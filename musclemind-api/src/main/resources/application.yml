@@ -1,4 +1,4 @@
-#potrebno je stvoriti env.yml file u kojem ?e biti sadr?ani DB_NAME, DB_USERNAME i DB_PASSWORD u sljede?em obliku:
+#potrebno je stvoriti env.yml file u kojem ce biti sadrzani DB_NAME, DB_USERNAME i DB_PASSWORD u sljedecem obliku:
 #DB_NAME: your_database_name
 #DB_USERNAME: your_database_username
 #DB_PASSWORD: your_database_password
