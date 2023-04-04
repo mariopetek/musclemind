@@ -1,9 +1,9 @@
 import React from 'react'
 import '../../styles/Navbar.css'
-import MusclemindLogo from '../../assets/logos/musclemind-logo.svg'
+import MusclemindLogo from '../../assets/logos/musclemind-logo.png'
 import GithubLogo from '../../assets/logos/github-logo.png'
 
-export default () => {
+const Navbar = () => {
     return (
         <>
             <div className="header">
@@ -23,3 +23,5 @@ export default () => {
         </>
     )
 }
+
+export default Navbar

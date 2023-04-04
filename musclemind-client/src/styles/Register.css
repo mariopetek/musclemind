@@ -1,0 +1,38 @@
+.registerContainer {
+    height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px;
+}
+.registerContainer > form {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    justify-content: space-around;
+    height: 100%;
+    outline: 1px solid rgba(191, 191, 191, 1);
+    border-radius: 8px;
+    margin: 10px;
+    padding: 0px 20px;
+}
+.registerContainer > form > h2 {
+    margin: 0;
+    text-align: center;
+    color: rgba(89, 89, 89, 1);
+}
+.registerContainer > form > button {
+    border: none;
+    outline: 1px solid rgba(0, 149, 255, 1);
+    background-color: rgba(0, 167, 255, 1);
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
+    transition: all 0.2s ease;
+}
+.registerContainer >form > button:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
