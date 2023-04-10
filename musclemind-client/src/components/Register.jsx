@@ -15,6 +15,7 @@ const Register = () => {
         password: '',
         confirmPassword: ''
     })
+    const [successMessage, setSuccessMessage] = useState('')
 
     const [inputErrors, setInputErrors] = useState({
         name: '',
@@ -95,6 +96,7 @@ const Register = () => {
 
     const register = async (event) => {
         event.preventDefault()
+        setSuccessMessage('')
         await fetch('/api/v1/users/new', {
             method: 'POST',
             headers: {
@@ -103,10 +105,16 @@ const Register = () => {
             body: JSON.stringify(inputValues)
         }).
         then((response) => {
+            if(response.status === 200) {
+                setSuccessMessage('Uspješna registracija. Možete se prijaviti putem stranice za prijavu')
+                document.querySelector('.successMessage').style.color = 'green'
+            }else {
+                setSuccessMessage('Neuspješna registracija.')
+                document.querySelector('.successMessage').style.color = 'red'
+            }
             return response.json()
         }).then((data)=> {
             console.log(data)
-             /*window.location.href = '/home';*/
         })
         .catch((error) => {
             console.log(error)
@@ -145,6 +153,7 @@ const Register = () => {
                     </div>
                 </form>
             </div>
+            <div className="successMessage">{successMessage}</div>
         </>
     )
 }

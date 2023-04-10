@@ -47,9 +47,12 @@ const Login = () => {
         }).then((response) => {
             if(response.status === 401) {
                 setError('Login failed')
+            }else {
+                /*window.location.href = '/home'*/
             }
-        }).catch(err => {
-            console.log(err)
+            console.log(response)
+        }).catch((error) => {
+            console.log(error)
         })
 
     }

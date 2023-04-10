@@ -63,3 +63,8 @@
     opacity: 0.8;
     cursor: pointer;
 }
+
+.successMessage {
+    text-align: center;
+    font-weight: 600;
+}
