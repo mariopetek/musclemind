@@ -3,6 +3,7 @@ package com.mariopetek.service.implementation;
 import com.mariopetek.model.AppUser;
 import com.mariopetek.model.Role;
 import com.mariopetek.repository.AppUserRepository;
+import com.mariopetek.repository.RoleRepository;
 import com.mariopetek.service.AppUserService;
 import com.mariopetek.service.RequestDeniedException;
 import com.mariopetek.dto.NewAppUserDTO;
@@ -17,9 +18,11 @@ import java.util.Optional;
 @Service
 public class AppUserServiceImpl implements AppUserService {
     private final AppUserRepository appUserRepository;
+    private final RoleRepository roleRepository;
 
-    public AppUserServiceImpl(AppUserRepository appUserRepository) {
+    public AppUserServiceImpl(AppUserRepository appUserRepository, RoleRepository roleRepository) {
         this.appUserRepository = appUserRepository;
+        this.roleRepository = roleRepository;
     }
 
     @Override
@@ -56,7 +59,7 @@ public class AppUserServiceImpl implements AppUserService {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         appUser.setPassword(passwordEncoder.encode(newAppUser.getPassword()));
         appUser.setBio(null);
-        appUser.setRole(Role.USER.toString());
+        appUser.setRole(roleRepository.findByRoleName("ROLE_USER"));
         return appUserRepository.save(appUser).getAppUserId();
     }
     @Override

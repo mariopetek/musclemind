@@ -20,22 +20,29 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfiguration {
     private final AppUserDetailsService appUserDetailsService;
+
     public SecurityConfiguration(AppUserDetailsService appUserDetailsService) {
         this.appUserDetailsService = appUserDetailsService;
     }
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().cors(Customizer.withDefaults())
-                .authorizeHttpRequests().requestMatchers("/users/new").permitAll()
-                .and().authorizeHttpRequests().anyRequest().authenticated()
-                .and().userDetailsService(appUserDetailsService)
-                .headers(headers -> headers.frameOptions().sameOrigin())
-                .formLogin()
-                .and().build();
+        http.authorizeHttpRequests(request ->
+                request
+                .requestMatchers("/users/new").permitAll()
+                .anyRequest().authenticated())
+            .csrf().disable()
+            .formLogin(form ->
+                form
+                .usernameParameter("username")
+                .passwordParameter("password"))
+            .logout(logout -> logout
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID"))
+            .userDetailsService(appUserDetailsService)
+            .cors(Customizer.withDefaults());
+
+        return http.build();
     }
 
     @Bean

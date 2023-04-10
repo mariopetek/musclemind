@@ -18,7 +18,7 @@ public class AppUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority(appUser.getRole()));
+        return Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
     }
     @Override
     public String getPassword() {
