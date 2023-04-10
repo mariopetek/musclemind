@@ -2,13 +2,11 @@ package com.mariopetek.controller;
 
 import com.mariopetek.dto.NewUserDTO;
 import com.mariopetek.service.UserService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/auth")
 public class AuthController {
     private final UserService userService;
 
@@ -17,7 +15,7 @@ public class AuthController {
     }
 
     @PostMapping("/new")
-    public void addNewUser(@RequestBody NewUserDTO newUser) {
-        userService.addNewUser(newUser);
+    public Long addNewUser(@RequestBody NewUserDTO newUser) {
+        return userService.addNewUser(newUser);
     }
 }

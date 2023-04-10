@@ -2,22 +2,22 @@ package com.mariopetek.config;
 
 import com.mariopetek.model.User;
 import com.mariopetek.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+import static org.springframework.security.core.authority.AuthorityUtils.NO_AUTHORITIES;
+@Service
 public class AppUserDetailsService implements UserDetailsService {
-    @Autowired
-    private UserService userService;
-
+    private final UserService userService;
+    public AppUserDetailsService(UserService userService) {
+        this.userService = userService;
+    }
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userService.getUserByUsername(username).orElseThrow(
-                () -> new UsernameNotFoundException("User not found")
-        );
-        return new AppUserDetails(user);
+        User user = userService.getUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException("No user found."));
+
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), NO_AUTHORITIES);
     }
 }

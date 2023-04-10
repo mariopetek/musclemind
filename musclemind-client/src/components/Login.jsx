@@ -11,6 +11,7 @@ const Login = () => {
         username: '',
         password: ''
     })
+    const [error, setError] = useState('')
 
     const handleInputChange = (event) => {
         setInputValues({
@@ -34,9 +35,26 @@ const Login = () => {
         }
     ]
 
-    const login = (event) => {
+    const login = async (event) => {
         event.preventDefault()
+        setError('')
+        await fetch('/api/v1/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `username=${inputValues.username}&password=${inputValues.password}`
+        }).then((response) => {
+            if(response.status === 401) {
+                setError('Login failed')
+            }
+        }).catch(err => {
+            console.log(err)
+        })
+
     }
+
+    console.log(inputValues)
 
     return (
         <>
@@ -59,6 +77,9 @@ const Login = () => {
                     <div className="loginButtonSection">
                         <a href="/">Odustani</a>
                         <button>Prijavi se</button>
+                    </div>
+                    <div>
+                        {error}
                     </div>
                 </form>
             </div>

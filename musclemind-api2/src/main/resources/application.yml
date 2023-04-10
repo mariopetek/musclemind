@@ -8,10 +8,6 @@ server:
 spring:
   config:
     import: file:env.yml
-  security:
-    user:
-      name: ${ADMIN_USERNAME}
-      password: ${ADMIN_PASSWORD}
   datasource:
     url: jdbc:postgresql://localhost:5432/${DB_NAME}
     username: ${DB_USERNAME}

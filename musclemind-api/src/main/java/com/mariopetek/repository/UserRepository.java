@@ -7,4 +7,8 @@ import java.util.Optional;
 //@Repository anotaciju možemo pisati, ali ne moramo (kada extendamo JpaRepository onda se automatski zna da se radi o repository anotaciji)
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByUsername(String username);
+    Optional<User> findByUserId(Long userId);
+    Integer countByUsername(String username);
+    Integer countByEmail(String email);
+
 }

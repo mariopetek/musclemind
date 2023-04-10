@@ -1,34 +1,32 @@
-package com.mariopetek.config;
+package com.mariopetek.configuration;
 
-import com.mariopetek.model.User;
+import com.mariopetek.model.AppUser;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import java.util.Collection;
-import java.util.List;
-import static org.springframework.security.core.authority.AuthorityUtils.commaSeparatedStringToAuthorityList;
+import java.util.Collections;
 
 public class AppUserDetails implements UserDetails {
-    private final String username;
-    private final String password;
-    private final List<GrantedAuthority> authorities;
 
-    public AppUserDetails(User user) {
-        this.username = user.getUsername();
-        this.password = user.getPassword();
-        this.authorities = commaSeparatedStringToAuthorityList(user.getRole().name());
+    private final AppUser appUser;
+
+    public AppUserDetails(AppUser appUser) {
+        this.appUser = appUser;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+        return Collections.singleton(new SimpleGrantedAuthority(appUser.getRole()));
     }
     @Override
     public String getPassword() {
-        return password;
+        return appUser.getPassword();
     }
     @Override
     public String getUsername() {
-        return username;
+        return appUser.getUsername();
     }
     @Override
     public boolean isAccountNonExpired() {

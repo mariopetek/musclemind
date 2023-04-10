@@ -7,13 +7,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
-public class MusclemindApplication {
-	@Bean
-	public PasswordEncoder passwordEncoder(){
-		return new BCryptPasswordEncoder();
-	}
+public class MusclemindApiApplication {
+
 	public static void main(String[] args) {
-		SpringApplication.run(MusclemindApplication.class, args);
+		SpringApplication.run(MusclemindApiApplication.class, args);
 	}
 
 }

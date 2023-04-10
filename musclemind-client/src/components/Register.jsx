@@ -1,6 +1,5 @@
 import { React, useState } from 'react'
 import InputField from './partials/InputField'
-import axios from 'axios'
 
 import Navbar from './partials/Navbar'
 
@@ -61,7 +60,7 @@ const Register = () => {
     const handleInputChange = (event) => {
         const { name, value} = event.target
         setInputValues({...inputValues, [name]: value})
-        
+        /*
         switch(name) {
             case 'name': {
                 if(value.length === 0) {
@@ -91,16 +90,25 @@ const Register = () => {
                 }
                 break;
             }
-        }
+        }*/
     }
 
-    const register = (event) => {
+    const register = async (event) => {
         event.preventDefault()
-        axios.post('/api/v1/auth/new', inputValues).
+        await fetch('/api/v1/users/new', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(inputValues)
+        }).
         then((response) => {
-            console.log(response)
-            window.location.href = '/home';
-        }).catch((error) => {
+            return response.json()
+        }).then((data)=> {
+            console.log(data)
+             /*window.location.href = '/home';*/
+        })
+        .catch((error) => {
             console.log(error)
         })
     }
