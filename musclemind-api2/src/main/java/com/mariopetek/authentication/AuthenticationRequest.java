@@ -1,17 +1,15 @@
-package com.mariopetek.dto;
+package com.mariopetek.authentication;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class NewAppUserDTO {
-    private String name;
+public class AuthenticationRequest {
     private String username;
-    private String email;
     private String password;
 }

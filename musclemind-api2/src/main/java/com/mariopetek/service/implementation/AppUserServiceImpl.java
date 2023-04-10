@@ -1,16 +1,11 @@
 package com.mariopetek.service.implementation;
 
 import com.mariopetek.model.AppUser;
-import com.mariopetek.model.Role;
 import com.mariopetek.repository.AppUserRepository;
 import com.mariopetek.repository.RoleRepository;
 import com.mariopetek.service.AppUserService;
-import com.mariopetek.service.RequestDeniedException;
-import com.mariopetek.dto.NewAppUserDTO;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,18 +13,16 @@ import java.util.Optional;
 @Service
 public class AppUserServiceImpl implements AppUserService {
     private final AppUserRepository appUserRepository;
-    private final RoleRepository roleRepository;
 
-    public AppUserServiceImpl(AppUserRepository appUserRepository, RoleRepository roleRepository) {
+    public AppUserServiceImpl(AppUserRepository appUserRepository) {
         this.appUserRepository = appUserRepository;
-        this.roleRepository = roleRepository;
     }
 
     @Override
     public List<AppUser> getAllAppUsers() {
         return appUserRepository.findAll();
     }
-    public void validateNewAppUser(NewAppUserDTO newAppUser) {
+    /*public void validateNewAppUser(NewAppUserDTO newAppUser) {
         //treba dodat i format usernamea i passworda i to provjeriti
         final String EMAIL_REGEX = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
         Assert.notNull(newAppUser, "newUser must be given.");
@@ -48,20 +41,19 @@ public class AppUserServiceImpl implements AppUserService {
                     "User with email " + newAppUser.getEmail() + " already exists."
             );
         }
-    }
-    @Override
+    }*/
+    /*@Override
     public Long addNewAppUser(NewAppUserDTO newAppUser) {
         validateNewAppUser(newAppUser);
         AppUser appUser = new AppUser();
         appUser.setName(newAppUser.getName());
         appUser.setUsername(newAppUser.getUsername());
         appUser.setEmail(newAppUser.getEmail());
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         appUser.setPassword(passwordEncoder.encode(newAppUser.getPassword()));
         appUser.setBio(null);
         appUser.setRole(roleRepository.findByRoleName("ROLE_USER"));
         return appUserRepository.save(appUser).getAppUserId();
-    }
+    }*/
     @Override
     public Optional<AppUser> getAppUserByUsername(String username) {
         return appUserRepository.findByUsername(username);
