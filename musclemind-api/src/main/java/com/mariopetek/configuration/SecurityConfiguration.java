@@ -1,5 +1,6 @@
 package com.mariopetek.configuration;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +27,9 @@ public class SecurityConfiguration {
                 .anyRequest().authenticated()
             .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            /*.and().exceptionHandling().authenticationEntryPoint((req, res, ex) -> {
+                res.sendError(HttpServletResponse.SC_UNAUTHORIZED, ex.getMessage());
+            })*/
             .and().authenticationProvider(authenticationProvider)
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
