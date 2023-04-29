@@ -38,26 +38,26 @@ const Login = () => {
     const login = async (event) => {
         event.preventDefault()
         setError('')
-        await fetch('/api/v1/login', {
+        await fetch('/api/v1/auth/login', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
+                'Content-Type': 'application/json'
             },
-            body: `username=${inputValues.username}&password=${inputValues.password}`
+            body: JSON.stringify(inputValues)
         }).then((response) => {
-            if(response.status === 401) {
-                setError('Login failed')
+            if(response.status === 200) {
+                return response.json()
             }else {
-                /*window.location.href = '/home'*/
+                return Promise.reject('Neispravno korisničko ime ili lozinka')
             }
-            console.log(response)
+        }).then((data) => {
+            setError('')
+            localStorage.setItem('jwt', data.token)
+            window.location.href = '/home'
         }).catch((error) => {
-            console.log(error)
+            setError(error)
         })
-
     }
-
-    console.log(inputValues)
 
     return (
         <>
@@ -81,10 +81,10 @@ const Login = () => {
                         <a href="/">Odustani</a>
                         <button>Prijavi se</button>
                     </div>
-                    <div>
-                        {error}
-                    </div>
                 </form>
+            </div>
+            <div>
+                {error}
             </div>
         </>
     )

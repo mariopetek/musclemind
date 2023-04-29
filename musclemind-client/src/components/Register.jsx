@@ -1,6 +1,6 @@
 import { React, useState } from 'react'
-import InputField from './partials/InputField'
 
+import InputField from './partials/InputField'
 import Navbar from './partials/Navbar'
 
 import '../styles/Register.css'
@@ -15,15 +15,8 @@ const Register = () => {
         password: '',
         confirmPassword: ''
     })
-    const [successMessage, setSuccessMessage] = useState('')
 
-    const [inputErrors, setInputErrors] = useState({
-        name: '',
-        username: '',
-        email: '',
-        password: '',
-        confirmPassword: ''
-    })
+    const [error, setError] = useState('')
 
     const inputs = [
         {
@@ -61,43 +54,11 @@ const Register = () => {
     const handleInputChange = (event) => {
         const { name, value} = event.target
         setInputValues({...inputValues, [name]: value})
-        /*
-        switch(name) {
-            case 'name': {
-                if(value.length === 0) {
-                    setInputErrors({...inputErrors, [name]: 'Ime smije sadržavati samo velika i mala slova'})
-                } else {
-                    setInputErrors({...inputErrors, [name]: ''})
-                }
-                break;
-            }
-            case 'username': {
-                setInputErrors({...inputErrors, [name]: 'Korisničko ime treba sadržavati 4 - 20 znakova bez specijalnih znakova'})
-                break;
-            }
-            case 'email': {
-                setInputErrors({...inputErrors, [name]: 'Email treba biti u obliku example@mail.com'})
-                break;
-            }
-            case 'password': {
-                setInputErrors({...inputErrors, [name]: 'Lozinka treba sadržavati 8 - 20 znakova koji uključuju velika i mala slova, brojeve i specijalne znakove'})
-                break;
-            }
-            case 'confirmPassword': {
-                if(value !== inputValues.password) {
-                    setInputErrors({...inputErrors, [name]: 'Lozinke se ne poklapaju'})
-                } else {
-                    setInputErrors({...inputErrors, [name]: ''})
-                }
-                break;
-            }
-        }*/
     }
 
     const register = async (event) => {
         event.preventDefault()
-        setSuccessMessage('')
-        await fetch('/api/v1/users/new', {
+        await fetch('/api/v1/auth/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -106,26 +67,18 @@ const Register = () => {
         }).
         then((response) => {
             if(response.status === 200) {
-                setSuccessMessage('Uspješna registracija. Možete se prijaviti putem stranice za prijavu')
-                document.querySelector('.successMessage').style.color = 'green'
+                return response.json()
             }else {
-                setSuccessMessage('Neuspješna registracija.')
-                document.querySelector('.successMessage').style.color = 'red'
+                return Promise.reject('Neuspješna registracija')
             }
-            return response.json()
-        }).then((data)=> {
-            console.log(data)
-        })
-        .catch((error) => {
-            console.log(error)
+        }).then((data) => {
+            setError('')
+            localStorage.setItem('jwt', data.token)
+            window.location.href = '/home'
+        }).catch((error) => {
+            setError(error)
         })
     }
-
-    const isValid = () => {
-        
-    }
-
-    console.log(inputValues)
 
     return (
         <>
@@ -142,18 +95,18 @@ const Register = () => {
                                         type={input.type}
                                         required
                                         onChange={handleInputChange}
-                                        helperText={inputErrors[input.name]} 
+                                        helperText='' 
                                         variant="outlined" 
                                         size="small"/>
                         ))
                     }
                     <div className="registerButtonSection">
                         <a href="/">Odustani</a>
-                        <button disabled={isValid()}>Registriraj se</button>
+                        <button>Registriraj se</button>
                     </div>
                 </form>
             </div>
-            <div className="successMessage">{successMessage}</div>
+            <div className="errorMessage">{error}</div>
         </>
     )
 }

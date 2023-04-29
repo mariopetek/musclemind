@@ -1,9 +1,14 @@
-import React from 'react'
+import { React, useEffect } from 'react'
 import Navbar from './partials/Navbar'
 import MusclemindLogo from '../assets/logos/musclemind-logo.png'
 import '../styles/Welcome.css'
+import validateToken from '../utilities/ValidateToken'
 
 const Welcome = () => {
+    useEffect(() => {
+        validateToken()
+    }, [])
+    
     return (
         <>
             <Navbar />

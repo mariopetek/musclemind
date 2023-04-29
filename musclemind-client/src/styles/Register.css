@@ -64,7 +64,7 @@
     cursor: pointer;
 }
 
-.successMessage {
+.errorMessage {
     text-align: center;
     font-weight: 600;
 }
