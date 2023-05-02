@@ -14,8 +14,8 @@ import java.util.List;
 @Builder
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class AppUser implements UserDetails {
     @Id
     @Column(name = "id_korisnik", nullable = false)
