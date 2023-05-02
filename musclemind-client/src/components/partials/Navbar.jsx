@@ -1,23 +1,49 @@
-import React from 'react'
+import { NavLink } from 'react-router-dom'
+
 import '../../styles/Navbar.css'
 import MusclemindLogo from '../../assets/logos/musclemind-logo.png'
 import GithubLogo from '../../assets/logos/github-logo.png'
 
-const Navbar = () => {
+const Navbar = (props) => {
+    const authenticatedNavigation = [
+        {name: 'Početna', href: '/home'},
+        {name: 'Istraži', href: '/explore'},
+        {name: 'Novo', href: '/new'},
+        {name: 'Račun', href: '/profile'}
+    ]
+    const notAuthenticatedNavigation = [
+        {name: 'Registracija', href: '/register'},
+        {name: 'Prijava', href: '/login'}
+    ]
+
+    let homeLink = props.isAuthenticated ? "/home" : "/"
+
     return (
         <>
             <div className="header">
-                <a className="logo" href="/">
+                <NavLink className="logo" to={homeLink}>
                     <img src={MusclemindLogo} alt="musclemind-logo.svg" />
                     <h1>Musclemind</h1>
-                </a>
+                </NavLink>
                 <div className="links">
-                    <a href="/register">Registracija</a>
-                    <a href="/login">Prijava</a>
-                    <div></div>
-                    <a href="https://www.github.com" target="_blank">
-                        <img src={GithubLogo} alt="github-logo.png" />
-                    </a>
+                    {
+                        props.isAuthenticated ?
+                        authenticatedNavigation.map((link, idx) => (
+                            <NavLink className={({isActive}) => {return isActive ? "navLinkActive" : "navLink"}} key={idx} to={link.href}>{link.name}</NavLink>
+                        ))
+                        :
+                        <>
+                            {
+                                notAuthenticatedNavigation.map((link, idx) => (
+                                    <NavLink className={({isActive}) => {return isActive ? "navLinkActive" : "navLink"}} key={idx} to={link.href}>{link.name}</NavLink>
+                                ))
+                            }
+                            <div className="separator"></div>
+                            <NavLink className="githubLogo" target="_blank" to="https://www.github.com">
+                                <img src={GithubLogo} alt="github-logo.png" />
+                            </NavLink>
+                        </>
+                    }
                 </div>
             </div>
         </>

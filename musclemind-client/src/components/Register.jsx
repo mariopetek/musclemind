@@ -1,4 +1,4 @@
-import { React, useState } from 'react'
+import { useState } from 'react'
 
 import InputField from './partials/InputField'
 import Navbar from './partials/Navbar'
@@ -82,7 +82,6 @@ const Register = () => {
 
     return (
         <>
-            <Navbar />
             <div className="registerContainer">
                 <form onSubmit={register}>
                     <h2>Registracija</h2>

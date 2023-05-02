@@ -1,4 +1,4 @@
-import { React, useState } from 'react'
+import { useState } from 'react'
 
 import Navbar from './partials/Navbar'
 import InputField from './partials/InputField'
@@ -61,7 +61,6 @@ const Login = () => {
 
     return (
         <>
-            <Navbar />
             <div className="loginContainer">
                 <form onSubmit={login}>
                     <h2>Prijava</h2>
