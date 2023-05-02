@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
-import Navbar from './partials/Navbar'
+import { useNavigate } from 'react-router-dom'
 
 const Home = (props) => {
+    const navigate = useNavigate()
     useEffect(() => {
         (async () => {
             const token = localStorage.getItem('jwt')
@@ -22,11 +23,12 @@ const Home = (props) => {
                 }).then((data) => {
                     console.log(data)
                 }).catch((error) => {
-                    window.location.href = '/login'
+                    navigate('/login')
                     console.log(error)
                 })
             }else {
-                window.location.href = '/login'
+                props.authRequest(false)
+                navigate('/login')
                 console.log('Nema tokena')
             }
         })()

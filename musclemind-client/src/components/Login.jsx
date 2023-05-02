@@ -1,25 +1,22 @@
 import { useState } from 'react'
-
-import Navbar from './partials/Navbar'
+import { useNavigate } from 'react-router-dom'
 import InputField from './partials/InputField'
 
 import '../styles/Login.css'
 
 const Login = () => {
-
+    const navigate = useNavigate()
     const [inputValues, setInputValues] = useState({
         username: '',
         password: ''
     })
     const [error, setError] = useState('')
-
     const handleInputChange = (event) => {
         setInputValues({
           ...inputValues,
             [event.target.name]: event.target.value
         })
     }
-
     const inputs = [
         {
             id: 1,
@@ -34,7 +31,6 @@ const Login = () => {
             label: 'Lozinka'
         }
     ]
-
     const login = async (event) => {
         event.preventDefault()
         setError('')
@@ -53,7 +49,7 @@ const Login = () => {
         }).then((data) => {
             setError('')
             localStorage.setItem('jwt', data.token)
-            window.location.href = '/home'
+            navigate('/home')
         }).catch((error) => {
             setError(error)
         })

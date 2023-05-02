@@ -15,7 +15,7 @@ const App = () => {
 
     return (
         <BrowserRouter>
-            <Navbar isAuthenticated={isAuthenticated}/>
+            <Navbar isAuthenticated={isAuthenticated} authRequest={authRequest}/>
             <Routes>
                 <Route path="/" element={<Welcome />} />
                 <Route path="/register" element={<Register />} />

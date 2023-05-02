@@ -1,13 +1,12 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import InputField from './partials/InputField'
-import Navbar from './partials/Navbar'
 
 import '../styles/Register.css'
 
-
 const Register = () => {
-
+    const navigate = useNavigate()
     const [inputValues, setInputValues] = useState({
         name: '',
         username: '',
@@ -15,9 +14,7 @@ const Register = () => {
         password: '',
         confirmPassword: ''
     })
-
     const [error, setError] = useState('')
-
     const inputs = [
         {
             id: 1,
@@ -50,12 +47,10 @@ const Register = () => {
             type: 'password'
         }
     ]
-
     const handleInputChange = (event) => {
         const { name, value} = event.target
         setInputValues({...inputValues, [name]: value})
     }
-
     const register = async (event) => {
         event.preventDefault()
         await fetch('/api/v1/auth/register', {
@@ -74,7 +69,7 @@ const Register = () => {
         }).then((data) => {
             setError('')
             localStorage.setItem('jwt', data.token)
-            window.location.href = '/home'
+            navigate('/home')
         }).catch((error) => {
             setError(error)
         })

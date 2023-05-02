@@ -46,7 +46,7 @@
     text-decoration: none;
     outline: 2px solid rgba(89, 89, 89, 1);
     padding: 5px;
-    border-radius: 10px;
+    border-radius: 8px;
     color:rgba(89, 89, 89, 1);
     font-weight: 600;
     transition: all 0.2s ease;
@@ -57,9 +57,24 @@
 .separator {
     height: 55%;
     width: 1px;
-    background-color: #595959;
+    background-color: rgba(89, 89, 89, 1);
+}
+
+.githubLogo {
+    transition: all 0.2s ease;
 }
 .githubLogo > img {
     height: 30px;
     vertical-align: bottom;
+}
+.githubLogo:hover {
+    opacity: 0.8;
+}
+
+.powerOff {
+    transition: all 0.2s ease;
+}
+.powerOff:hover {
+    cursor: pointer;
+    opacity: 0.8;
 }
