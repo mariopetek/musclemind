@@ -1,13 +1,13 @@
 import { NavLink, useNavigate } from 'react-router-dom'
 
-import '../../styles/Navbar.css'
+import styles from '../../styles/Header.module.css'
 import MusclemindLogo from '../../assets/logos/musclemind-logo.png'
 import GithubLogo from '../../assets/logos/github-logo.png'
 import { IconContext } from 'react-icons'
 import { FiPower } from 'react-icons/fi'
 
 
-const Navbar = (props) => {
+export const Navbar = (props) => {
     const navigate = useNavigate()
     const authenticatedNavigation = [
         {name: 'Početna', href: '/home'},
@@ -28,22 +28,22 @@ const Navbar = (props) => {
     }
 
     return (
-        <div className="header">
-            <NavLink className="logo" to={homeLink}>
+        <div className={styles.header}>
+            <NavLink className={styles.logo} to={homeLink}>
                 <img src={MusclemindLogo} alt="musclemind-logo.svg" />
                 <h1>Musclemind</h1>
             </NavLink>
-            <div className="links">
+            <div className={styles.links}>
                 {
                     props.isAuthenticated ?
                     <>
                         {
                             authenticatedNavigation.map((link, idx) => (
-                                <NavLink className={({isActive}) => {return isActive ? "navLinkActive" : "navLink"}} key={idx} to={link.href}>{link.name}</NavLink>
+                                <NavLink className={({isActive}) => {return isActive ? styles.navLinkActive : styles.navLink}} key={idx} to={link.href}>{link.name}</NavLink>
                             ))
                         }
-                        <div className="separator"></div>
-                        <IconContext.Provider value={{ color: "rgba(89, 89, 89, 1)", size: "25px", className: "powerOff" }}>
+                        <div className={styles.separator}></div>
+                        <IconContext.Provider value={{ color: "rgba(89, 89, 89, 1)", size: "25px", className:styles.logoutIcon }}>
                             <FiPower onClick={logout}/>
                         </IconContext.Provider>
                     </>
@@ -51,11 +51,11 @@ const Navbar = (props) => {
                     <>
                         {
                             notAuthenticatedNavigation.map((link, idx) => (
-                                <NavLink className={({isActive}) => {return isActive ? "navLinkActive" : "navLink"}} key={idx} to={link.href}>{link.name}</NavLink>
+                                <NavLink className={({isActive}) => {return isActive ? styles.navLinkActive : styles.navLink}} key={idx} to={link.href}>{link.name}</NavLink>
                             ))
                         }
-                        <div className="separator"></div>
-                        <NavLink className="githubLogo" target="_blank" to="https://www.github.com">
+                        <div className={styles.separator}></div>
+                        <NavLink className={styles.githubLogo} target="_blank" to="https://www.github.com">
                             <img src={GithubLogo} alt="github-logo.png" />
                         </NavLink>
                     </>

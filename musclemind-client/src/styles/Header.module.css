@@ -71,10 +71,10 @@
     opacity: 0.8;
 }
 
-.powerOff {
+.logoutIcon {
     transition: all 0.2s ease;
 }
-.powerOff:hover {
+.logoutIcon:hover {
     cursor: pointer;
     opacity: 0.8;
 }

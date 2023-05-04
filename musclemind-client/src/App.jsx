@@ -4,7 +4,7 @@ import Welcome from './components/Welcome'
 import Home from './components/Home'
 import Register from './components/Register'
 import Login from './components/Login'
-import Navbar from './components/partials/Navbar'
+import Header from './components/partials/Header'
 
 const App = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -15,7 +15,7 @@ const App = () => {
 
     return (
         <BrowserRouter>
-            <Navbar isAuthenticated={isAuthenticated} authRequest={authRequest}/>
+            <Header isAuthenticated={isAuthenticated} authRequest={authRequest}/>
             <Routes>
                 <Route path="/" element={<Welcome />} />
                 <Route path="/register" element={<Register />} />

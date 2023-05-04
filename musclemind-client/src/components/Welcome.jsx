@@ -1,22 +1,24 @@
 import { useEffect } from 'react'
+import { NavLink } from 'react-router-dom'
 import MusclemindLogo from '../assets/logos/musclemind-logo.png'
-import '../styles/Welcome.css'
-import validateToken from '../utilities/ValidateToken'
+import styles from '../styles/Welcome.module.css'
 
 const Welcome = () => {
-    
+    useEffect(()=> {
+        
+    })
     return (
-        <div className="bodyContainer">
+        <div className={styles.bodyContainer}>
             <img src={MusclemindLogo} alt="musclemind-logo.svg" />
-            <div className="textContainer">
+            <div className={styles.textContainer}>
                 <h1>Muscemind</h1>
-                <p className="mainDesc">Mjesto na kojem vlada trening i zdravlje.</p>
-                <p className="secondaryDesc">Izradite i podijelite svoj trening te se povežite s ostalima koji imaju jednake interese.</p>
-                <div className="buttonContainer">
-                    <a className="registerButton" href="/register">Registriraj se</a>
-                    <div className="loginButton">
+                <p className={styles.mainDesc}>Mjesto na kojem vlada trening i zdravlje.</p>
+                <p className={styles.secondaryDesc}>Izradite i podijelite svoj trening te se povežite s ostalima koji imaju jednake interese.</p>
+                <div className={styles.buttonContainer}>
+                    <NavLink className={styles.registerButton} to="/register">Registriraj se</NavLink>
+                    <div className={styles.loginContainer}>
                         <p>Imaš račun?</p>
-                        <a href="/login">Prijavi se</a>
+                        <NavLink className={styles.loginButton} to="/login">Prijavi se</NavLink>
                     </div>
                 </div>
             </div>

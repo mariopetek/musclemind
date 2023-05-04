@@ -7,25 +7,25 @@ const Home = (props) => {
         (async () => {
             const token = localStorage.getItem('jwt')
             if(token) {
-                await fetch('/api/v1/users', {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                }).then((response) => {
+                try {
+                    const response = await fetch('/api/v1/users', {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    })
                     if(response.status === 200) {
                         props.authRequest(true)
-                        return response.json()
+                        const data = await response.json()
+                        console.log(data)
                     }else {
-                        props.authRequest(false)
-                        return Promise.reject('Neispravan token')
+                        throw Error('Neispravan token')
                     }
-                }).then((data) => {
-                    console.log(data)
-                }).catch((error) => {
+                }catch(error) {
+                    props.authRequest(false)
                     navigate('/login')
-                    console.log(error)
-                })
+                    console.log(error.message)
+                }
             }else {
                 props.authRequest(false)
                 navigate('/login')
