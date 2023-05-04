@@ -23,13 +23,10 @@ public class SecurityConfiguration {
         http
             .csrf().disable()
             .authorizeHttpRequests()
-                .requestMatchers("/api/v1/auth/**").permitAll()
+                .requestMatchers("/api/v1/auth/login", "/api/v1/auth/register").permitAll()
                 .anyRequest().authenticated()
             .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            /*.and().exceptionHandling().authenticationEntryPoint((req, res, ex) -> {
-                res.sendError(HttpServletResponse.SC_UNAUTHORIZED, ex.getMessage());
-            })*/
             .and().authenticationProvider(authenticationProvider)
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 

@@ -2,11 +2,8 @@ package com.mariopetek.authentication;
 
 
 import com.mariopetek.configuration.JwtService;
-import com.mariopetek.model.AppUser;
-import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,7 +22,7 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticationService.authenticate(request));
     }
     @GetMapping("/validate")
-    public ResponseEntity<Long> validateToken(@AuthenticationPrincipal AppUser appUser) {
-        return ResponseEntity.ok(appUser.getAppUserId());
+    public ResponseEntity<String> validateToken() {
+        return ResponseEntity.ok("Ispravan token");
     }
 }
