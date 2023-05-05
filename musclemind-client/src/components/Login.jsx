@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import { NavLink, useNavigate, Navigate } from 'react-router-dom'
 import InputField from './partials/InputField'
 
 import styles from '../styles/Login.module.css'
@@ -25,27 +25,6 @@ const Login = () => {
             label: 'Lozinka'
         }
     ]
-    useEffect(() => {
-        (async () => {
-            const token = localStorage.getItem('jwt')
-            if(token) {
-                try {
-                    const response = await fetch('/api/v1/auth/validate', {
-                        method: 'GET',
-                        headers: {
-                            'Authorization': `Bearer ${token}`
-                        }
-                    })
-                    if(response.status === 200) {
-                        throw Error('Odajvite se za pristup stranici za prijavu.')    
-                    }
-                }catch(error) {
-                    navigate('/home')
-                    console.log(error.message)
-                }
-            }
-        })()
-    }, [])
     const handleInputChange = (event) => {
         setInputValues({
           ...inputValues,
@@ -75,7 +54,6 @@ const Login = () => {
             setError(error.message)
         }
     }
-
     return (
         <>
             <div className={styles.loginContainer}>

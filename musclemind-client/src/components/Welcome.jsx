@@ -1,12 +1,8 @@
-import { useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 import MusclemindLogo from '../assets/logos/musclemind-logo.png'
 import styles from '../styles/Welcome.module.css'
 
 const Welcome = () => {
-    useEffect(()=> {
-        
-    })
     return (
         <div className={styles.bodyContainer}>
             <img src={MusclemindLogo} alt="musclemind-logo.svg" />

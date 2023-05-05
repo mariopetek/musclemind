@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 
 import InputField from './partials/InputField'
@@ -47,27 +47,6 @@ const Register = () => {
             type: 'password'
         }
     ]
-    useEffect(() => {
-        (async () => {
-            const token = localStorage.getItem('jwt')
-            if(token) {
-                try {
-                    const response = await fetch('/api/v1/auth/validate', {
-                        method: 'GET',
-                        headers: {
-                            'Authorization': `Bearer ${token}`
-                        }
-                    })
-                    if(response.status === 200) {
-                        throw Error('Odajvite se za pristup stranici za registraciju.')    
-                    }
-                }catch(error) {
-                    navigate('/home')
-                    console.log(error.message)
-                }
-            }
-        })()
-    }, [])
     const handleInputChange = (event) => {
         setInputValues({
             ...inputValues, 
@@ -96,29 +75,7 @@ const Register = () => {
         }catch(error) {
             setError(error.message)
         }
-        /*
-        await fetch('/api/v1/auth/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(inputValues)
-        }).
-        then((response) => {
-            if(response.status === 200) {
-                return response.json()
-            }else {
-                return Promise.reject('Neuspješna registracija')
-            }
-        }).then((data) => {
-            setError('')
-            localStorage.setItem('jwt', data.token)
-            navigate('/home')
-        }).catch((error) => {
-            setError(error)
-        })*/
     }
-
     return (
         <>
             <div className={styles.registerContainer}>

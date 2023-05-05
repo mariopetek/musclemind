@@ -1,4 +1,6 @@
 import { NavLink, useNavigate } from 'react-router-dom'
+import { useContext } from 'react'
+import { AuthContext } from '../../App'
 
 import styles from '../../styles/Header.module.css'
 import MusclemindLogo from '../../assets/logos/musclemind-logo.png'
@@ -7,7 +9,8 @@ import { IconContext } from 'react-icons'
 import { FiPower } from 'react-icons/fi'
 
 
-export const Navbar = (props) => {
+export const Header = () => {
+    const [ isAuthenticated, setIsAuthenticated ] = useContext(AuthContext)
     const navigate = useNavigate()
     const authenticatedNavigation = [
         {name: 'Početna', href: '/home'},
@@ -19,11 +22,11 @@ export const Navbar = (props) => {
         {name: 'Registracija', href: '/register'},
         {name: 'Prijava', href: '/login'}
     ]
-    let homeLink = props.isAuthenticated ? "/home" : "/"
+    let homeLink = isAuthenticated ? "/home" : "/"
 
     const logout = () => {
         localStorage.removeItem('jwt')
-        props.authRequest(false)
+        setIsAuthenticated(false)
         navigate('/')
     }
 
@@ -35,7 +38,7 @@ export const Navbar = (props) => {
             </NavLink>
             <div className={styles.links}>
                 {
-                    props.isAuthenticated ?
+                    isAuthenticated ?
                     <>
                         {
                             authenticatedNavigation.map((link, idx) => (
@@ -65,4 +68,4 @@ export const Navbar = (props) => {
     )
 }
 
-export default Navbar
+export default Header
