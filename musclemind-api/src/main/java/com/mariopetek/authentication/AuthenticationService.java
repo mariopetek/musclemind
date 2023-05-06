@@ -28,11 +28,11 @@ public class AuthenticationService {
                         .bio(null)
                         .role(roleRepository.findByRoleName("ROLE_USER"))
                         .build();
-        appUserRepository.save(appUser);
         var jwtToken = jwtService.generateToken(appUser);
         return AuthenticationResponse
                 .builder()
                 .token(jwtToken)
+                .appUser(appUserRepository.save(appUser))
                 .build();
     }
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
@@ -44,6 +44,7 @@ public class AuthenticationService {
         return AuthenticationResponse
                 .builder()
                 .token(jwtToken)
+                .appUser(appUser)
                 .build();
     }
 }
