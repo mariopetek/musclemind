@@ -1,6 +1,5 @@
 import { NavLink, useNavigate } from 'react-router-dom'
-import { useContext } from 'react'
-import { AuthContext } from '../../App'
+import { useAuth } from './AuthContext'
 
 import styles from '../../styles/Header.module.css'
 import MusclemindLogo from '../../assets/logos/musclemind-logo.png'
@@ -9,8 +8,8 @@ import { IconContext } from 'react-icons'
 import { FiPower } from 'react-icons/fi'
 
 
-export const Header = () => {
-    const [ isAuthenticated, setIsAuthenticated, user ] = useContext(AuthContext)
+const Header = () => {
+    const [ userInfo, setUserInfo ] = useAuth()
     const navigate = useNavigate()
     const authenticatedNavigation = [
         {name: 'Početna', href: '/home'},
@@ -22,13 +21,18 @@ export const Header = () => {
         {name: 'Registracija', href: '/register'},
         {name: 'Prijava', href: '/login'}
     ]
-    let homeLink = isAuthenticated ? "/home" : "/"
+    let homeLink = userInfo.isAuthenticated ? '/home' : '/'
 
     const logout = () => {
         localStorage.removeItem('jwt')
         localStorage.removeItem('id')
         localStorage.removeItem('username')
-        setIsAuthenticated(false)
+        setUserInfo({
+            token: null, 
+            id: null, 
+            username: null, 
+            isAuthenticated: false
+        })
         navigate('/')
     }
 
@@ -40,7 +44,7 @@ export const Header = () => {
             </NavLink>
             <div className={styles.links}>
                 {
-                    isAuthenticated ?
+                    userInfo.isAuthenticated ?
                     <>
                         {
                             authenticatedNavigation.map((link, idx) => (
@@ -51,7 +55,7 @@ export const Header = () => {
                         <IconContext.Provider value={{ size: "25px" }}>
                             <FiPower className={styles.logoutIcon} title="Odjava" onClick={logout}/>
                         </IconContext.Provider>
-                        <p>{user.username}</p>
+                        <p>{userInfo.username}</p>
                     </>
                     :
                     <>

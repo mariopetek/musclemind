@@ -1,10 +1,10 @@
-import { useState, createContext } from 'react'
+import { createContext } from 'react'
 import { Routes, Route, BrowserRouter } from 'react-router-dom'
 
 import ProtectedRoute from './components/partials/ProtectedRoute'
 import UnprotectedRoute from './components/partials/UnprotectedRoute'
-
 import Header from './components/partials/Header'
+import { AuthProvider } from './components/partials/AuthContext'
 
 import Welcome from './components/Welcome'
 import Register from './components/Register'
@@ -18,12 +18,9 @@ import Profile from './components/Profile'
 export const AuthContext = createContext()
 
 const App = () => {
-    const [ isAuthenticated, setIsAuthenticated ] = useState(false)
-    const [ user, setUser] = useState(null)
-
     return (
-        <AuthContext.Provider value={[isAuthenticated, setIsAuthenticated, user, setUser]}>
-            <BrowserRouter>
+        <BrowserRouter>
+            <AuthProvider>
                 <Header />
                 <Routes>
                     <Route element={<UnprotectedRoute />}>
@@ -31,7 +28,7 @@ const App = () => {
                         <Route path="/register" element={<Register />} />
                         <Route path="/login" element={<Login />} />
                     </Route>
-                    <Route element={<ProtectedRoute />}>
+                    <Route element={<ProtectedRoute isProtected={true} />}>
                         <Route path="/home" element={<Home />} />
                         <Route path="/explore" element={<Explore />} />
                         <Route path="/new" element={<NewWorkout />} />
@@ -39,8 +36,9 @@ const App = () => {
                     </Route>
                     <Route path="*" element={<h1>Not found</h1>} />
                 </Routes>
-            </BrowserRouter>
-        </AuthContext.Provider>
+            </AuthProvider>
+        </BrowserRouter>
+        
     )
 }
 

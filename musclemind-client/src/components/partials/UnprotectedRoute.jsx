@@ -1,10 +1,10 @@
 import { Navigate, Outlet } from 'react-router-dom'
-import { useEffect, useContext, useState } from 'react'
-import { AuthContext } from '../../App'
+import { useEffect, useState } from 'react'
+import { useAuth } from './AuthContext'
 
 const UnprotectedRoute = () => {
-    const [ isAuthenticated, setIsAuthenticated, user, setUser ] = useContext(AuthContext)
-    const [ isSendingRequest, setIsSendingRequest ] = useState(true)
+    const [userInfo, setUserInfo] = useAuth()
+    const [isSendingRequest, setIsSendingRequest] = useState(true)
     useEffect(() => {
         (async () => {
             const token = localStorage.getItem('jwt')
@@ -16,25 +16,37 @@ const UnprotectedRoute = () => {
                     }
                 })
                 if(response.status === 200) {
-                    setIsAuthenticated(true)
-                    setUser({id: localStorage.getItem('id'), username: localStorage.getItem('username')})
-                } else {
+                    setUserInfo({
+                        token: token, 
+                        id: localStorage.getItem('id'), 
+                        username: localStorage.getItem('username'), 
+                        isAuthenticated: true
+                    })
+                }else {
                     localStorage.removeItem('jwt')
                     localStorage.removeItem('id')
                     localStorage.removeItem('username')
-                    setIsAuthenticated(false)
-                    setUser(null)
+                    setUserInfo({
+                        token: null, 
+                        id: null, 
+                        username: null, 
+                        isAuthenticated: false
+                    })
                 }
             }else {
-                setIsAuthenticated(false)
-                setUser(null)
+                setUserInfo({
+                    token: null, 
+                    id: null, 
+                    username: null, 
+                    isAuthenticated: false
+                })
             }
             setIsSendingRequest(false)
         })()
     }, [])
     
     if(!isSendingRequest)
-        return isAuthenticated ? <Navigate to="/home" /> : <Outlet />
+        return userInfo.isAuthenticated ? <Navigate to="/home" /> : <Outlet />
 }
 
 export default UnprotectedRoute

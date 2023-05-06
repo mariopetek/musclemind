@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { NavLink, useNavigate, Navigate } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import InputField from './partials/InputField'
 
 import styles from '../styles/Login.module.css'
@@ -26,9 +26,8 @@ const Login = () => {
         }
     ]
     const handleInputChange = (event) => {
-        setInputValues({
-          ...inputValues,
-            [event.target.name]: event.target.value
+        setInputValues((prevInputValues) => {
+          return { ...prevInputValues, [event.target.name]: event.target.value }
         })
     }
     const login = async (event) => {
@@ -45,7 +44,6 @@ const Login = () => {
             if(response.status === 200) {
                 setError(null)
                 const data = await response.json()
-                console.log(data)
                 localStorage.setItem('jwt', data.token)
                 localStorage.setItem('id', data.appUser.appUserId)
                 localStorage.setItem('username', data.appUser.username)

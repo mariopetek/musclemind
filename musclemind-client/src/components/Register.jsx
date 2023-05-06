@@ -48,9 +48,8 @@ const Register = () => {
         }
     ]
     const handleInputChange = (event) => {
-        setInputValues({
-            ...inputValues, 
-            [event.target.name]: event.target.value
+        setInputValues((prevInputValues) => {
+            return {...prevInputValues, [event.target.name]: event.target.value }
         })
     }
     const register = async (event) => {
@@ -67,7 +66,6 @@ const Register = () => {
             if(response.status === 200) {
                 setError(null)
                 const data = await response.json()
-                console.log(data)
                 localStorage.setItem('jwt', data.token)
                 localStorage.setItem('id', data.appUser.appUserId)
                 localStorage.setItem('username', data.appUser.username)
