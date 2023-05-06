@@ -45,7 +45,10 @@ const Login = () => {
             if(response.status === 200) {
                 setError(null)
                 const data = await response.json()
+                console.log(data)
                 localStorage.setItem('jwt', data.token)
+                localStorage.setItem('id', data.appUser.appUserId)
+                localStorage.setItem('username', data.appUser.username)
                 navigate('/home')
             }else {
                 throw Error('Neispravno korisničko ime ili lozinka')
@@ -72,8 +75,8 @@ const Login = () => {
                         ))
                     }
                     <div className={styles.buttonContainer}>
-                        <NavLink className={styles.returnButton} to="/">Odustani</NavLink>
-                        <button>Prijavi se</button>
+                        <NavLink className={styles.returnButton} to="/" title="Odustani">Odustani</NavLink>
+                        <button title="Prijavi se">Prijavi se</button>
                     </div>
                 </form>
             </div>

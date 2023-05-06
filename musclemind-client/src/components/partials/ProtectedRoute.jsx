@@ -1,9 +1,9 @@
 import { Navigate, Outlet } from 'react-router-dom'
 import { useEffect, useContext, useState } from 'react'
-import { AuthContext } from '../App'
+import { AuthContext } from '../../App'
 
 const ProtectedRoute = () => {
-    const [ isAuthenticated, setIsAuthenticated ] = useContext(AuthContext)
+    const [ isAuthenticated, setIsAuthenticated, user, setUser ] = useContext(AuthContext)
     const [ isSendingRequest, setIsSendingRequest ] = useState(true)
     useEffect(() => {
         (async () => {
@@ -15,9 +15,19 @@ const ProtectedRoute = () => {
                         'Authorization' : `Bearer ${token}`
                     }
                 })
-                response.status === 200 ? setIsAuthenticated(true) : setIsAuthenticated(false)
+                if(response.status === 200) {
+                    setIsAuthenticated(true)
+                    setUser({id: localStorage.getItem('id'), username: localStorage.getItem('username')})
+                }else {
+                    localStorage.removeItem('jwt')
+                    localStorage.removeItem('id')
+                    localStorage.removeItem('username')
+                    setIsAuthenticated(false)
+                    setUser(null)
+                }
             }else {
                 setIsAuthenticated(false)
+                setUser(null)
             }
             setIsSendingRequest(false)
         })()

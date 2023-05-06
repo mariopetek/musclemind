@@ -10,7 +10,7 @@ import { FiPower } from 'react-icons/fi'
 
 
 export const Header = () => {
-    const [ isAuthenticated, setIsAuthenticated ] = useContext(AuthContext)
+    const [ isAuthenticated, setIsAuthenticated, user ] = useContext(AuthContext)
     const navigate = useNavigate()
     const authenticatedNavigation = [
         {name: 'Početna', href: '/home'},
@@ -26,13 +26,15 @@ export const Header = () => {
 
     const logout = () => {
         localStorage.removeItem('jwt')
+        localStorage.removeItem('id')
+        localStorage.removeItem('username')
         setIsAuthenticated(false)
         navigate('/')
     }
 
     return (
         <div className={styles.header}>
-            <NavLink className={styles.logo} to={homeLink}>
+            <NavLink className={styles.logo} to={homeLink} title="Početna">
                 <img src={MusclemindLogo} alt="musclemind-logo.svg" />
                 <h1>Musclemind</h1>
             </NavLink>
@@ -42,23 +44,24 @@ export const Header = () => {
                     <>
                         {
                             authenticatedNavigation.map((link, idx) => (
-                                <NavLink className={({isActive}) => {return isActive ? styles.navLinkActive : styles.navLink}} key={idx} to={link.href}>{link.name}</NavLink>
+                                <NavLink className={({isActive}) => {return isActive ? styles.navLinkActive : styles.navLink}} key={idx} to={link.href} title={link.name}>{link.name}</NavLink>
                             ))
                         }
                         <div className={styles.separator}></div>
-                        <IconContext.Provider value={{ color: "rgba(89, 89, 89, 1)", size: "25px", className:styles.logoutIcon }}>
-                            <FiPower onClick={logout}/>
+                        <IconContext.Provider value={{ size: "25px" }}>
+                            <FiPower className={styles.logoutIcon} title="Odjava" onClick={logout}/>
                         </IconContext.Provider>
+                        <p>{user.username}</p>
                     </>
                     :
                     <>
                         {
                             notAuthenticatedNavigation.map((link, idx) => (
-                                <NavLink className={({isActive}) => {return isActive ? styles.navLinkActive : styles.navLink}} key={idx} to={link.href}>{link.name}</NavLink>
+                                <NavLink className={({isActive}) => {return isActive ? styles.navLinkActive : styles.navLink}} key={idx} to={link.href} title={link.name}>{link.name}</NavLink>
                             ))
                         }
                         <div className={styles.separator}></div>
-                        <NavLink className={styles.githubLogo} target="_blank" to="https://www.github.com">
+                        <NavLink className={styles.githubLogo} target="_blank" to="https://www.github.com" title="Source projekta">
                             <img src={GithubLogo} alt="github-logo.png" />
                         </NavLink>
                     </>

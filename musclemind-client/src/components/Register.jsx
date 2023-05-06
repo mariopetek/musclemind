@@ -67,7 +67,10 @@ const Register = () => {
             if(response.status === 200) {
                 setError(null)
                 const data = await response.json()
+                console.log(data)
                 localStorage.setItem('jwt', data.token)
+                localStorage.setItem('id', data.appUser.appUserId)
+                localStorage.setItem('username', data.appUser.username)
                 navigate('/home')
             }else {
                 throw Error('Neuspješna registracija')
@@ -96,8 +99,8 @@ const Register = () => {
                         ))
                     }
                     <div className={styles.buttonContainer}>
-                        <NavLink className={styles.returnButton} to="/">Odustani</NavLink>
-                        <button>Registriraj se</button>
+                        <NavLink className={styles.returnButton} to="/" title="Odustani">Odustani</NavLink>
+                        <button title="Registriraj se">Registriraj se</button>
                     </div>
                 </form>
             </div>
