@@ -27,7 +27,10 @@ const Login = () => {
     ]
     const handleInputChange = (event) => {
         setInputValues((prevInputValues) => {
-          return { ...prevInputValues, [event.target.name]: event.target.value }
+            return {
+                ...prevInputValues,
+                [event.target.name]: event.target.value
+            }
         })
     }
     const login = async (event) => {
@@ -41,17 +44,17 @@ const Login = () => {
                 },
                 body: JSON.stringify(inputValues)
             })
-            if(response.status === 200) {
+            if (response.status === 200) {
                 setError(null)
                 const data = await response.json()
                 localStorage.setItem('jwt', data.token)
                 localStorage.setItem('id', data.appUser.appUserId)
                 localStorage.setItem('username', data.appUser.username)
                 navigate('/home')
-            }else {
+            } else {
                 throw Error('Neispravno korisničko ime ili lozinka')
             }
-        }catch(error) {
+        } catch (error) {
             setError(error.message)
         }
     }
@@ -60,27 +63,31 @@ const Login = () => {
             <div className={styles.loginContainer}>
                 <form onSubmit={login}>
                     <h2>Prijava</h2>
-                    {
-                        inputs.map((input) => (
-                            <InputField key={input.id} 
-                                        name={input.name} 
-                                        value={inputValues[input.name]} 
-                                        label={input.label} 
-                                        type={input.type} 
-                                        onChange={handleInputChange} 
-                                        variant="outlined" 
-                                        size="small"/>
-                        ))
-                    }
+                    {inputs.map((input) => (
+                        <InputField
+                            key={input.id}
+                            name={input.name}
+                            value={inputValues[input.name]}
+                            label={input.label}
+                            type={input.type}
+                            onChange={handleInputChange}
+                            variant="outlined"
+                            size="small"
+                        />
+                    ))}
                     <div className={styles.buttonContainer}>
-                        <NavLink className={styles.returnButton} to="/" title="Odustani">Odustani</NavLink>
+                        <NavLink
+                            className={styles.returnButton}
+                            to="/"
+                            title="Odustani"
+                        >
+                            Odustani
+                        </NavLink>
                         <button title="Prijavi se">Prijavi se</button>
                     </div>
                 </form>
             </div>
-            <div className={styles.errorContainer}>
-                {error}
-            </div>
+            <div className={styles.errorContainer}>{error}</div>
         </>
     )
 }

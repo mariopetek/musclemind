@@ -7,7 +7,12 @@ export const useAuth = () => {
 }
 
 export const AuthProvider = ({ children }) => {
-    const [userInfo, setUserInfo] = useState({token: null, id: null, username: null, isAuthenticated: false})
+    const [userInfo, setUserInfo] = useState({
+        token: null,
+        id: null,
+        username: null,
+        isAuthenticated: false
+    })
 
     return (
         <AuthContext.Provider value={[userInfo, setUserInfo]}>

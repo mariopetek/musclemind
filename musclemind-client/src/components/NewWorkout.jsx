@@ -1,8 +1,11 @@
-
+import { Helmet } from 'react-helmet'
 const NewWorkout = () => {
-  return (
-    <div>NewWorkout</div>
-  )
+    return (
+        <>
+            <Helmet>Musclemind | Novi trening</Helmet>
+            <div>NewWorkout</div>
+        </>
+    )
 }
 
 export default NewWorkout

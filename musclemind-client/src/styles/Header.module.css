@@ -34,12 +34,12 @@
     height: 100%;
 }
 .links > p {
-    font-weight:600;
+    font-weight: 600;
     color: rgba(89, 89, 89, 1);
 }
 .navLink {
     text-decoration: none;
-    color:rgba(89, 89, 89, 1);
+    color: rgba(89, 89, 89, 1);
     font-weight: 600;
     transition: all 0.2s ease;
 }
@@ -51,7 +51,7 @@
     outline: 2px solid rgba(89, 89, 89, 1);
     padding: 5px;
     border-radius: 8px;
-    color:rgba(89, 89, 89, 1);
+    color: rgba(89, 89, 89, 1);
     font-weight: 600;
     transition: all 0.2s ease;
 }

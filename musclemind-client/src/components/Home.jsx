@@ -1,22 +1,28 @@
 import { useEffect } from 'react'
+import { Helmet } from 'react-helmet'
 
 const Home = () => {
     useEffect(() => {
-        (async () => {
+        ;(async () => {
             const response = await fetch('/api/v1/users', {
                 method: 'GET',
                 headers: {
-                    'Authorization' : `Bearer ${localStorage.getItem('jwt')}`
+                    Authorization: `Bearer ${localStorage.getItem('jwt')}`
                 }
             })
-            if(response.status === 200) {
+            if (response.status === 200) {
                 const data = await response.json()
                 console.log(data)
             }
         })()
     }, [])
     return (
-        <div>Home</div>
+        <>
+            <Helmet>
+                <title>Musclemind | Početna</title>
+            </Helmet>
+            <div>Home</div>
+        </>
     )
 }
 

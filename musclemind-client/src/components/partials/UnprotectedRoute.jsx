@@ -6,46 +6,46 @@ const UnprotectedRoute = () => {
     const [userInfo, setUserInfo] = useAuth()
     const [isSendingRequest, setIsSendingRequest] = useState(true)
     useEffect(() => {
-        (async () => {
+        ;(async () => {
             const token = localStorage.getItem('jwt')
-            if(token) {
+            if (token) {
                 const response = await fetch('/api/v1/auth/validate', {
                     method: 'GET',
                     headers: {
-                        'Authorization' : `Bearer ${token}`
+                        Authorization: `Bearer ${token}`
                     }
                 })
-                if(response.status === 200) {
+                if (response.status === 200) {
                     setUserInfo({
-                        token: token, 
-                        id: localStorage.getItem('id'), 
-                        username: localStorage.getItem('username'), 
+                        token: token,
+                        id: localStorage.getItem('id'),
+                        username: localStorage.getItem('username'),
                         isAuthenticated: true
                     })
-                }else {
+                } else {
                     localStorage.removeItem('jwt')
                     localStorage.removeItem('id')
                     localStorage.removeItem('username')
                     setUserInfo({
-                        token: null, 
-                        id: null, 
-                        username: null, 
+                        token: null,
+                        id: null,
+                        username: null,
                         isAuthenticated: false
                     })
                 }
-            }else {
+            } else {
                 setUserInfo({
-                    token: null, 
-                    id: null, 
-                    username: null, 
+                    token: null,
+                    id: null,
+                    username: null,
                     isAuthenticated: false
                 })
             }
             setIsSendingRequest(false)
         })()
     }, [])
-    
-    if(!isSendingRequest)
+
+    if (!isSendingRequest)
         return userInfo.isAuthenticated ? <Navigate to="/home" /> : <Outlet />
 }
 
