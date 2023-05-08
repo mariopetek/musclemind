@@ -15,10 +15,6 @@ import java.util.List;
 public class AppUserController {
     private final AppUserService appUserService;
 
-    /*public AppUserController(AppUserService appUserService) {
-        this.appUserService = appUserService;
-    }*/
-
     @GetMapping("")
     public ResponseEntity<List<AppUser>> getAllAppUsers() {
         return ResponseEntity.ok(appUserService.getAllAppUsers());

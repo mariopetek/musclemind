@@ -16,16 +16,8 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class Workout {
     @Id
-    @Column(name = "id_trening", nullable = false)
-    @SequenceGenerator(
-            name = "id_trening_sequence",
-            sequenceName = "id_trening_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "id_trening_sequence"
-    )
+    @Column(name = "id_trening", nullable = false, columnDefinition = "serial")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long workoutId;
     @Column(name = "naziv_trening", nullable = false)
     private String workoutName;

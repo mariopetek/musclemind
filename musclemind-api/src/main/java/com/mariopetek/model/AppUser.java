@@ -18,16 +18,8 @@ import java.util.List;
 @AllArgsConstructor
 public class AppUser implements UserDetails {
     @Id
-    @Column(name = "id_korisnik", nullable = false)
-    @SequenceGenerator(
-        name = "id_korisnik_sequence",
-        sequenceName = "id_korisnik_sequence",
-        allocationSize = 1
-    )
-    @GeneratedValue(
-        strategy = GenerationType.SEQUENCE,
-        generator = "id_korisnik_sequence"
-    )
+    @Column(name = "id_korisnik", nullable = false, columnDefinition = "serial")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long appUserId;
     @Column(name = "ime", nullable = false)
     private String name;

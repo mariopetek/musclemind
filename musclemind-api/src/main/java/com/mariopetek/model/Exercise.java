@@ -14,16 +14,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Exercise {
     @Id
-    @Column(name = "id_vjezba", nullable = false)
-    @SequenceGenerator(
-            name = "id_vjezba_sequence",
-            sequenceName = "id_vjezba_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "id_vjezba_sequence"
-    )
+    @Column(name = "id_vjezba", nullable = false, columnDefinition = "serial")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long exerciseId;
     @Column(name = "naziv_vjezba", nullable = false, unique = true)
     private String exerciseName;

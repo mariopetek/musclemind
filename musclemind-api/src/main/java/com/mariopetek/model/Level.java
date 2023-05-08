@@ -14,21 +14,9 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Level {
     @Id
-    @Column(name = "id_tezina", nullable = false)
-    @SequenceGenerator(
-            name = "id_tezina_sequence",
-            sequenceName = "id_težina_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "id_tezina_sequence"
-    )
+    @Column(name = "id_tezina", nullable = false, columnDefinition = "serial")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long levelId;
     @Column(name = "naziv_tezina", nullable = false, unique = true)
     private String levelName;
-
-    public Level(String levelName) {
-        this.levelName = levelName;
-    }
 }
