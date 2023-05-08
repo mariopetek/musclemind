@@ -1,4 +1,3 @@
-DELETE FROM vidljivost;
 INSERT INTO vidljivost (naziv_vidljivost) VALUES
                                               ('Javno'),
-                                              ('Privatno');
+                                              ('Privatno') ON CONFLICT DO NOTHING ;

@@ -1,4 +1,3 @@
-DELETE FROM kategorija;
 INSERT INTO kategorija (naziv_kategorija, slika) VALUES
                                                      ('Prsa', '../assets/categoris/Prsa.png'),
                                                      ('Triceps', '../assets/categoris/Triceps.png'),
@@ -11,4 +10,4 @@ INSERT INTO kategorija (naziv_kategorija, slika) VALUES
                                                      ('Kvadriceps', '../assets/categoris/Kvadriceps.png'),
                                                      ('Zadnja loža', '../assets/categoris/Zadnja loža.png'),
                                                      ('Kvadriceps-Zadnja loža', '../assets/categoris/Kvadriceps-Zadnja loža.png'),
-                                                     ('Listovi', '../assets/categoris/Listovi.png');
+                                                     ('Listovi', '../assets/categoris/Listovi.png') ON CONFLICT DO NOTHING;

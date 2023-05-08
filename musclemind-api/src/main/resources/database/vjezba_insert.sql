@@ -1,4 +1,3 @@
-DELETE FROM vjezba;
 INSERT INTO vjezba (naziv_vjezba, id_kategorija) VALUES
                                                      ('Razvlačenja s bučicama', 1),
                                                      ('Razvlačenja s bučicama pod nagibom', 1),
@@ -124,4 +123,4 @@ INSERT INTO vjezba (naziv_vjezba, id_kategorija) VALUES
                                                      ('Plantarne fleksije stopala na nožnoj preši', 12),
                                                      ('Sjedeće plantarne fleksije stopala na mašini', 12),
                                                      ('Sjedeće plantarne fleksije stopala s bugarskom vrećom', 12),
-                                                     ('Sjedeće plantarne fleksije stopala s utegom', 12);
+                                                     ('Sjedeće plantarne fleksije stopala s utegom', 12) ON CONFLICT DO NOTHING;
