@@ -1,0 +1,12 @@
+.newWorkoutContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 600px;
+}
+
+.newWorkoutContainer > form > h2 {
+    margin: 0;
+    text-align: center;
+    color: rgba(89, 89, 89, 1);
+}

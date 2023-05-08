@@ -2,12 +2,13 @@
     "extends": ["airbnb", "prettier"],
     "plugins": ["prettier"],
     "rules": {
-        "prettier/prettier": "error",
         "no-undef": "off",
         "no-console": "off",
         "func-names": "off",
+        "arrow-body-style": "off",
+        "spaced-comment": "off",
         "react/react-in-jsx-scope": "off",
         "react/function-component-definition": "off",
-        "arrow-body-style": "off"
+        "react/self-closing-comp": "off"
     }
 }
