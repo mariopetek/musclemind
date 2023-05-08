@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
+import { Helmet } from 'react-helmet'
 
 import InputField from './partials/InputField'
-
 import styles from '../styles/Register.module.css'
 
 const Register = () => {
@@ -76,12 +76,15 @@ const Register = () => {
             } else {
                 throw Error('Neuspješna registracija')
             }
-        } catch (error) {
-            setError(error.message)
+        } catch (err) {
+            setError(err.message)
         }
     }
     return (
         <>
+            <Helmet>
+                <title>Musclemind | Registracija</title>
+            </Helmet>
             <div className={styles.registerContainer}>
                 <form onSubmit={register}>
                     <h2>Registracija</h2>
@@ -107,7 +110,9 @@ const Register = () => {
                         >
                             Odustani
                         </NavLink>
-                        <button title="Registriraj se">Registriraj se</button>
+                        <button type="submit" title="Registriraj se">
+                            Registriraj se
+                        </button>
                     </div>
                 </form>
             </div>

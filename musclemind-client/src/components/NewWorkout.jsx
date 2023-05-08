@@ -1,10 +1,10 @@
 import { Helmet } from 'react-helmet'
+
 const NewWorkout = () => {
     return (
-        <>
-            <Helmet>Musclemind | Novi trening</Helmet>
-            <div>NewWorkout</div>
-        </>
+        <Helmet>
+            <title>Musclemind | Novi trening</title>
+        </Helmet>
     )
 }
 

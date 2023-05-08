@@ -9,7 +9,6 @@ import { AuthProvider } from './components/partials/AuthContext'
 import Welcome from './components/Welcome'
 import Register from './components/Register'
 import Login from './components/Login'
-
 import Home from './components/Home'
 import Explore from './components/Explore'
 import NewWorkout from './components/NewWorkout'
@@ -28,7 +27,7 @@ const App = () => {
                         <Route path="/register" element={<Register />} />
                         <Route path="/login" element={<Login />} />
                     </Route>
-                    <Route element={<ProtectedRoute isProtected={true} />}>
+                    <Route element={<ProtectedRoute />}>
                         <Route path="/home" element={<Home />} />
                         <Route path="/explore" element={<Explore />} />
                         <Route path="/new" element={<NewWorkout />} />

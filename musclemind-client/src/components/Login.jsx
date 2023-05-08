@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
-import InputField from './partials/InputField'
+import { Helmet } from 'react-helmet'
 
+import InputField from './partials/InputField'
 import styles from '../styles/Login.module.css'
 
 const Login = () => {
@@ -54,12 +55,15 @@ const Login = () => {
             } else {
                 throw Error('Neispravno korisničko ime ili lozinka')
             }
-        } catch (error) {
-            setError(error.message)
+        } catch (err) {
+            setError(err.message)
         }
     }
     return (
         <>
+            <Helmet>
+                <title>Musclemind | Prijava</title>
+            </Helmet>
             <div className={styles.loginContainer}>
                 <form onSubmit={login}>
                     <h2>Prijava</h2>
@@ -83,7 +87,9 @@ const Login = () => {
                         >
                             Odustani
                         </NavLink>
-                        <button title="Prijavi se">Prijavi se</button>
+                        <button type="submit" title="Prijavi se">
+                            Prijavi se
+                        </button>
                     </div>
                 </form>
             </div>
