@@ -17,7 +17,7 @@ const ProtectedRoute = () => {
                 })
                 if (response.status === 200) {
                     setUserInfo({
-                        token: token,
+                        token,
                         id: localStorage.getItem('id'),
                         username: localStorage.getItem('username'),
                         isAuthenticated: true
@@ -47,6 +47,7 @@ const ProtectedRoute = () => {
 
     if (!isSendingRequest)
         return userInfo.isAuthenticated ? <Outlet /> : <Navigate to="/login" />
+    return null
 }
 
 export default ProtectedRoute

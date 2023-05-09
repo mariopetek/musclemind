@@ -9,6 +9,8 @@
         "spaced-comment": "off",
         "react/react-in-jsx-scope": "off",
         "react/function-component-definition": "off",
-        "react/self-closing-comp": "off"
+        "react/self-closing-comp": "off",
+        "react/jsx-no-constructed-context-values": "off",
+        "react/prop-types": "off"
     }
 }

@@ -2,11 +2,77 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 600px;
+    margin: 20px;
 }
-
+.newWorkoutContainer > form {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    outline: 1px solid rgba(191, 191, 191, 1);
+    border-radius: 8px;
+}
 .newWorkoutContainer > form > h2 {
     margin: 0;
     text-align: center;
     color: rgba(89, 89, 89, 1);
+}
+.visibilityContainer {
+    display: flex;
+    gap: 10px;
+}
+.visibilityInput {
+    cursor: pointer;
+}
+.visibilityOption {
+    display: flex;
+    gap: 3px;
+}
+.separator {
+    width: 100%;
+    height: 1px;
+    background-color: black;
+}
+.buttonContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.buttonContainer > button {
+    border: none;
+    outline: 1px solid rgba(0, 149, 255, 1);
+    background-color: rgba(0, 167, 255, 1);
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
+    transition: all 0.2s ease;
+    width: 48%;
+}
+.buttonContainer > button:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
+.buttonContainer > button:disabled {
+    outline: 1px solid rgb(100, 190, 255);
+    background-color: rgb(148, 217, 255);
+    cursor: auto;
+    opacity: 1;
+}
+.returnButton {
+    text-decoration: none;
+    outline: 1px solid rgba(191, 191, 191, 1);
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    color: rgba(89, 89, 89, 1);
+    transition: all 0.2s ease;
+    background-color: var(--navbar-color);
+    width: 48%;
+    text-align: center;
+}
+.returnButton:hover {
+    opacity: 0.8;
+    cursor: pointer;
 }

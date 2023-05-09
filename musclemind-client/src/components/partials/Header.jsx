@@ -1,26 +1,26 @@
 import { NavLink, useNavigate } from 'react-router-dom'
-import { useAuth } from './AuthContext'
+import { IconContext } from 'react-icons'
+import { FiPower } from 'react-icons/fi'
 
+import { useAuth } from './AuthContext'
 import styles from '../../styles/Header.module.css'
 import MusclemindLogo from '../../assets/logos/musclemind-logo.png'
 import GithubLogo from '../../assets/logos/github-logo.png'
-import { IconContext } from 'react-icons'
-import { FiPower } from 'react-icons/fi'
 
 const Header = () => {
     const [userInfo, setUserInfo] = useAuth()
     const navigate = useNavigate()
     const authenticatedNavigation = [
-        { name: 'Početna', href: '/home' },
-        { name: 'Istraži', href: '/explore' },
-        { name: 'Novo', href: '/new' },
-        { name: 'Račun', href: '/profile' }
+        { id: 1, name: 'Početna', href: '/home' },
+        { id: 2, name: 'Istraži', href: '/explore' },
+        { id: 3, name: 'Novo', href: '/new' },
+        { id: 4, name: 'Račun', href: '/profile' }
     ]
     const notAuthenticatedNavigation = [
-        { name: 'Registracija', href: '/register' },
-        { name: 'Prijava', href: '/login' }
+        { id: 1, name: 'Registracija', href: '/register' },
+        { id: 2, name: 'Prijava', href: '/login' }
     ]
-    let homeLink = userInfo.isAuthenticated ? '/home' : '/'
+    const homeLink = userInfo.isAuthenticated ? '/home' : '/'
 
     const logout = () => {
         localStorage.removeItem('jwt')
@@ -44,14 +44,14 @@ const Header = () => {
             <div className={styles.links}>
                 {userInfo.isAuthenticated ? (
                     <>
-                        {authenticatedNavigation.map((link, idx) => (
+                        {authenticatedNavigation.map((link) => (
                             <NavLink
                                 className={({ isActive }) => {
                                     return isActive
                                         ? styles.navLinkActive
                                         : styles.navLink
                                 }}
-                                key={idx}
+                                key={link.id}
                                 to={link.href}
                                 title={link.name}
                             >
@@ -70,14 +70,14 @@ const Header = () => {
                     </>
                 ) : (
                     <>
-                        {notAuthenticatedNavigation.map((link, idx) => (
+                        {notAuthenticatedNavigation.map((link) => (
                             <NavLink
                                 className={({ isActive }) => {
                                     return isActive
                                         ? styles.navLinkActive
                                         : styles.navLink
                                 }}
-                                key={idx}
+                                key={link.id}
                                 to={link.href}
                                 title={link.name}
                             >
