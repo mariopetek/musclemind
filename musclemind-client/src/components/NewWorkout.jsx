@@ -333,103 +333,152 @@ const NewWorkout = () => {
                                 >
                                     <div className={styles.separator}></div>
                                     <p>{exercise.name}</p>
-                                    <p>Ponavljanja:</p>
-                                    <input
-                                        className={styles.changeValueButton}
-                                        type="button"
-                                        value="-"
-                                        onClick={() =>
-                                            decreaseReps(exercise.id)
+                                    <div
+                                        className={
+                                            styles.exerciseComponentsContainer
                                         }
-                                        disabled={exercise.reps === 1}
-                                    />
-                                    <input
-                                        type="text"
-                                        value={exercise.reps}
-                                        onChange={(e) =>
-                                            handleRepsChange(
-                                                exercise.id,
-                                                e.target.value
-                                            )
-                                        }
-                                    />
-                                    <input
-                                        className={styles.changeValueButton}
-                                        type="button"
-                                        value="+"
-                                        onClick={() =>
-                                            increaseReps(exercise.id)
-                                        }
-                                    />
-                                    <p>Serije:</p>
-                                    <input
-                                        className={styles.changeValueButton}
-                                        type="button"
-                                        value="-"
-                                        onClick={() =>
-                                            decreaseSets(exercise.id)
-                                        }
-                                        disabled={exercise.sets === 1}
-                                    />
-                                    <input
-                                        className={styles.changeValueButton}
-                                        type="text"
-                                        value={exercise.sets}
-                                        onChange={(e) =>
-                                            handleSetsChange(
-                                                exercise.id,
-                                                e.target.value
-                                            )
-                                        }
-                                    />
-                                    <input
-                                        className={styles.changeValueButton}
-                                        type="button"
-                                        value="+"
-                                        onClick={() =>
-                                            increaseSets(exercise.id)
-                                        }
-                                    />
-                                    <p>Odmor:</p>
-                                    <fieldset>
-                                        <legend>MM:SS</legend>
+                                    >
+                                        <div className={styles.repsSetsRest}>
+                                            <div
+                                                className={
+                                                    styles.exerciseRepsContainer
+                                                }
+                                            >
+                                                <p>Ponavljanja:</p>
+                                                <input
+                                                    className={
+                                                        styles.changeValueButton
+                                                    }
+                                                    type="button"
+                                                    value="-"
+                                                    onClick={() =>
+                                                        decreaseReps(
+                                                            exercise.id
+                                                        )
+                                                    }
+                                                    disabled={
+                                                        exercise.reps === 1
+                                                    }
+                                                />
+                                                <input
+                                                    type="text"
+                                                    value={exercise.reps}
+                                                    onChange={(e) =>
+                                                        handleRepsChange(
+                                                            exercise.id,
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                />
+                                                <input
+                                                    className={
+                                                        styles.changeValueButton
+                                                    }
+                                                    type="button"
+                                                    value="+"
+                                                    onClick={() =>
+                                                        increaseReps(
+                                                            exercise.id
+                                                        )
+                                                    }
+                                                />
+                                            </div>
+                                            <div
+                                                className={
+                                                    styles.exerciseSetsContainer
+                                                }
+                                            >
+                                                <p>Serije:</p>
+                                                <input
+                                                    className={
+                                                        styles.changeValueButton
+                                                    }
+                                                    type="button"
+                                                    value="-"
+                                                    onClick={() =>
+                                                        decreaseSets(
+                                                            exercise.id
+                                                        )
+                                                    }
+                                                    disabled={
+                                                        exercise.sets === 1
+                                                    }
+                                                />
+                                                <input
+                                                    className={
+                                                        styles.changeValueButton
+                                                    }
+                                                    type="text"
+                                                    value={exercise.sets}
+                                                    onChange={(e) =>
+                                                        handleSetsChange(
+                                                            exercise.id,
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                />
+                                                <input
+                                                    className={
+                                                        styles.changeValueButton
+                                                    }
+                                                    type="button"
+                                                    value="+"
+                                                    onClick={() =>
+                                                        increaseSets(
+                                                            exercise.id
+                                                        )
+                                                    }
+                                                />
+                                            </div>
+                                            <div
+                                                className={
+                                                    styles.exerciseRestContainer
+                                                }
+                                            >
+                                                <p>Odmor (mm:ss):</p>
+                                                <input
+                                                    type="number"
+                                                    id="minutes"
+                                                    min="0"
+                                                    max="59"
+                                                    value={
+                                                        exercise.rest.minutes
+                                                    }
+                                                    onChange={(e) =>
+                                                        handleRestChange(
+                                                            exercise.id,
+                                                            e.target.id,
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                />
+                                                :
+                                                <input
+                                                    type="number"
+                                                    id="seconds"
+                                                    min="0"
+                                                    max="59"
+                                                    value={
+                                                        exercise.rest.seconds
+                                                    }
+                                                    onChange={(e) =>
+                                                        handleRestChange(
+                                                            exercise.id,
+                                                            e.target.id,
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                />
+                                            </div>
+                                        </div>
                                         <input
-                                            type="number"
-                                            id="minutes"
-                                            min="0"
-                                            max="59"
-                                            value={exercise.rest.minutes}
-                                            onChange={(e) =>
-                                                handleRestChange(
-                                                    exercise.id,
-                                                    e.target.id,
-                                                    e.target.value
-                                                )
+                                            type="button"
+                                            value="Ukloni"
+                                            onClick={() =>
+                                                removeExercise(exercise.id)
                                             }
                                         />
-                                        :
-                                        <input
-                                            type="number"
-                                            id="seconds"
-                                            min="0"
-                                            max="59"
-                                            value={exercise.rest.seconds}
-                                            onChange={(e) =>
-                                                handleRestChange(
-                                                    exercise.id,
-                                                    e.target.id,
-                                                    e.target.value
-                                                )
-                                            }
-                                        />
-                                    </fieldset>
-                                    <input
-                                        type="button"
-                                        value="Ukloni"
-                                        onClick={() =>
-                                            removeExercise(exercise.id)
-                                        }
-                                    />
+                                    </div>
                                     <div className={styles.separator}></div>
                                 </div>
                             ))
