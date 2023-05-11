@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
-import { Helmet } from 'react-helmet'
 
 import InputField from './partials/InputField'
 import styles from '../styles/Login.module.css'
@@ -61,9 +60,6 @@ const Login = () => {
     }
     return (
         <>
-            <Helmet>
-                <title>Musclemind | Prijava</title>
-            </Helmet>
             <div className={styles.loginContainer}>
                 <form onSubmit={login}>
                     <h2>Prijava</h2>

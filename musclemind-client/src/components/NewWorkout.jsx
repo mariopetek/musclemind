@@ -1,74 +1,53 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import { Helmet } from 'react-helmet'
+import { useQuery } from 'react-query'
 import { IconContext } from 'react-icons'
-import { SlLock, SlGlobe } from 'react-icons/sl'
 import { BsEmojiFrown } from 'react-icons/bs'
+import axios from 'axios'
 
 import styles from '../styles/NewWorkout.module.css'
 
 const NewWorkout = () => {
-    const [allExercises, setAllExercises] = useState([])
-    const [allCategories, setAllCategories] = useState({})
-
-    const [isWorkoutPrivate, setIsWorkoutPrivate] = useState(true)
+    const [visibilityId, setVisibilityId] = useState(1)
+    const [levelId, setLevelId] = useState(1)
     const [workoutName, setWorkoutName] = useState('')
     const [workoutDesc, setWorkoutDesc] = useState('')
     const [exerciseInput, setExerciseInput] = useState('')
     const [workoutExercises, setWorkoutExercises] = useState([])
 
-    const [error, setError] = useState(null)
-
-    useEffect(() => {
-        const fetchExercises = async () => {
-            await fetch('/api/v1/exercises', {
-                method: 'GET',
+    const exercisesQuery = useQuery('allExercises', async () => {
+        return axios
+            .get('/api/v1/exercises', {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('jwt')}`
                 }
             })
-                .then((response) => {
-                    return response.status === 200
-                        ? response.json()
-                        : Promise.reject(new Error('Greška pri dohvaćanju'))
-                })
-                .then((data) => {
-                    data.map((el) =>
-                        setAllExercises((prev) => {
-                            return [...prev, el]
-                        })
-                    )
-                })
-                .catch((err) => {
-                    setError(err)
-                })
-        }
-        const fetchCategories = async () => {
-            await fetch('/api/v1/categories', {
-                method: 'GET',
+            .then((response) => {
+                return response.data
+            })
+    })
+    const visibilitiesQuery = useQuery('allVisibilities', async () => {
+        return axios
+            .get('/api/v1/visibilities', {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('jwt')}`
                 }
             })
-                .then((response) => {
-                    return response.status === 200
-                        ? response.json()
-                        : Promise.reject(new Error('Greška pri dohvaćanju'))
-                })
-                .then((data) => {
-                    data.map((el) =>
-                        setAllCategories((prev) => {
-                            return { ...prev, [el.categoryId]: el.categoryName }
-                        })
-                    )
-                })
-                .catch((err) => {
-                    setError(err)
-                })
-        }
-        fetchExercises()
-        fetchCategories()
-    }, [])
+            .then((response) => {
+                return response.data
+            })
+    })
+    const levelsQuery = useQuery('allLevels', async () => {
+        return axios
+            .get('/api/v1/levels', {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('jwt')}`
+                }
+            })
+            .then((response) => {
+                return response.data
+            })
+    })
 
     const addExercise = () => {
         setWorkoutExercises((prevExercises) => [
@@ -85,10 +64,6 @@ const NewWorkout = () => {
             }
         ])
         setExerciseInput('')
-    }
-
-    const clearExerciseInput = () => {
-        se
     }
 
     const decreaseReps = (id) => {
@@ -119,7 +94,9 @@ const NewWorkout = () => {
                     ? {
                           ...exercise,
                           reps:
-                              Number.isNaN(Number(value)) || value === ''
+                              Number.isNaN(Number(value)) ||
+                              value === '' ||
+                              Number(value) === 0
                                   ? 1
                                   : Number(value)
                       }
@@ -159,7 +136,9 @@ const NewWorkout = () => {
                     ? {
                           ...exercise,
                           sets:
-                              Number.isNaN(Number(value)) || value === ''
+                              Number.isNaN(Number(value)) ||
+                              value === '' ||
+                              Number(value) === 0
                                   ? 1
                                   : Number(value)
                       }
@@ -199,158 +178,168 @@ const NewWorkout = () => {
     const saveWorkout = async () => {
         //empty
     }
-    console.log(workoutExercises)
+    console.log(levelId)
+
+    if (
+        exercisesQuery.isLoading ||
+        visibilitiesQuery.isLoading ||
+        levelsQuery.isLoading
+    )
+        return <h1>Učitavanje...</h1>
+    if (exercisesQuery.error || visibilitiesQuery.error || levelsQuery.error)
+        return <h1>Nešto je pošlo po zlu</h1>
+
     return (
-        <>
-            <Helmet>
-                <title>Musclemind | Novi trening</title>
-            </Helmet>
-            <div className={styles.newWorkoutContainer}>
-                <form onSubmit={saveWorkout}>
-                    <div className={styles.newWorkoutHeader}>
-                        <h2>Novi trening</h2>
-                        <div className={styles.headerSeparator}></div>
-                    </div>
-                    <div className={styles.visibilityContainer}>
+        <div className={styles.newWorkoutContainer}>
+            <form onSubmit={saveWorkout}>
+                <h2>Novi trening</h2>
+                <div className={styles.visibilityContainer}>
+                    {visibilitiesQuery.data.map((visibility) => (
                         <label
-                            htmlFor="private"
+                            key={visibility.visibilityName}
+                            htmlFor={visibility.visibilityName}
                             className={`${styles.visibilityInput} ${styles.visibilityOption}`}
                         >
-                            <SlLock />
-                            Privatno
+                            {visibility.visibilityName}
                             <input
-                                id="private"
+                                id={visibility.visibilityName}
+                                value={visibility.visibilityId}
                                 type="radio"
                                 name="visibility"
-                                checked={isWorkoutPrivate}
-                                onChange={() =>
-                                    setIsWorkoutPrivate(!isWorkoutPrivate)
+                                checked={
+                                    visibilityId === visibility.visibilityId
+                                }
+                                onChange={(e) =>
+                                    setVisibilityId(Number(e.target.value))
                                 }
                                 className={styles.visibilityInput}
                             />
                         </label>
-                        <label
-                            htmlFor="public"
-                            className={`${styles.visibilityInput} ${styles.visibilityOption}`}
-                        >
-                            <SlGlobe />
-                            Javno
+                    ))}
+                </div>
+                <div className={styles.levelContainer}>
+                    {levelsQuery.data.map((level) => (
+                        <label key={level.levelName} htmlFor={level.levelName}>
+                            {level.levelName}
                             <input
-                                id="public"
+                                id={level.levelName}
+                                value={level.levelId}
                                 type="radio"
-                                name="visibility"
-                                checked={!isWorkoutPrivate}
-                                onChange={() =>
-                                    setIsWorkoutPrivate(!isWorkoutPrivate)
+                                name="level"
+                                checked={levelId === level.levelId}
+                                onChange={(e) =>
+                                    setLevelId(Number(e.target.value))
                                 }
-                                className={styles.visibilityInput}
                             />
                         </label>
-                    </div>
-                    <div className={styles.workoutName}>
-                        <h3>Naziv treninga:</h3>
-                        <input
-                            id="workoutName"
-                            type="text"
-                            value={workoutName}
-                            maxLength="50"
-                            placeholder="Unesite naziv treninga (max. 50 znakova)"
-                            onChange={(e) => setWorkoutName(e.target.value)}
-                        />
-                    </div>
-                    <div className={styles.workoutDesc}>
-                        <h3>Opis treninga:</h3>
-                        <textarea
-                            id="workoutDesc"
-                            cols="70"
-                            rows="7"
-                            maxLength="500"
-                            placeholder="Unesite opis treninga (max. 500 znakova)"
-                            value={workoutDesc}
-                            onChange={(e) => setWorkoutDesc(e.target.value)}
-                        />
-                    </div>
+                    ))}
+                </div>
+                <div className={styles.workoutName}>
+                    <h3>Naziv treninga*</h3>
+                    <input
+                        id="workoutName"
+                        type="text"
+                        value={workoutName}
+                        maxLength="50"
+                        placeholder="Unesite naziv treninga (max. 50 znakova)"
+                        onChange={(e) => setWorkoutName(e.target.value)}
+                    />
+                </div>
+                <div className={styles.workoutDesc}>
+                    <h3>Opis treninga</h3>
+                    <textarea
+                        id="workoutDesc"
+                        cols="70"
+                        rows="7"
+                        maxLength="500"
+                        placeholder="Unesite opis treninga (max. 500 znakova)"
+                        value={workoutDesc}
+                        onChange={(e) => setWorkoutDesc(e.target.value)}
+                    />
+                </div>
+                <div className={styles.exerciseSelectionContainer}>
+                    <h3>Odabir vježbi*</h3>
                     <div className={styles.exerciseSelection}>
-                        <h3>Odabir vježbi:</h3>
-                        <div className={styles.exerciseInputContainer}>
-                            <div className={styles.exerciseInput}>
-                                <input
-                                    className={styles.exerciseInputField}
-                                    id="exercises"
-                                    list="exercisesList"
-                                    placeholder="Unesite naziv vježbe"
-                                    value={exerciseInput}
-                                    onChange={(e) =>
-                                        setExerciseInput(e.target.value)
-                                    }
-                                />
-                                <datalist id="exercisesList">
-                                    {allExercises.map((exercise) => (
-                                        <option key={exercise.exerciseId}>
-                                            {exercise.exerciseName} |{' '}
-                                            {
-                                                allCategories[
-                                                    exercise.category.categoryId
-                                                ]
-                                            }
-                                        </option>
-                                    ))}
-                                </datalist>
-                                <input
-                                    type="button"
-                                    value=" ⨉ "
-                                    className={styles.clearExerciseInput}
-                                    onClick={() => setExerciseInput('')}
-                                ></input>
-                            </div>
+                        <div className={styles.exerciseSelectionAndClear}>
+                            <select
+                                className={styles.exerciseSelectionField}
+                                value={exerciseInput}
+                                onChange={(e) =>
+                                    setExerciseInput(e.target.value)
+                                }
+                            >
+                                <option value="" disabled>
+                                    Odaberite vježbu
+                                </option>
+                                {exercisesQuery.data.map((exercise) => (
+                                    <option key={exercise.exerciseId}>
+                                        {exercise.exerciseName} |{' '}
+                                        {exercise.category.categoryName}
+                                    </option>
+                                ))}
+                            </select>
                             <input
-                                className={styles.addExerciseButton}
-                                id="addExercise"
                                 type="button"
-                                value="Dodaj"
-                                onClick={addExercise}
-                                disabled={exerciseInput === ''}
-                            />
+                                value=" ⨉ "
+                                className={styles.clearExerciseInput}
+                                onClick={() => setExerciseInput('')}
+                            ></input>
                         </div>
+                        <input
+                            className={styles.addExerciseButton}
+                            id="addExercise"
+                            type="button"
+                            value="Dodaj"
+                            onClick={addExercise}
+                            disabled={exerciseInput === ''}
+                        />
                     </div>
+                </div>
 
-                    <div className={styles.workoutCurrentExercises}>
-                        <h3>Odabrane vježbe:</h3>
-                        {workoutExercises.length === 0 ? (
-                            <div className={styles.noExercisesYet}>
-                                <IconContext.Provider value={{ size: '80px' }}>
-                                    <BsEmojiFrown />
-                                </IconContext.Provider>
+                <div className={styles.workoutCurrentExercises}>
+                    <h3>Odabrane vježbe</h3>
+                    {workoutExercises.length === 0 ? (
+                        <div className={styles.noExercisesYet}>
+                            <IconContext.Provider value={{ size: '80px' }}>
+                                <BsEmojiFrown />
+                            </IconContext.Provider>
 
-                                <p>Prazno...</p>
-                                <p>(Vježbe koje dodate pojaviti će se ovdje)</p>
-                            </div>
-                        ) : (
-                            workoutExercises.map((exercise) => (
-                                <div
-                                    key={exercise.id}
-                                    className={styles.workoutExercise}
-                                >
+                            <p>Prazno...</p>
+                            <p>(Vježbe koje dodate pojaviti će se ovdje)</p>
+                        </div>
+                    ) : (
+                        workoutExercises.map((exercise, idx) => (
+                            <div key={exercise.id}>
+                                {idx === 0 ? (
                                     <div className={styles.separator}></div>
-                                    <p>{exercise.name}</p>
+                                ) : null}
+                                <div className={styles.workoutExercise}>
                                     <div
-                                        className={
-                                            styles.exerciseComponentsContainer
-                                        }
+                                        className={styles.exerciseNameContainer}
                                     >
-                                        <div className={styles.repsSetsRest}>
-                                            <div
-                                                className={
-                                                    styles.exerciseRepsContainer
-                                                }
-                                            >
-                                                <p>Ponavljanja:</p>
+                                        <p>{exercise.name}</p>
+                                        <input
+                                            type="button"
+                                            value="Ukloni"
+                                            onClick={() =>
+                                                removeExercise(exercise.id)
+                                            }
+                                        />
+                                    </div>
+                                    <div className={styles.repsSetsRest}>
+                                        <div
+                                            className={
+                                                styles.exerciseRepsContainer
+                                            }
+                                        >
+                                            <p>ponavljanja</p>
+                                            <div className={styles.repsInputs}>
                                                 <input
                                                     className={
                                                         styles.changeValueButton
                                                     }
                                                     type="button"
-                                                    value="-"
+                                                    value=" - "
                                                     onClick={() =>
                                                         decreaseReps(
                                                             exercise.id
@@ -361,6 +350,7 @@ const NewWorkout = () => {
                                                     }
                                                 />
                                                 <input
+                                                    className={styles.repsValue}
                                                     type="text"
                                                     value={exercise.reps}
                                                     onChange={(e) =>
@@ -375,7 +365,7 @@ const NewWorkout = () => {
                                                         styles.changeValueButton
                                                     }
                                                     type="button"
-                                                    value="+"
+                                                    value=" + "
                                                     onClick={() =>
                                                         increaseReps(
                                                             exercise.id
@@ -383,18 +373,20 @@ const NewWorkout = () => {
                                                     }
                                                 />
                                             </div>
-                                            <div
-                                                className={
-                                                    styles.exerciseSetsContainer
-                                                }
-                                            >
-                                                <p>Serije:</p>
+                                        </div>
+                                        <div
+                                            className={
+                                                styles.exerciseSetsContainer
+                                            }
+                                        >
+                                            <p>serije</p>
+                                            <div className={styles.setsInputs}>
                                                 <input
                                                     className={
                                                         styles.changeValueButton
                                                     }
                                                     type="button"
-                                                    value="-"
+                                                    value=" - "
                                                     onClick={() =>
                                                         decreaseSets(
                                                             exercise.id
@@ -405,9 +397,7 @@ const NewWorkout = () => {
                                                     }
                                                 />
                                                 <input
-                                                    className={
-                                                        styles.changeValueButton
-                                                    }
+                                                    className={styles.setsValue}
                                                     type="text"
                                                     value={exercise.sets}
                                                     onChange={(e) =>
@@ -422,7 +412,7 @@ const NewWorkout = () => {
                                                         styles.changeValueButton
                                                     }
                                                     type="button"
-                                                    value="+"
+                                                    value=" + "
                                                     onClick={() =>
                                                         increaseSets(
                                                             exercise.id
@@ -430,13 +420,16 @@ const NewWorkout = () => {
                                                     }
                                                 />
                                             </div>
-                                            <div
-                                                className={
-                                                    styles.exerciseRestContainer
-                                                }
-                                            >
-                                                <p>Odmor (mm:ss):</p>
+                                        </div>
+                                        <div
+                                            className={
+                                                styles.exerciseRestContainer
+                                            }
+                                        >
+                                            <p>odmor (min : sek)</p>
+                                            <div className={styles.restInputs}>
                                                 <input
+                                                    className={styles.restValue}
                                                     type="number"
                                                     id="minutes"
                                                     min="0"
@@ -454,6 +447,7 @@ const NewWorkout = () => {
                                                 />
                                                 :
                                                 <input
+                                                    className={styles.restValue}
                                                     type="number"
                                                     id="seconds"
                                                     min="0"
@@ -471,36 +465,27 @@ const NewWorkout = () => {
                                                 />
                                             </div>
                                         </div>
-                                        <input
-                                            type="button"
-                                            value="Ukloni"
-                                            onClick={() =>
-                                                removeExercise(exercise.id)
-                                            }
-                                        />
                                     </div>
-                                    <div className={styles.separator}></div>
                                 </div>
-                            ))
-                        )}
-                    </div>
+                                <div className={styles.separator}></div>
+                            </div>
+                        ))
+                    )}
+                </div>
 
-                    <div className={styles.buttonContainer}>
-                        <NavLink to="/home" className={styles.returnButton}>
-                            Odustani
-                        </NavLink>
-                        <button
-                            type="submit"
-                            disabled={
-                                !workoutName || workoutExercises.length === 0
-                            }
-                        >
-                            Završi
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </>
+                <div className={styles.buttonContainer}>
+                    <NavLink to="/home" className={styles.returnButton}>
+                        Odustani
+                    </NavLink>
+                    <button
+                        type="submit"
+                        disabled={!workoutName || workoutExercises.length === 0}
+                    >
+                        Završi
+                    </button>
+                </div>
+            </form>
+        </div>
     )
 }
 

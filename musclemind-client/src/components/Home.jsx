@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-import { Helmet } from 'react-helmet'
 
 const Home = () => {
     useEffect(() => {
@@ -16,14 +15,7 @@ const Home = () => {
             }
         })()
     }, [])
-    return (
-        <>
-            <Helmet>
-                <title>Musclemind | Početna</title>
-            </Helmet>
-            <div>Home</div>
-        </>
-    )
+    return <div>Home</div>
 }
 
 export default Home

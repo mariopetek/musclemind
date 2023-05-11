@@ -12,17 +12,10 @@
     outline: 1px solid rgba(191, 191, 191, 1);
     border-radius: 8px;
 }
-.newWorkoutHeader > h2 {
+.newWorkoutContainer > form > h2 {
     margin: 0;
-    text-align: center;
     color: rgba(89, 89, 89, 1);
-}
-.headerSeparator {
-    height: 3px;
-    width: 100%;
-    background-color: rgba(89, 89, 89, 1);
-    margin-top: 5px;
-    margin-bottom: 5px;
+    text-align: center;
 }
 
 .visibilityContainer {
@@ -87,21 +80,21 @@
     outline: 2px solid rgba(0, 149, 255, 1);
 }
 
-.exerciseSelection > h3 {
+.exerciseSelectionContainer > h3 {
     color: rgba(89, 89, 89, 1);
     margin-bottom: 5px;
     margin-top: 5px;
 }
-.exerciseInputContainer {
+.exerciseSelection {
     display: flex;
     gap: 10px;
 }
-.exerciseInput {
+.exerciseSelectionAndClear {
     display: flex;
     gap: 3px;
     width: 100%;
 }
-.exerciseInputField {
+.exerciseSelectionField {
     border: none;
     outline: 1px solid rgba(191, 191, 191, 1);
     border-radius: 8px 0px 0px 8px;
@@ -111,10 +104,10 @@
     width: inherit;
     transition: all 0.2s ease;
 }
-.exerciseInputField:hover {
+.exerciseSelectionField:hover {
     outline-color: rgba(89, 89, 89, 1);
 }
-.exerciseInputField:focus {
+.exerciseSelectionField:focus {
     transition: none;
     outline: 2px solid rgba(0, 149, 255, 1);
 }
@@ -130,7 +123,7 @@
     opacity: 0.8;
     cursor: pointer;
 }
-.exerciseInputContainer > input {
+.exerciseSelection > input {
     border: none;
     outline: 1px solid rgba(0, 149, 255, 1);
     border-radius: 8px;
@@ -143,11 +136,11 @@
     color: white;
     transition: all 0.2s ease;
 }
-.exerciseInputContainer > input:hover {
+.exerciseSelection > input:hover {
     cursor: pointer;
     opacity: 0.8;
 }
-.exerciseInputContainer > input:disabled {
+.exerciseSelection > input:disabled {
     cursor: auto;
     outline: 1px solid rgb(100, 190, 255);
     background-color: rgb(148, 217, 255);
@@ -155,6 +148,9 @@
     opacity: 1;
 }
 
+.workoutExercise {
+    padding: 10px;
+}
 .workoutCurrentExercises > h3 {
     color: rgba(89, 89, 89, 1);
     margin-bottom: 5px;
@@ -174,15 +170,95 @@
     font-weight: 900;
     margin: 5px;
 }
-.exerciseComponentsContainer {
+.exerciseNameContainer {
     display: flex;
+    align-items: center;
+    gap: 10px;
 }
-.workoutExercise > p {
+.exerciseNameContainer > p {
+    font-weight: 500;
+    color: rgba(89, 89, 89, 1);
+    margin: 0;
+}
+.exerciseNameContainer > input {
+    border: none;
+    color: white;
+    background-color: rgba(217, 43, 43, 1);
+    outline: 1px solid rgba(176, 18, 18, 1);
+    font-family: inherit;
+    padding: 7px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+.exerciseNameContainer > input:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+.exercise .workoutExercise > p {
     font-weight: 600;
     color: rgba(89, 89, 89, 1);
 }
 .repsSetsRest {
     display: flex;
+    justify-content: space-around;
+}
+.exerciseRepsContainer > p,
+.exerciseSetsContainer > p,
+.exerciseRestContainer > p {
+    text-align: center;
+    margin: 10px;
+    color: rgba(89, 89, 89, 1);
+}
+.repsInputs,
+.setsInputs,
+.restInputs {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+}
+.repsValue,
+.setsValue,
+.restValue {
+    text-align: center;
+    border: none;
+    outline: 1px solid rgba(191, 191, 191, 1);
+    border-radius: 8px;
+    color: rgba(89, 89, 89, 1);
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+.restValue {
+    padding: 3px;
+}
+.repsValue:hover,
+.setsValue:hover,
+.restValue:hover {
+    outline-color: rgba(89, 89, 89, 1);
+}
+.repsValue:focus,
+.setsValue:focus,
+.restValue:focus {
+    transition: none;
+    outline: 2px solid rgba(0, 149, 255, 1);
+}
+
+.changeValueButton {
+    font-family: inherit;
+    border-radius: 8px;
+    color: rgba(89, 89, 89, 1);
+    font-size: 1rem;
+    border: none;
+    outline: 1px solid rgba(191, 191, 191, 1);
+    transition: all 0.2s ease;
+}
+.changeValueButton:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
+.changeValueButton:disabled {
+    opacity: 0.3;
+    cursor: auto;
 }
 
 .separator {
@@ -190,6 +266,7 @@
     height: 1px;
     background-color: rgba(89, 89, 89, 1);
 }
+
 .buttonContainer {
     display: flex;
     align-items: center;
