@@ -147,19 +147,19 @@ const NewWorkout = () => {
         )
     }
 
-    const handleRestChange = (exerciseId, unitId, value) => {
+    const handleRestChange = (exerciseId, unitName, value) => {
         setWorkoutExercises(
             workoutExercises.map((exercise) => {
                 return exercise.id === exerciseId
                     ? {
                           ...exercise,
                           rest: {
-                              [unitId]:
+                              [unitName]:
                                   Number(value) > 59 || Number(value) < 0
                                       ? 0
                                       : Number(value),
-                              [unitId === 'minutes' ? 'seconds' : 'minutes']:
-                                  unitId === 'minutes'
+                              [unitName === 'minutes' ? 'seconds' : 'minutes']:
+                                  unitName === 'minutes'
                                       ? exercise.rest.seconds
                                       : exercise.rest.minutes
                           }
@@ -198,7 +198,7 @@ const NewWorkout = () => {
                         <label
                             key={visibility.visibilityName}
                             htmlFor={visibility.visibilityName}
-                            className={`${styles.visibilityInput} ${styles.visibilityOption}`}
+                            className={styles.visibilityInput}
                         >
                             {visibility.visibilityName}
                             <input
@@ -219,7 +219,11 @@ const NewWorkout = () => {
                 </div>
                 <div className={styles.levelContainer}>
                     {levelsQuery.data.map((level) => (
-                        <label key={level.levelName} htmlFor={level.levelName}>
+                        <label
+                            key={level.levelName}
+                            htmlFor={level.levelName}
+                            className={styles.levelInput}
+                        >
                             {level.levelName}
                             <input
                                 id={level.levelName}
@@ -262,6 +266,7 @@ const NewWorkout = () => {
                     <div className={styles.exerciseSelection}>
                         <div className={styles.exerciseSelectionAndClear}>
                             <select
+                                id="exerciseSelection"
                                 className={styles.exerciseSelectionField}
                                 value={exerciseInput}
                                 onChange={(e) =>
@@ -287,7 +292,6 @@ const NewWorkout = () => {
                         </div>
                         <input
                             className={styles.addExerciseButton}
-                            id="addExercise"
                             type="button"
                             value="Dodaj"
                             onClick={addExercise}
@@ -352,6 +356,7 @@ const NewWorkout = () => {
                                                 <input
                                                     className={styles.repsValue}
                                                     type="text"
+                                                    name="repsCount"
                                                     value={exercise.reps}
                                                     onChange={(e) =>
                                                         handleRepsChange(
@@ -399,6 +404,7 @@ const NewWorkout = () => {
                                                 <input
                                                     className={styles.setsValue}
                                                     type="text"
+                                                    name="setsCount"
                                                     value={exercise.sets}
                                                     onChange={(e) =>
                                                         handleSetsChange(
@@ -431,7 +437,7 @@ const NewWorkout = () => {
                                                 <input
                                                     className={styles.restValue}
                                                     type="number"
-                                                    id="minutes"
+                                                    name="minutes"
                                                     min="0"
                                                     max="59"
                                                     value={
@@ -440,7 +446,7 @@ const NewWorkout = () => {
                                                     onChange={(e) =>
                                                         handleRestChange(
                                                             exercise.id,
-                                                            e.target.id,
+                                                            e.target.name,
                                                             e.target.value
                                                         )
                                                     }
@@ -449,7 +455,7 @@ const NewWorkout = () => {
                                                 <input
                                                     className={styles.restValue}
                                                     type="number"
-                                                    id="seconds"
+                                                    name="seconds"
                                                     min="0"
                                                     max="59"
                                                     value={
@@ -458,7 +464,7 @@ const NewWorkout = () => {
                                                     onChange={(e) =>
                                                         handleRestChange(
                                                             exercise.id,
-                                                            e.target.id,
+                                                            e.target.name,
                                                             e.target.value
                                                         )
                                                     }

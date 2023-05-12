@@ -18,17 +18,18 @@
     text-align: center;
 }
 
-.visibilityContainer {
+.visibilityContainer,
+.levelContainer {
     display: flex;
     gap: 10px;
 }
-.visibilityContainer > label {
+.visibilityContainer > label,
+.levelContainer > label {
     color: rgba(89, 89, 89, 1);
 }
-.visibilityInput {
+.visibilityInput,
+.levelInput {
     cursor: pointer;
-}
-.visibilityOption {
     display: flex;
     gap: 3px;
 }
@@ -47,6 +48,9 @@
     font-size: 1rem;
     transition: all 0.2s ease;
     font-family: inherit;
+}
+::placeholder {
+    color: rgba(191, 191, 191, 1);
 }
 .workoutName > input:hover {
     outline-color: rgba(89, 89, 89, 1);
@@ -103,6 +107,8 @@
     font-family: inherit;
     width: inherit;
     transition: all 0.2s ease;
+    background-color: white;
+    color: rgba(89, 89, 89, 1);
 }
 .exerciseSelectionField:hover {
     outline-color: rgba(89, 89, 89, 1);
