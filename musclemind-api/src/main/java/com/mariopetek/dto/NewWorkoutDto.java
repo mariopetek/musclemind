@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class WorkoutDto {
+public class NewWorkoutDto {
     private String workoutName;
     private String workoutDescription;
     private Integer numberOfSets;

@@ -1,7 +1,7 @@
 package com.mariopetek.service;
 
-import com.mariopetek.dto.WorkoutDto;
+import com.mariopetek.dto.NewWorkoutDto;
 
 public interface WorkoutService {
-    void saveNewWorkout(WorkoutDto newWorkout);
+    String saveNewWorkout(NewWorkoutDto newWorkout);
 }
