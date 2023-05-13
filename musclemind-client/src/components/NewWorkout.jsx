@@ -1,15 +1,18 @@
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import { useQuery } from 'react-query'
+import { useQuery, useMutation } from 'react-query'
 import { IconContext } from 'react-icons'
 import { BsEmojiFrown } from 'react-icons/bs'
 import axios from 'axios'
 
 import styles from '../styles/NewWorkout.module.css'
+import Loading from './partials/Loading'
+import SomethingWentWrong from './partials/SomethingWentWrong'
 
 const NewWorkout = () => {
     const [visibilityId, setVisibilityId] = useState(1)
     const [levelId, setLevelId] = useState(1)
+    const [totalSets, setTotalSets] = useState(1)
     const [workoutName, setWorkoutName] = useState('')
     const [workoutDesc, setWorkoutDesc] = useState('')
     const [exerciseInput, setExerciseInput] = useState('')
@@ -65,6 +68,11 @@ const NewWorkout = () => {
         ])
         setExerciseInput('')
     }
+    const removeExercise = (id) => {
+        setWorkoutExercises(
+            workoutExercises.filter((exercise) => exercise.id !== id)
+        )
+    }
 
     const decreaseReps = (id) => {
         setWorkoutExercises(
@@ -93,12 +101,7 @@ const NewWorkout = () => {
                 return exercise.id === id
                     ? {
                           ...exercise,
-                          reps:
-                              Number.isNaN(Number(value)) ||
-                              value === '' ||
-                              Number(value) === 0
-                                  ? 1
-                                  : Number(value)
+                          reps: Number(value) < 1 ? 1 : Number(value)
                       }
                     : exercise
             })
@@ -135,12 +138,7 @@ const NewWorkout = () => {
                 return exercise.id === id
                     ? {
                           ...exercise,
-                          sets:
-                              Number.isNaN(Number(value)) ||
-                              value === '' ||
-                              Number(value) === 0
-                                  ? 1
-                                  : Number(value)
+                          sets: Number(value) < 1 ? 1 : Number(value)
                       }
                     : exercise
             })
@@ -169,25 +167,51 @@ const NewWorkout = () => {
         )
     }
 
-    const removeExercise = (id) => {
-        setWorkoutExercises(
-            workoutExercises.filter((exercise) => exercise.id !== id)
-        )
+    const handleTotalSetsChange = (value) => {
+        setTotalSets(Number(value) < 1 ? 1 : Number(value))
     }
 
-    const saveWorkout = async () => {
-        //empty
+    const workoutInfoMutation = useMutation(async (workoutInfo) => {
+        return axios
+            .post('/api/v1/workouts/new', workoutInfo, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then((response) => {
+                console.log(response.data)
+            })
+    })
+    const workoutExercisesMutation = useMutation(async (workoutExercises) => {})
+
+    const saveWorkout = async (event) => {
+        event.preventDefault()
+        const workoutInfo = {
+            workoutName,
+            workoutDescription: workoutDesc,
+            numberOfSets: totalSets,
+            appUserId: localStorage.getItem('id'),
+            visibilityId,
+            levelId
+        }
+        const workoutExercisesFinal = exercisesQuery.data.filter((exercise) => {
+            return workoutExercises.some((addedExercise) => {
+                return addedExercise.name === exercise.exerciseName
+            })
+        })
+        console.log(workoutExercisesFinal)
+        workoutInfoMutation.mutate(workoutInfo)
     }
-    console.log(levelId)
 
     if (
         exercisesQuery.isLoading ||
         visibilitiesQuery.isLoading ||
         levelsQuery.isLoading
     )
-        return <h1>Učitavanje...</h1>
+        return <Loading />
     if (exercisesQuery.error || visibilitiesQuery.error || levelsQuery.error)
-        return <h1>Nešto je pošlo po zlu</h1>
+        return <SomethingWentWrong />
 
     return (
         <div className={styles.newWorkoutContainer}>
@@ -198,7 +222,7 @@ const NewWorkout = () => {
                         <label
                             key={visibility.visibilityName}
                             htmlFor={visibility.visibilityName}
-                            className={styles.visibilityInput}
+                            className={styles.visibilityLabel}
                         >
                             {visibility.visibilityName}
                             <input
@@ -212,7 +236,6 @@ const NewWorkout = () => {
                                 onChange={(e) =>
                                     setVisibilityId(Number(e.target.value))
                                 }
-                                className={styles.visibilityInput}
                             />
                         </label>
                     ))}
@@ -222,7 +245,7 @@ const NewWorkout = () => {
                         <label
                             key={level.levelName}
                             htmlFor={level.levelName}
-                            className={styles.levelInput}
+                            className={styles.levelLabel}
                         >
                             {level.levelName}
                             <input
@@ -253,8 +276,6 @@ const NewWorkout = () => {
                     <h3>Opis treninga</h3>
                     <textarea
                         id="workoutDesc"
-                        cols="70"
-                        rows="7"
                         maxLength="500"
                         placeholder="Unesite opis treninga (max. 500 znakova)"
                         value={workoutDesc}
@@ -277,7 +298,18 @@ const NewWorkout = () => {
                                     Odaberite vježbu
                                 </option>
                                 {exercisesQuery.data.map((exercise) => (
-                                    <option key={exercise.exerciseId}>
+                                    <option
+                                        key={exercise.exerciseId}
+                                        value={exercise.exerciseName}
+                                        onClick={(e) => {
+                                            setExerciseInput(e.target.value)
+                                        }}
+                                        disabled={workoutExercises.some(
+                                            (el) =>
+                                                el.name ===
+                                                exercise.exerciseName
+                                        )}
+                                    >
                                         {exercise.exerciseName} |{' '}
                                         {exercise.category.categoryName}
                                     </option>
@@ -304,7 +336,7 @@ const NewWorkout = () => {
                     <h3>Odabrane vježbe</h3>
                     {workoutExercises.length === 0 ? (
                         <div className={styles.noExercisesYet}>
-                            <IconContext.Provider value={{ size: '80px' }}>
+                            <IconContext.Provider value={{ size: '70px' }}>
                                 <BsEmojiFrown />
                             </IconContext.Provider>
 
@@ -355,7 +387,7 @@ const NewWorkout = () => {
                                                 />
                                                 <input
                                                     className={styles.repsValue}
-                                                    type="text"
+                                                    type="number"
                                                     name="repsCount"
                                                     value={exercise.reps}
                                                     onChange={(e) =>
@@ -403,7 +435,7 @@ const NewWorkout = () => {
                                                 />
                                                 <input
                                                     className={styles.setsValue}
-                                                    type="text"
+                                                    type="number"
                                                     name="setsCount"
                                                     value={exercise.sets}
                                                     onChange={(e) =>
@@ -432,7 +464,7 @@ const NewWorkout = () => {
                                                 styles.exerciseRestContainer
                                             }
                                         >
-                                            <p>odmor (min : sek)</p>
+                                            <p>odmor (min:sek)</p>
                                             <div className={styles.restInputs}>
                                                 <input
                                                     className={styles.restValue}
@@ -477,6 +509,37 @@ const NewWorkout = () => {
                             </div>
                         ))
                     )}
+                </div>
+                <div className={styles.totalSetsContainer}>
+                    <h3>Ukupno serija</h3>
+                    <div className={styles.totalSetsInputs}>
+                        <input
+                            type="button"
+                            value=" - "
+                            className={styles.changeValueButton}
+                            disabled={totalSets === 1}
+                            onClick={() =>
+                                setTotalSets((prev) =>
+                                    prev === 1 ? 1 : prev - 1
+                                )
+                            }
+                        />
+                        <input
+                            type="number"
+                            name="totalSets"
+                            value={totalSets}
+                            onChange={(e) =>
+                                handleTotalSetsChange(e.target.value)
+                            }
+                            className={styles.totalSetsValue}
+                        />
+                        <input
+                            type="button"
+                            value=" + "
+                            className={styles.changeValueButton}
+                            onClick={() => setTotalSets((prev) => prev + 1)}
+                        />
+                    </div>
                 </div>
 
                 <div className={styles.buttonContainer}>

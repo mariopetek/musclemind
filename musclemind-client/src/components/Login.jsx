@@ -73,6 +73,7 @@ const Login = () => {
                             onChange={handleInputChange}
                             variant="outlined"
                             size="small"
+                            autoComplete="on"
                         />
                     ))}
                     <div className={styles.buttonContainer}>
