@@ -16,7 +16,7 @@ public class WorkoutController {
     private final WorkoutService workoutService;
 
     @PostMapping("/new")
-    public ResponseEntity<String> saveNewWorkout(@RequestBody NewWorkoutDto newWorkout) {
+    public ResponseEntity<Long> saveNewWorkout(@RequestBody NewWorkoutDto newWorkout) {
         return ResponseEntity.ok(workoutService.saveNewWorkout(newWorkout));
     }
 }

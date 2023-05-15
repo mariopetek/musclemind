@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class WorkoutExercises {
+public class WorkoutExercise {
     @EmbeddedId
     private WorkoutExercisesId workoutExercisesId;
     @Column(name = "broj_serija", nullable = false)
@@ -20,5 +20,5 @@ public class WorkoutExercises {
     @Column(name = "broj_ponavljanja", nullable = false)
     private Integer numberOfReps;
     @Column(name = "odmor", nullable = false)
-    private Integer rest;
+    private String rest;
 }

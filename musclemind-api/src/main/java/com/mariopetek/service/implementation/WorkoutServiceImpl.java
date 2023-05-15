@@ -21,7 +21,7 @@ public class WorkoutServiceImpl implements WorkoutService {
     private final VisibilityRepository visibilityRepository;
     private final LevelRepository levelRepository;
 
-    public String saveNewWorkout(NewWorkoutDto newWorkout) {
+    public Long saveNewWorkout(NewWorkoutDto newWorkout) {
         Workout workout = new Workout();
         workout.setWorkoutName(newWorkout.getWorkoutName());
         workout.setWorkoutDescription(newWorkout.getWorkoutDescription());
@@ -30,7 +30,6 @@ public class WorkoutServiceImpl implements WorkoutService {
         workout.setAppUser(appUserRepository.findByAppUserId(newWorkout.getAppUserId()).orElseThrow());
         workout.setVisibility(visibilityRepository.findByVisibilityId(newWorkout.getVisibilityId()).orElseThrow());
         workout.setLevel(levelRepository.findByLevelId(newWorkout.getLevelId()).orElseThrow());
-        workoutRepository.save(workout);
-        return "Trening uspješno pohranjen";
+        return workoutRepository.save(workout).getWorkoutId();
     }
 }
