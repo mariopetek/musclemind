@@ -19,4 +19,8 @@ public class AppUserController {
     public ResponseEntity<List<AppUser>> getAllAppUsers() {
         return ResponseEntity.ok(appUserService.getAllAppUsers());
     }
+    @GetMapping("/search")
+    public ResponseEntity<List<AppUser>> getAppUsersByUsernameContainingIgnoreCase(@RequestParam("username") String username) {
+        return ResponseEntity.ok(appUserService.getAppUsersByUsernameContainingIgnoreCase(username));
+    }
 }

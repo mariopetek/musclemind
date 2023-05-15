@@ -9,4 +9,5 @@ public interface AppUserService {
     List<AppUser> getAllAppUsers();
     Optional<AppUser> getAppUserByUsername(String username);
     Optional<AppUser> getAppUserByAppUserId(Long appUserId);
+    List<AppUser> getAppUsersByUsernameContainingIgnoreCase(String username);
 }
