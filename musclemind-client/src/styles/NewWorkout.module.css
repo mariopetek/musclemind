@@ -10,6 +10,8 @@ input[type='number'] {
 
 .newWorkoutContainer {
     display: flex;
+    flex-direction: column;
+    gap: 10px;
     align-items: center;
     justify-content: center;
     margin: 20px;
@@ -331,4 +333,13 @@ input[type='number'] {
 .returnButton:hover {
     opacity: 0.8;
     cursor: pointer;
+}
+
+.successMessageContainer {
+    font-weight: 500;
+    color: green;
+}
+.errorMessageContainer {
+    font-weight: 500;
+    color: red;
 }

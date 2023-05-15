@@ -18,6 +18,9 @@ const NewWorkout = () => {
     const [exerciseInput, setExerciseInput] = useState('')
     const [workoutExercises, setWorkoutExercises] = useState([])
 
+    const [successMessage, setSuccessMessage] = useState(null)
+    const [errorMessage, setErrorMessage] = useState(null)
+
     const exercisesQuery = useQuery('allExercises', async () => {
         return axios
             .get('/api/v1/exercises', {
@@ -56,8 +59,10 @@ const NewWorkout = () => {
         setWorkoutExercises((prevExercises) => [
             ...prevExercises,
             {
-                id: prevExercises.length + 1,
-                name: exerciseInput,
+                id: Number(exerciseInput.split(' | ')[0]),
+                name: `${exerciseInput.split(' | ')[1]} | ${
+                    exerciseInput.split(' | ')[2]
+                }`,
                 sets: 1,
                 reps: 1,
                 rest: {
@@ -68,16 +73,16 @@ const NewWorkout = () => {
         ])
         setExerciseInput('')
     }
-    const removeExercise = (id) => {
+    const removeExercise = (exerciseId) => {
         setWorkoutExercises(
-            workoutExercises.filter((exercise) => exercise.id !== id)
+            workoutExercises.filter((exercise) => exercise.id !== exerciseId)
         )
     }
 
-    const decreaseReps = (id) => {
+    const decreaseReps = (exerciseId) => {
         setWorkoutExercises(
             workoutExercises.map((exercise) => {
-                return exercise.id === id
+                return exercise.id === exerciseId
                     ? {
                           ...exercise,
                           reps: exercise.reps > 1 ? exercise.reps - 1 : 1
@@ -86,19 +91,19 @@ const NewWorkout = () => {
             })
         )
     }
-    const increaseReps = (id) => {
+    const increaseReps = (exerciseId) => {
         setWorkoutExercises(
             workoutExercises.map((exercise) => {
-                return exercise.id === id
+                return exercise.id === exerciseId
                     ? { ...exercise, reps: exercise.reps + 1 }
                     : exercise
             })
         )
     }
-    const handleRepsChange = (id, value) => {
+    const handleRepsChange = (exerciseId, value) => {
         setWorkoutExercises(
             workoutExercises.map((exercise) => {
-                return exercise.id === id
+                return exercise.id === exerciseId
                     ? {
                           ...exercise,
                           reps: Number(value) < 1 ? 1 : Number(value)
@@ -108,10 +113,10 @@ const NewWorkout = () => {
         )
     }
 
-    const decreaseSets = (id) => {
+    const decreaseSets = (exerciseId) => {
         setWorkoutExercises(
             workoutExercises.map((exercise) => {
-                return exercise.id === id
+                return exercise.id === exerciseId
                     ? {
                           ...exercise,
                           sets: exercise.sets > 1 ? exercise.sets - 1 : 1
@@ -120,10 +125,10 @@ const NewWorkout = () => {
             })
         )
     }
-    const increaseSets = (id) => {
+    const increaseSets = (exerciseId) => {
         setWorkoutExercises(
             workoutExercises.map((exercise) => {
-                return exercise.id === id
+                return exercise.id === exerciseId
                     ? {
                           ...exercise,
                           sets: exercise.sets + 1
@@ -132,10 +137,10 @@ const NewWorkout = () => {
             })
         )
     }
-    const handleSetsChange = (id, value) => {
+    const handleSetsChange = (exerciseId, value) => {
         setWorkoutExercises(
             workoutExercises.map((exercise) => {
-                return exercise.id === id
+                return exercise.id === exerciseId
                     ? {
                           ...exercise,
                           sets: Number(value) < 1 ? 1 : Number(value)
@@ -171,39 +176,69 @@ const NewWorkout = () => {
         setTotalSets(Number(value) < 1 ? 1 : Number(value))
     }
 
-    const workoutInfoMutation = useMutation(async (workoutInfo) => {
-        return axios
-            .post('/api/v1/workouts/new', workoutInfo, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('jwt')}`,
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then((response) => {
-                console.log(response.data)
-            })
-    })
-    const workoutExercisesMutation = useMutation(async (workoutExercises) => {})
+    const workoutExercisesMutation = useMutation(
+        async (data) => {
+            return axios
+                .post('/api/v1/workoutexercises/new', data, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then((response) => {
+                    return response.data
+                })
+        },
+        {
+            onSuccess: () => {
+                setSuccessMessage('Uspješna objava')
+                setErrorMessage(null)
+            },
+            onError: () => {
+                setSuccessMessage(null)
+                setErrorMessage('Nešto je pošlo po zlu')
+            }
+        }
+    )
+
+    const workoutInfoMutation = useMutation(
+        async (data) => {
+            return axios
+                .post('/api/v1/workouts/new', data, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then((response) => {
+                    return response.data
+                })
+        },
+        {
+            onSuccess: (response) => {
+                workoutExercisesMutation.mutate({
+                    workoutId: response,
+                    workoutExercises
+                })
+            },
+            onError: () => {
+                setSuccessMessage(null)
+                setErrorMessage('Nešto je pošlo po zlu')
+            }
+        }
+    )
 
     const saveWorkout = async (event) => {
         event.preventDefault()
-        const workoutInfo = {
+        workoutInfoMutation.mutate({
             workoutName,
             workoutDescription: workoutDesc,
             numberOfSets: totalSets,
             appUserId: localStorage.getItem('id'),
             visibilityId,
             levelId
-        }
-        const workoutExercisesFinal = exercisesQuery.data.filter((exercise) => {
-            return workoutExercises.some((addedExercise) => {
-                return addedExercise.name === exercise.exerciseName
-            })
         })
-        console.log(workoutExercisesFinal)
-        workoutInfoMutation.mutate(workoutInfo)
     }
-
     if (
         exercisesQuery.isLoading ||
         visibilitiesQuery.isLoading ||
@@ -233,8 +268,8 @@ const NewWorkout = () => {
                                 checked={
                                     visibilityId === visibility.visibilityId
                                 }
-                                onChange={(e) =>
-                                    setVisibilityId(Number(e.target.value))
+                                onChange={(event) =>
+                                    setVisibilityId(Number(event.target.value))
                                 }
                             />
                         </label>
@@ -254,8 +289,8 @@ const NewWorkout = () => {
                                 type="radio"
                                 name="level"
                                 checked={levelId === level.levelId}
-                                onChange={(e) =>
-                                    setLevelId(Number(e.target.value))
+                                onChange={(event) =>
+                                    setLevelId(Number(event.target.value))
                                 }
                             />
                         </label>
@@ -264,22 +299,22 @@ const NewWorkout = () => {
                 <div className={styles.workoutName}>
                     <h3>Naziv treninga*</h3>
                     <input
-                        id="workoutName"
+                        name="workoutName"
                         type="text"
                         value={workoutName}
                         maxLength="50"
                         placeholder="Unesite naziv treninga (max. 50 znakova)"
-                        onChange={(e) => setWorkoutName(e.target.value)}
+                        onChange={(event) => setWorkoutName(event.target.value)}
                     />
                 </div>
                 <div className={styles.workoutDesc}>
                     <h3>Opis treninga</h3>
                     <textarea
-                        id="workoutDesc"
+                        name="workoutDesc"
                         maxLength="500"
                         placeholder="Unesite opis treninga (max. 500 znakova)"
                         value={workoutDesc}
-                        onChange={(e) => setWorkoutDesc(e.target.value)}
+                        onChange={(event) => setWorkoutDesc(event.target.value)}
                     />
                 </div>
                 <div className={styles.exerciseSelectionContainer}>
@@ -287,11 +322,11 @@ const NewWorkout = () => {
                     <div className={styles.exerciseSelection}>
                         <div className={styles.exerciseSelectionAndClear}>
                             <select
-                                id="exerciseSelection"
+                                name="exerciseSelection"
                                 className={styles.exerciseSelectionField}
                                 value={exerciseInput}
-                                onChange={(e) =>
-                                    setExerciseInput(e.target.value)
+                                onChange={(event) =>
+                                    setExerciseInput(event.target.value)
                                 }
                             >
                                 <option value="" disabled>
@@ -300,18 +335,14 @@ const NewWorkout = () => {
                                 {exercisesQuery.data.map((exercise) => (
                                     <option
                                         key={exercise.exerciseId}
-                                        value={exercise.exerciseName}
-                                        onClick={(e) => {
-                                            setExerciseInput(e.target.value)
-                                        }}
+                                        value={`${exercise.exerciseId} | ${exercise.exerciseName} | ${exercise.category.categoryName}`}
                                         disabled={workoutExercises.some(
-                                            (el) =>
-                                                el.name ===
-                                                exercise.exerciseName
+                                            (workoutExercise) =>
+                                                workoutExercise.name ===
+                                                `${exercise.exerciseName} | ${exercise.category.categoryName}`
                                         )}
                                     >
-                                        {exercise.exerciseName} |{' '}
-                                        {exercise.category.categoryName}
+                                        {`${exercise.exerciseName} | ${exercise.category.categoryName}`}
                                     </option>
                                 ))}
                             </select>
@@ -390,10 +421,10 @@ const NewWorkout = () => {
                                                     type="number"
                                                     name="repsCount"
                                                     value={exercise.reps}
-                                                    onChange={(e) =>
+                                                    onChange={(event) =>
                                                         handleRepsChange(
                                                             exercise.id,
-                                                            e.target.value
+                                                            event.target.value
                                                         )
                                                     }
                                                 />
@@ -438,10 +469,10 @@ const NewWorkout = () => {
                                                     type="number"
                                                     name="setsCount"
                                                     value={exercise.sets}
-                                                    onChange={(e) =>
+                                                    onChange={(event) =>
                                                         handleSetsChange(
                                                             exercise.id,
-                                                            e.target.value
+                                                            event.target.value
                                                         )
                                                     }
                                                 />
@@ -475,11 +506,11 @@ const NewWorkout = () => {
                                                     value={
                                                         exercise.rest.minutes
                                                     }
-                                                    onChange={(e) =>
+                                                    onChange={(event) =>
                                                         handleRestChange(
                                                             exercise.id,
-                                                            e.target.name,
-                                                            e.target.value
+                                                            event.target.name,
+                                                            event.target.value
                                                         )
                                                     }
                                                 />
@@ -493,11 +524,11 @@ const NewWorkout = () => {
                                                     value={
                                                         exercise.rest.seconds
                                                     }
-                                                    onChange={(e) =>
+                                                    onChange={(event) =>
                                                         handleRestChange(
                                                             exercise.id,
-                                                            e.target.name,
-                                                            e.target.value
+                                                            event.target.name,
+                                                            event.target.value
                                                         )
                                                     }
                                                 />
@@ -528,8 +559,8 @@ const NewWorkout = () => {
                             type="number"
                             name="totalSets"
                             value={totalSets}
-                            onChange={(e) =>
-                                handleTotalSetsChange(e.target.value)
+                            onChange={(event) =>
+                                handleTotalSetsChange(event.target.value)
                             }
                             className={styles.totalSetsValue}
                         />
@@ -554,6 +585,16 @@ const NewWorkout = () => {
                     </button>
                 </div>
             </form>
+            {successMessage ? (
+                <div className={styles.successMessageContainer}>
+                    {successMessage}
+                </div>
+            ) : null}
+            {errorMessage ? (
+                <div className={styles.errorMessageContainer}>
+                    {errorMessage}
+                </div>
+            ) : null}
         </div>
     )
 }
