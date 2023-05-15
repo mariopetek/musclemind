@@ -1,0 +1,65 @@
+.exploreContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+}
+
+.userSearchContainer {
+    display: flex;
+    width: 50%;
+    position: relative;
+    gap: 3px;
+}
+.searchInput {
+    padding: 8px;
+    border: none;
+    outline: 1px solid rgba(191, 191, 191, 1);
+    border-radius: 8px 0px 0px 8px;
+    width: 100%;
+    font-family: inherit;
+    font-size: 1rem;
+    color: rgba(89, 89, 89, 1);
+    transition: all 0.2s ease;
+}
+.searchInput:hover {
+    outline-color: rgba(89, 89, 89, 1);
+}
+.searchInput:focus {
+    transition: none;
+    outline: 2px solid rgba(0, 149, 255, 1);
+}
+.clearSearchInput {
+    border: none;
+    outline: 1px solid rgba(191, 191, 191, 1);
+    border-radius: 0px 8px 8px 0px;
+    color: rgba(89, 89, 89, 1);
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+.clearSearchInput:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+.foundUsersContainer {
+    width: 100%;
+    outline: 1px solid rgba(191, 191, 191, 1);
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 0px 0px 10px 1px rgba(191, 191, 191, 1);
+    position: absolute;
+    top: 40px;
+    left: 0;
+}
+.foundUser {
+    display: block;
+    text-decoration: none;
+    margin: 0;
+    padding: 8px;
+    color: rgba(89, 89, 89, 1);
+}
+
+.oddFoundUserIdx {
+    background-color: rgb(241, 241, 241);
+}
