@@ -23,4 +23,8 @@ public class AppUserController {
     public ResponseEntity<List<AppUser>> getAppUsersByUsernameContainingIgnoreCase(@RequestParam("username") String username) {
         return ResponseEntity.ok(appUserService.getAppUsersByUsernameContainingIgnoreCase(username));
     }
+    @GetMapping("/{appUserId}")
+    public ResponseEntity<AppUser> getAppUserByAppUserId(@PathVariable("appUserId") Long appUserId) {
+        return ResponseEntity.ok(appUserService.getAppUserByAppUserId(appUserId).orElseThrow());
+    }
 }

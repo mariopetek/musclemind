@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -31,5 +32,9 @@ public class WorkoutServiceImpl implements WorkoutService {
         workout.setVisibility(visibilityRepository.findByVisibilityId(newWorkout.getVisibilityId()).orElseThrow());
         workout.setLevel(levelRepository.findByLevelId(newWorkout.getLevelId()).orElseThrow());
         return workoutRepository.save(workout).getWorkoutId();
+    }
+
+    public List<Workout> getAllWorkoutsFromUser(Long appUserId) {
+        return workoutRepository.findByAppUser(appUserRepository.findByAppUserId(appUserId).orElseThrow());
     }
 }

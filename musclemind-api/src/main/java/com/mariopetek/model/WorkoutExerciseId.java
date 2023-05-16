@@ -15,7 +15,7 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class WorkoutExercisesId implements Serializable {
+public class WorkoutExerciseId implements Serializable {
     @ManyToOne
     @JoinColumn(name = "id_trening")
     private Workout workout;
