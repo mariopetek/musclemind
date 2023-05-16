@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { NavLink } from 'react-router-dom'
 import axios from 'axios'
 
@@ -7,6 +7,20 @@ import styles from '../styles/Explore.module.css'
 const Explore = () => {
     const [searchValue, setSearchValue] = useState('')
     const [foundUsers, setFoundUsers] = useState([])
+    const searchMenuRef = useRef()
+
+    useEffect(() => {
+        const handler = (event) => {
+            if (!searchMenuRef.current.contains(event.target)) {
+                setSearchValue('')
+                setFoundUsers('')
+            }
+        }
+        document.addEventListener('mousedown', handler)
+        return () => {
+            document.removeEventListener('mousedown', handler)
+        }
+    }, [])
 
     useEffect(() => {
         axios
@@ -25,7 +39,7 @@ const Explore = () => {
     console.log(searchValue)
     return (
         <div className={styles.exploreContainer}>
-            <div className={styles.userSearchContainer}>
+            <div className={styles.userSearchContainer} ref={searchMenuRef}>
                 <input
                     className={styles.searchInput}
                     type="text"
