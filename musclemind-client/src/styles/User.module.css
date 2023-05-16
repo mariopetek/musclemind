@@ -1,0 +1,46 @@
+.userContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.userInfoContainer {
+    display: flex;
+    gap: 10px;
+    width: 75%;
+    padding: 20px;
+}
+.userInfoContainer h2,
+p {
+    color: rgba(89, 89, 89, 1);
+    margin: 0;
+}
+.followButtonTemplate {
+    border: none;
+    border-radius: 8px;
+    padding: 0 50px;
+    font-family: inherit;
+    background: none;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+.followButtonTemplate:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+.followButton {
+    outline: 1px solid rgba(0, 149, 255, 1);
+    background-color: rgba(0, 167, 255, 1);
+    color: white;
+}
+.unfollowButton {
+    outline: 1px solid rgba(191, 191, 191, 1);
+    background-color: var(--navbar-color);
+    color: rgba(89, 89, 89, 1);
+}
+
+.separator {
+    height: 1px;
+    width: 80%;
+    background-color: rgba(89, 89, 89, 1);
+}

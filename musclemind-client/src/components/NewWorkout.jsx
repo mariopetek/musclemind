@@ -21,7 +21,7 @@ const NewWorkout = () => {
     const [successMessage, setSuccessMessage] = useState(null)
     const [errorMessage, setErrorMessage] = useState(null)
 
-    const exercisesQuery = useQuery('allExercises', async () => {
+    const exercisesQuery = useQuery(['allExercises'], async () => {
         return axios
             .get('/api/v1/exercises', {
                 headers: {
@@ -32,7 +32,7 @@ const NewWorkout = () => {
                 return response.data
             })
     })
-    const visibilitiesQuery = useQuery('allVisibilities', async () => {
+    const visibilitiesQuery = useQuery(['allVisibilities'], async () => {
         return axios
             .get('/api/v1/visibilities', {
                 headers: {
@@ -43,7 +43,7 @@ const NewWorkout = () => {
                 return response.data
             })
     })
-    const levelsQuery = useQuery('allLevels', async () => {
+    const levelsQuery = useQuery(['allLevels'], async () => {
         return axios
             .get('/api/v1/levels', {
                 headers: {

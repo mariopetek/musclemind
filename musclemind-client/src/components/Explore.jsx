@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { NavLink } from 'react-router-dom'
+import { BiSearch } from 'react-icons/bi'
+import { IconContext } from 'react-icons'
 import axios from 'axios'
 
 import styles from '../styles/Explore.module.css'
@@ -23,30 +25,46 @@ const Explore = () => {
     }, [])
 
     useEffect(() => {
-        axios
-            .get(`/api/v1/users/search?username=${searchValue}`, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('jwt')}`
-                }
-            })
-            .then((response) => {
-                return response.data
-            })
-            .then((data) => {
-                setFoundUsers(data)
-            })
+        if (/\S/.test(searchValue)) {
+            axios
+                .get(`/api/v1/users/search?username=${searchValue}`, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('jwt')}`
+                    }
+                })
+                .then((response) => {
+                    return response.data
+                })
+                .then((data) => {
+                    setFoundUsers(
+                        data.filter((element) => {
+                            return (
+                                element.appUserId !==
+                                Number(localStorage.getItem('id'))
+                            )
+                        })
+                    )
+                })
+        }
     }, [searchValue])
-    console.log(searchValue)
+    console.log(foundUsers)
     return (
         <div className={styles.exploreContainer}>
             <div className={styles.userSearchContainer} ref={searchMenuRef}>
+                <IconContext.Provider value={{ size: '30px' }}>
+                    <BiSearch className={styles.searchIcon} />
+                </IconContext.Provider>
                 <input
                     className={styles.searchInput}
                     type="text"
                     placeholder="Pretražite korisnike"
                     value={searchValue}
-                    onChange={(event) => setSearchValue(event.target.value)}
+                    onChange={(event) => {
+                        setSearchValue(event.target.value)
+                        if (!/\S/.test(event.target.value)) setFoundUsers([])
+                    }}
                 />
+
                 <input
                     type="button"
                     value=" ⨉ "
@@ -60,6 +78,7 @@ const Explore = () => {
                     <div className={styles.foundUsersContainer}>
                         {foundUsers.map((user, idx) => (
                             <NavLink
+                                to={`/explore/users/${user.appUserId}`}
                                 key={user.appUserId}
                                 className={`${styles.foundUser} ${
                                     idx % 2 === 1
@@ -67,9 +86,15 @@ const Explore = () => {
                                         : null
                                 }`}
                             >
-                                {user.username}
+                                <p>{user.username}</p>
+                                <p>{user.name}</p>
                             </NavLink>
                         ))}
+                    </div>
+                ) : null}
+                {foundUsers.length === 0 && /\S/.test(searchValue) ? (
+                    <div className={styles.foundUsersContainer}>
+                        <div className={styles.foundUser}>Nema rezultata</div>
                     </div>
                 ) : null}
             </div>

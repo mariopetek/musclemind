@@ -41,6 +41,10 @@
     opacity: 0.8;
     cursor: pointer;
 }
+.searchIcon {
+    color: rgba(89, 89, 89, 1);
+    align-self: center;
+}
 
 .foundUsersContainer {
     width: 100%;
@@ -59,7 +63,15 @@
     padding: 8px;
     color: rgba(89, 89, 89, 1);
 }
-
+.foundUser > p {
+    margin: 0;
+}
+.foundUser:hover > p {
+    filter: brightness(150%);
+}
+.foundUser p:first-child {
+    font-weight: 600;
+}
 .oddFoundUserIdx {
     background-color: rgb(241, 241, 241);
 }

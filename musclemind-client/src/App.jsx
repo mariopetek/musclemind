@@ -13,6 +13,7 @@ import Home from './components/Home'
 import Explore from './components/Explore'
 import NewWorkout from './components/NewWorkout'
 import Profile from './components/Profile'
+import User from './components/User'
 
 const queryClient = new QueryClient()
 
@@ -30,7 +31,13 @@ const App = () => {
                         </Route>
                         <Route element={<ProtectedRoute />}>
                             <Route path="/home" element={<Home />} />
-                            <Route path="/explore" element={<Explore />} />
+                            <Route path="/explore">
+                                <Route index element={<Explore />} />
+                                <Route
+                                    path="users/:appUserId"
+                                    element={<User />}
+                                />
+                            </Route>
                             <Route path="/new" element={<NewWorkout />} />
                             <Route path="/profile" element={<Profile />} />
                         </Route>
