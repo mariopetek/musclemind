@@ -1,11 +1,12 @@
 import { useState } from 'react'
-import { useQuery } from 'react-query'
+import { useQuery, useQueries } from 'react-query'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
 
 import styles from '../styles/User.module.css'
 import SomethingWentWrong from './partials/SomethingWentWrong'
 import Loading from './partials/Loading'
+import UserWorkout from './partials/UserWorkout'
 
 const User = () => {
     const { appUserId } = useParams()
@@ -15,7 +16,7 @@ const User = () => {
 
     const userQuery = useQuery(
         ['users', appUserId],
-        async () => {
+        () => {
             return axios
                 .get(`/api/v1/users/${appUserId}`, {
                     headers: {
@@ -32,30 +33,10 @@ const User = () => {
             }
         }
     )
-    const getWorkoutsExercises = async (workoutId) => {
-        return axios
-            .get(`/api/v1/workoutexercises/workout/${workoutId}`, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('jwt')}`
-                }
-            })
-            .then((response) => {
-                return response.data
-            })
-            .then((data) => {
-                setUserWorkouts((prev) => {
-                    return prev.map((workout) => {
-                        return workout.workoutId === workoutId
-                            ? { ...workout, exercises: data }
-                            : workout
-                    })
-                })
-            })
-    }
 
     const userWorkoutsQuery = useQuery(
         ['workouts', 'user', appUserId],
-        async () => {
+        () => {
             return axios
                 .get(`/api/v1/workouts/user/${appUserId}`, {
                     headers: {
@@ -69,13 +50,53 @@ const User = () => {
         {
             onSuccess: (data) => {
                 setUserWorkouts(data)
-                data.map((workout) => getWorkoutsExercises(workout.workoutId))
             }
         }
     )
 
-    if (userQuery.isLoading || userWorkoutsQuery.isLoading) return <Loading />
-    if (userQuery.error || userWorkoutsQuery.error)
+    const workoutsExercises = useQueries(
+        userWorkouts.map((workout) => {
+            return {
+                queryKey: ['workoutexercises', 'workout', workout.workoutId],
+                queryFn: () => {
+                    return axios
+                        .get(
+                            `/api/v1/workoutexercises/workout/${workout.workoutId}`,
+                            {
+                                headers: {
+                                    Authorization: `Bearer ${localStorage.getItem(
+                                        'jwt'
+                                    )}`
+                                }
+                            }
+                        )
+                        .then((response) => {
+                            return { ...workout, exercises: response.data }
+                        })
+                }
+            }
+        })
+    )
+
+    const handleFollowEvent = () => {
+        setIsFollowing(!isFollowing)
+    }
+
+    if (
+        userQuery.isLoading ||
+        userWorkoutsQuery.isLoading ||
+        workoutsExercises.filter((workoutExercises) => {
+            return workoutExercises.isLoading
+        }).length > 0
+    )
+        return <Loading />
+    if (
+        userQuery.isError ||
+        userWorkoutsQuery.isError ||
+        workoutsExercises.filter((workoutExercises) => {
+            return workoutExercises.isError
+        }).length > 0
+    )
         return <SomethingWentWrong />
 
     return (
@@ -88,17 +109,26 @@ const User = () => {
                 <input
                     type="button"
                     value={isFollowing ? 'Otprati' : 'Prati'}
-                    onClick={() => setIsFollowing(!isFollowing)}
+                    onClick={handleFollowEvent}
                     className={`${styles.followButtonTemplate} ${
                         isFollowing
                             ? styles.unfollowButton
                             : styles.followButton
                     }`}
                 />
-                Pratitetlja: Prati:
+                <div className={styles.followCountContainer}>
+                    <div className={styles.followersCount}>Pratitetlja:</div>
+                    <div className={styles.followingCount}>Prati:</div>
+                </div>
             </div>
             <div className={styles.separator}></div>
-            {console.log(userWorkouts)}
+            <div className={styles.userWorkoutsContainer}>
+                <h2>Treninzi</h2>
+                {workoutsExercises.map(({ data }) => (
+                    <UserWorkout key={data.workoutId} workoutInfo={data} />
+                ))}
+            </div>
+            {console.log(workoutsExercises)}
         </div>
     )
 }

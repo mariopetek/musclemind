@@ -1,0 +1,72 @@
+.workoutInfoContainer {
+    outline: 1px solid rgba(191, 191, 191, 1);
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+    background-color: var(--navbar-color);
+    width: 100%;
+    position: relative;
+}
+.timeAddedContainer {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.timeAddedContainer > p {
+    color: rgba(89, 89, 89, 1);
+    margin: 0;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+.workoutInfoContainer > h4 {
+    position: absolute;
+    top: 0;
+    right: 20px;
+    color: rgba(89, 89, 89, 1);
+}
+.calendarIcon {
+    color: rgba(89, 89, 89, 1);
+}
+
+.workoutNameBio > h3 {
+    margin: 5px;
+    color: rgba(89, 89, 89, 1);
+}
+.workoutNameBio > p {
+    margin: 5px;
+    color: rgba(89, 89, 89, 1);
+    font-size: 0.98rem;
+}
+
+.separator {
+    height: 1px;
+    background-color: rgba(89, 89, 89, 1);
+}
+
+.exercisesContainer {
+    padding: 20px;
+}
+
+.workoutOptionsContainer {
+    padding: 0 20px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 20px;
+}
+.likeIcon {
+    color: rgb(253, 82, 82);
+    transition: all 0.2s ease;
+}
+.likeIcon:hover {
+    cursor: pointer;
+    color: rgb(158, 2, 2);
+}
+.saveIcon {
+    color: rgba(89, 89, 89, 1);
+    transition: all 0.2s ease;
+}
+.saveIcon:hover {
+    cursor: pointer;
+    color: black;
+}
