@@ -34,7 +34,7 @@ const App = () => {
                             <Route path="/explore">
                                 <Route index element={<Explore />} />
                                 <Route
-                                    path="users/:appUserId"
+                                    path="users/:userId"
                                     element={<User />}
                                 />
                             </Route>

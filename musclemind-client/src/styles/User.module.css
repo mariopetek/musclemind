@@ -5,12 +5,17 @@
 }
 .userInfoContainer {
     display: flex;
-    gap: 10px;
     width: 75%;
     padding: 20px;
+    justify-content: space-between;
+    gap: 20px;
 }
-.userInfoContainer h2,
-.userInfoContainer p {
+.usernameContactButton {
+    display: flex;
+    gap: 20px;
+}
+.usernameAndContact > h2,
+.usernameAndContact > p {
     color: rgba(89, 89, 89, 1);
     margin: 0;
 }
@@ -40,7 +45,35 @@
 }
 .followCountContainer {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+.followersCount,
+.followingCount {
+    color: rgba(89, 89, 89, 1);
+    font-size: 1.2rem;
+}
+.followersCount > p,
+.followingCount > p {
+    margin: 0;
+    display: inline-block;
+    font-weight: 500;
+}
+
+.nameBioContainer {
+    width: 75%;
+    padding: 0 20px;
+}
+.nameBioContainer > h3,
+.nameBioContainer > p {
+    color: rgba(89, 89, 89, 1);
+    margin: 0;
+}
+.nameBioContainer > h3 {
+    font-weight: 600;
+}
+.nameBioContainer > p {
+    margin-bottom: 20px;
 }
 
 .separator {

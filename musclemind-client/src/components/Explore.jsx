@@ -22,7 +22,7 @@ const Explore = () => {
         return () => {
             document.removeEventListener('mousedown', handler)
         }
-    })
+    }, [])
 
     useEffect(() => {
         if (/\S/.test(searchValue)) {

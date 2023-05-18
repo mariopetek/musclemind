@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useQuery, useQueries } from 'react-query'
+import { useQuery, useQueries, useMutation, useQueryClient } from 'react-query'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
 
@@ -9,16 +9,34 @@ import Loading from './partials/Loading'
 import UserWorkout from './partials/UserWorkout'
 
 const User = () => {
-    const { appUserId } = useParams()
-    const [userInfo, setUserInfo] = useState({})
+    const { userId } = useParams()
     const [userWorkouts, setUserWorkouts] = useState([])
     const [isFollowing, setIsFollowing] = useState(false)
+    const [userFollowersCount, setUserFollowersCount] = useState(null)
+    const [userFollowingCount, setUserFollowingCount] = useState(null)
+    const queryClient = useQueryClient()
 
-    const userQuery = useQuery(
-        ['users', appUserId],
+    const {
+        data: userInfo,
+        isLoading: userInfoLoading,
+        isError: userInfoError
+    } = useQuery(['users', userId], () => {
+        return axios
+            .get(`/api/v1/users/${userId}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('jwt')}`
+                }
+            })
+            .then((response) => {
+                return response.data
+            })
+    })
+
+    const userFollowersCountQuery = useQuery(
+        ['following', 'followedbycount', userId],
         () => {
             return axios
-                .get(`/api/v1/users/${appUserId}`, {
+                .get(`/api/v1/following/followedbycount/${userId}`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('jwt')}`
                     }
@@ -28,17 +46,56 @@ const User = () => {
                 })
         },
         {
-            onSuccess: (data) => {
-                setUserInfo(data)
-            }
+            onSuccess: (data) => setUserFollowersCount(data)
+        }
+    )
+    const userFollowingCountQuery = useQuery(
+        ['following', 'followingcount', userId],
+        () => {
+            return axios
+                .get(`/api/v1/following/followingcount/${userId}`, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('jwt')}`
+                    }
+                })
+                .then((response) => {
+                    return response.data
+                })
+        },
+        {
+            onSuccess: (data) => setUserFollowingCount(data)
+        }
+    )
+    const isAppUserFollowingUserQuery = useQuery(
+        ['following', 'isfollowing', localStorage.getItem('id'), userId],
+        () => {
+            return axios
+                .get(
+                    `/api/v1/following/isfollowing/${localStorage.getItem(
+                        'id'
+                    )}/${userId}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                                'jwt'
+                            )}`
+                        }
+                    }
+                )
+                .then((response) => {
+                    return response.data
+                })
+        },
+        {
+            onSuccess: (data) => setIsFollowing(data)
         }
     )
 
     const userWorkoutsQuery = useQuery(
-        ['workouts', 'user', appUserId],
+        ['workouts', 'user', userId],
         () => {
             return axios
-                .get(`/api/v1/workouts/user/${appUserId}`, {
+                .get(`/api/v1/workouts/user/${userId}`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('jwt')}`
                     }
@@ -78,21 +135,113 @@ const User = () => {
         })
     )
 
+    const followUserMutation = useMutation(
+        () => {
+            return axios
+                .post(
+                    `/api/v1/following/follow/${localStorage.getItem(
+                        'id'
+                    )}/${userId}`,
+                    {},
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                                'jwt'
+                            )}`
+                        }
+                    }
+                )
+                .then((response) => {
+                    return response.data
+                })
+        },
+        {
+            onSuccess: () => {
+                queryClient.invalidateQueries([
+                    'following',
+                    'followedbycount',
+                    userId
+                ])
+                queryClient.invalidateQueries([
+                    'following',
+                    'followingcount',
+                    userId
+                ])
+                queryClient.invalidateQueries([
+                    'following',
+                    'isfollowing',
+                    localStorage.getItem('id'),
+                    userId
+                ])
+            }
+        }
+    )
+    const unfollowUserMutation = useMutation(
+        () => {
+            return axios
+                .delete(
+                    `/api/v1/following/unfollow/${localStorage.getItem(
+                        'id'
+                    )}/${userId}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                                'jwt'
+                            )}`
+                        }
+                    }
+                )
+                .then((response) => {
+                    return response.data
+                })
+        },
+        {
+            onSuccess: () => {
+                queryClient.invalidateQueries([
+                    'following',
+                    'followedbycount',
+                    userId
+                ])
+                queryClient.invalidateQueries([
+                    'following',
+                    'followingcount',
+                    userId
+                ])
+                queryClient.invalidateQueries([
+                    'following',
+                    'isfollowing',
+                    localStorage.getItem('id'),
+                    userId
+                ])
+            }
+        }
+    )
+
     const handleFollowEvent = () => {
-        setIsFollowing(!isFollowing)
+        if (isFollowing) {
+            unfollowUserMutation.mutate()
+        } else {
+            followUserMutation.mutate()
+        }
     }
 
     if (
-        userQuery.isLoading ||
+        userInfoLoading ||
         userWorkoutsQuery.isLoading ||
+        userFollowersCountQuery.isLoading ||
+        userFollowingCountQuery.isLoading ||
+        isAppUserFollowingUserQuery.isLoading ||
         workoutsExercises.filter((workoutExercises) => {
             return workoutExercises.isLoading
         }).length > 0
     )
         return <Loading />
     if (
-        userQuery.isError ||
+        userInfoError ||
         userWorkoutsQuery.isError ||
+        userFollowersCountQuery.isError ||
+        userFollowingCountQuery.isError ||
+        isAppUserFollowingUserQuery.isError ||
         workoutsExercises.filter((workoutExercises) => {
             return workoutExercises.isError
         }).length > 0
@@ -102,31 +251,46 @@ const User = () => {
     return (
         <div className={styles.userContainer}>
             <div className={styles.userInfoContainer}>
-                <div>
-                    <h2>@{userInfo.username}</h2>
-                    <p>Kontakt: {userInfo.email}</p>
+                <div className={styles.usernameContactButton}>
+                    <div className={styles.usernameAndContact}>
+                        <h2>@{userInfo.username}</h2>
+                        <p>Kontakt: {userInfo.email}</p>
+                    </div>
+                    <input
+                        type="button"
+                        value={isFollowing ? 'Otprati' : 'Prati'}
+                        onClick={handleFollowEvent}
+                        className={`${styles.followButtonTemplate} ${
+                            isFollowing
+                                ? styles.unfollowButton
+                                : styles.followButton
+                        }`}
+                    />
                 </div>
-                <input
-                    type="button"
-                    value={isFollowing ? 'Otprati' : 'Prati'}
-                    onClick={handleFollowEvent}
-                    className={`${styles.followButtonTemplate} ${
-                        isFollowing
-                            ? styles.unfollowButton
-                            : styles.followButton
-                    }`}
-                />
                 <div className={styles.followCountContainer}>
-                    <div className={styles.followersCount}>Pratitetlja:</div>
-                    <div className={styles.followingCount}>Prati:</div>
+                    <div className={styles.followersCount}>
+                        Pratitetlja: <p>{userFollowersCount}</p>
+                    </div>
+                    <div className={styles.followingCount}>
+                        Prati: <p>{userFollowingCount}</p>
+                    </div>
                 </div>
+            </div>
+            <div className={styles.nameBioContainer}>
+                <h3>{userInfo.name}</h3>
+                <p>{userInfo.bio}</p>
             </div>
             <div className={styles.separator}></div>
             <div className={styles.userWorkoutsContainer}>
                 <h2>Treninzi</h2>
-                {workoutsExercises.map(({ data }) => (
-                    <UserWorkout key={data.workoutId} workoutInfo={data} />
-                ))}
+                {workoutsExercises.length > 0 ? (
+                    workoutsExercises.map(({ data }) => (
+                        <UserWorkout key={data.workoutId} workoutInfo={data} />
+                    ))
+                ) : (
+                    <h1>Nema treninga</h1>
+                )}
+                {}
             </div>
             {console.log(workoutsExercises)}
         </div>
