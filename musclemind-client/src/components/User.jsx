@@ -292,7 +292,6 @@ const User = () => {
                 )}
                 {}
             </div>
-            {console.log(workoutsExercises)}
         </div>
     )
 }

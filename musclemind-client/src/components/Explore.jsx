@@ -47,7 +47,6 @@ const Explore = () => {
                 })
         }
     }, [searchValue])
-    console.log(foundUsers)
     return (
         <div className={styles.exploreContainer}>
             <div className={styles.userSearchContainer} ref={searchMenuRef}>
