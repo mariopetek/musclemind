@@ -25,6 +25,7 @@ const UserWorkout = ({ workoutInfo }) => {
     const [isWorkoutLiked, setIsWorkoutLiked] = useState(false)
     const [isWorkoutSaved, setIsWorkoutSaved] = useState(false)
     const [workoutLikes, setWorkoutLikes] = useState(0)
+    const [workoutSaves, setWorkoutSaves] = useState(0)
     const queryClient = useQueryClient()
 
     const workoutLikesCountQuery = useQuery(
@@ -42,6 +43,23 @@ const UserWorkout = ({ workoutInfo }) => {
         },
         {
             onSuccess: (data) => setWorkoutLikes(data)
+        }
+    )
+    const workoutSavesCountQuery = useQuery(
+        ['saving', 'count', workoutInfo.workoutId],
+        () => {
+            return axios
+                .get(`/api/v1/saving/count/${workoutInfo.workoutId}`, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('jwt')}`
+                    }
+                })
+                .then((response) => {
+                    return response.data
+                })
+        },
+        {
+            onSuccess: (data) => setWorkoutSaves(data)
         }
     )
 
@@ -72,6 +90,35 @@ const UserWorkout = ({ workoutInfo }) => {
         },
         {
             onSuccess: (data) => setIsWorkoutLiked(data)
+        }
+    )
+    const isWorkoutSavedByAppUserQuery = useQuery(
+        [
+            'saving',
+            'issaved',
+            localStorage.getItem('id'),
+            workoutInfo.workoutId
+        ],
+        () => {
+            return axios
+                .get(
+                    `/api/v1/saving/issaved/${localStorage.getItem('id')}/${
+                        workoutInfo.workoutId
+                    }`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                                'jwt'
+                            )}`
+                        }
+                    }
+                )
+                .then((response) => {
+                    return response.data
+                })
+        },
+        {
+            onSuccess: (data) => setIsWorkoutSaved(data)
         }
     )
 
@@ -111,6 +158,43 @@ const UserWorkout = ({ workoutInfo }) => {
             }
         }
     )
+    const saveWorkoutMutation = useMutation(
+        () => {
+            return axios
+                .post(
+                    `/api/v1/saving/save/${localStorage.getItem('id')}/${
+                        workoutInfo.workoutId
+                    }`,
+                    {},
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                                'jwt'
+                            )}`
+                        }
+                    }
+                )
+                .then((response) => {
+                    return response.data
+                })
+        },
+        {
+            onSuccess: () => {
+                queryClient.invalidateQueries([
+                    'saving',
+                    'count',
+                    workoutInfo.workoutId
+                ])
+                queryClient.invalidateQueries([
+                    'saving',
+                    'issaved',
+                    localStorage.getItem('id'),
+                    workoutInfo.workoutId
+                ])
+            }
+        }
+    )
+
     const unlikeWorkoutMutation = useMutation(
         () => {
             return axios
@@ -146,6 +230,41 @@ const UserWorkout = ({ workoutInfo }) => {
             }
         }
     )
+    const unsaveWorkoutMutation = useMutation(
+        () => {
+            return axios
+                .delete(
+                    `/api/v1/saving/unsave/${localStorage.getItem('id')}/${
+                        workoutInfo.workoutId
+                    }`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                                'jwt'
+                            )}`
+                        }
+                    }
+                )
+                .then((response) => {
+                    return response.data
+                })
+        },
+        {
+            onSuccess: () => {
+                queryClient.invalidateQueries([
+                    'saving',
+                    'count',
+                    workoutInfo.workoutId
+                ])
+                queryClient.invalidateQueries([
+                    'saving',
+                    'issaved',
+                    localStorage.getItem('id'),
+                    workoutInfo.workoutId
+                ])
+            }
+        }
+    )
 
     const handleLikeEvent = () => {
         if (isWorkoutLiked) {
@@ -154,10 +273,19 @@ const UserWorkout = ({ workoutInfo }) => {
             likeWorkoutMutation.mutate()
         }
     }
+    const handleSaveEvent = () => {
+        if (isWorkoutSaved) {
+            unsaveWorkoutMutation.mutate()
+        } else {
+            saveWorkoutMutation.mutate()
+        }
+    }
 
     if (
         workoutLikesCountQuery.isLoading ||
-        isWorkoutLikedByAppUserQuery.isLoading
+        isWorkoutLikedByAppUserQuery.isLoading ||
+        workoutSavesCountQuery.isLoading ||
+        isWorkoutSavedByAppUserQuery.isLoading
     )
         return <p>Učitavanje</p>
 
@@ -310,15 +438,16 @@ const UserWorkout = ({ workoutInfo }) => {
                         {isWorkoutSaved ? (
                             <BsSaveFill
                                 className={styles.saveIcon}
-                                onClick={() => setIsWorkoutSaved(false)}
+                                onClick={handleSaveEvent}
                             />
                         ) : (
                             <BsSave
                                 className={styles.saveIcon}
-                                onClick={() => setIsWorkoutSaved(true)}
+                                onClick={handleSaveEvent}
                             />
                         )}
                     </IconContext.Provider>
+                    {workoutSaves}
                 </div>
             </div>
         </div>
