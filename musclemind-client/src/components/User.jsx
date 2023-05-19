@@ -33,10 +33,10 @@ const User = () => {
     })
 
     const userFollowersCountQuery = useQuery(
-        ['following', 'followedbycount', userId],
+        ['following', 'followerscount', userId],
         () => {
             return axios
-                .get(`/api/v1/following/followedbycount/${userId}`, {
+                .get(`/api/v1/following/followerscount/${userId}`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('jwt')}`
                     }
@@ -159,7 +159,7 @@ const User = () => {
             onSuccess: () => {
                 queryClient.invalidateQueries([
                     'following',
-                    'followedbycount',
+                    'followerscount',
                     userId
                 ])
                 queryClient.invalidateQueries([
@@ -199,7 +199,7 @@ const User = () => {
             onSuccess: () => {
                 queryClient.invalidateQueries([
                     'following',
-                    'followedbycount',
+                    'followerscount',
                     userId
                 ])
                 queryClient.invalidateQueries([

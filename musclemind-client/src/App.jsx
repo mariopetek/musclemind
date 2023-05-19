@@ -14,6 +14,7 @@ import Explore from './components/Explore'
 import NewWorkout from './components/NewWorkout'
 import Profile from './components/Profile'
 import User from './components/User'
+import EditProfile from './components/EditProfile'
 
 const queryClient = new QueryClient()
 
@@ -39,7 +40,10 @@ const App = () => {
                                 />
                             </Route>
                             <Route path="/new" element={<NewWorkout />} />
-                            <Route path="/profile" element={<Profile />} />
+                            <Route path="/profile">
+                                <Route index element={<Profile />} />
+                                <Route path="edit" element={<EditProfile />} />
+                            </Route>
                         </Route>
                         <Route path="*" element={<h1>Not found</h1>} />
                     </Routes>
