@@ -3,8 +3,7 @@ import { useQuery, useMutation, useQueryClient } from 'react-query'
 import { IconContext } from 'react-icons'
 import { HiOutlineCalendarDays } from 'react-icons/hi2'
 import { RxLapTimer } from 'react-icons/rx'
-import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai'
-import { BsSave, BsSaveFill } from 'react-icons/bs'
+import { BsHeart, BsHeartFill, BsSave, BsSaveFill } from 'react-icons/bs'
 import { FaHashtag } from 'react-icons/fa'
 import axios from 'axios'
 
@@ -418,20 +417,20 @@ const UserWorkout = ({ workoutInfo }) => {
             </div>
             <div className={styles.workoutOptionsContainer}>
                 <div className={styles.likeContainer}>
-                    <IconContext.Provider value={{ size: '30px' }}>
+                    <IconContext.Provider value={{ size: '25px' }}>
                         {isWorkoutLiked ? (
-                            <AiFillHeart
+                            <BsHeartFill
                                 className={styles.likeIcon}
                                 onClick={handleLikeEvent}
                             />
                         ) : (
-                            <AiOutlineHeart
+                            <BsHeart
                                 className={styles.likeIcon}
                                 onClick={handleLikeEvent}
                             />
                         )}
                     </IconContext.Provider>
-                    {workoutLikes}
+                    <p>{workoutLikes}</p>
                 </div>
                 <div className={styles.saveContainer}>
                     <IconContext.Provider value={{ size: '25px' }}>
@@ -447,7 +446,7 @@ const UserWorkout = ({ workoutInfo }) => {
                             />
                         )}
                     </IconContext.Provider>
-                    {workoutSaves}
+                    <p>{workoutSaves}</p>
                 </div>
             </div>
         </div>
