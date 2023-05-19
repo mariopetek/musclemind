@@ -14,7 +14,7 @@ public class FollowingController {
     public ResponseEntity<Long> getNumberOfUsersAppUserIsFollowing(@PathVariable("appUserId") Long appUserId) {
         return ResponseEntity.ok(followingService.getNumberOfUsersAppUserIsFollowing(appUserId));
     }
-    @GetMapping("/followedbycount/{appUserId}") //koliko pratitelja ima korisnik appUserId
+    @GetMapping("/followerscount/{appUserId}") //koliko pratitelja ima korisnik appUserId
     public ResponseEntity<Long> getNumberOfAppUsersFollowers(@PathVariable("appUserId") Long appUserId) {
         return ResponseEntity.ok(followingService.getNumberOfAppUsersFollowers(appUserId));
     }
