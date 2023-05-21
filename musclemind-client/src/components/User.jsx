@@ -1,159 +1,107 @@
-import { useState } from 'react'
-import { useQuery, useQueries, useMutation, useQueryClient } from 'react-query'
+import { useQuery, useMutation, useQueryClient } from 'react-query'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
 
 import styles from '../styles/User.module.css'
 import SomethingWentWrong from './partials/SomethingWentWrong'
 import Loading from './partials/Loading'
-import UserWorkout from './partials/UserWorkout'
+import Workout from './partials/Workout'
 
 const User = () => {
     const { userId } = useParams()
-    const [userWorkouts, setUserWorkouts] = useState([])
-    const [isFollowing, setIsFollowing] = useState(false)
-    const [userFollowersCount, setUserFollowersCount] = useState(null)
-    const [userFollowingCount, setUserFollowingCount] = useState(null)
     const queryClient = useQueryClient()
 
     const {
         data: userInfo,
         isLoading: userInfoLoading,
         isError: userInfoError
-    } = useQuery(['users', userId], () => {
-        return axios
-            .get(`/api/v1/users/${userId}`, {
+    } = useQuery(['users', userId], async () => {
+        const { data } = await axios.get(`/api/v1/users/${userId}`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('jwt')}`
+            }
+        })
+        return data
+    })
+
+    const {
+        data: userFollowersCount,
+        isLoading: userFollowersCountLoading,
+        isError: userFollowersCountError
+    } = useQuery(['following', 'followerscount', userId], async () => {
+        const { data } = await axios.get(
+            `/api/v1/following/followerscount/${userId}`,
+            {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('jwt')}`
                 }
-            })
-            .then((response) => {
-                return response.data
-            })
-    })
-
-    const userFollowersCountQuery = useQuery(
-        ['following', 'followerscount', userId],
-        () => {
-            return axios
-                .get(`/api/v1/following/followerscount/${userId}`, {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem('jwt')}`
-                    }
-                })
-                .then((response) => {
-                    return response.data
-                })
-        },
-        {
-            onSuccess: (data) => setUserFollowersCount(data)
-        }
-    )
-    const userFollowingCountQuery = useQuery(
-        ['following', 'followingcount', userId],
-        () => {
-            return axios
-                .get(`/api/v1/following/followingcount/${userId}`, {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem('jwt')}`
-                    }
-                })
-                .then((response) => {
-                    return response.data
-                })
-        },
-        {
-            onSuccess: (data) => setUserFollowingCount(data)
-        }
-    )
-    const isAppUserFollowingUserQuery = useQuery(
-        ['following', 'isfollowing', localStorage.getItem('id'), userId],
-        () => {
-            return axios
-                .get(
-                    `/api/v1/following/isfollowing/${localStorage.getItem(
-                        'id'
-                    )}/${userId}`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${localStorage.getItem(
-                                'jwt'
-                            )}`
-                        }
-                    }
-                )
-                .then((response) => {
-                    return response.data
-                })
-        },
-        {
-            onSuccess: (data) => setIsFollowing(data)
-        }
-    )
-
-    const userWorkoutsQuery = useQuery(
-        ['workouts', 'user', userId],
-        () => {
-            return axios
-                .get(`/api/v1/workouts/user/${userId}`, {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem('jwt')}`
-                    }
-                })
-                .then((response) => {
-                    return response.data
-                })
-        },
-        {
-            onSuccess: (data) => {
-                setUserWorkouts(data)
             }
-        }
-    )
-
-    const workoutsExercises = useQueries(
-        userWorkouts.map((workout) => {
-            return {
-                queryKey: ['workoutexercises', 'workout', workout.workoutId],
-                queryFn: () => {
-                    return axios
-                        .get(
-                            `/api/v1/workoutexercises/workout/${workout.workoutId}`,
-                            {
-                                headers: {
-                                    Authorization: `Bearer ${localStorage.getItem(
-                                        'jwt'
-                                    )}`
-                                }
-                            }
-                        )
-                        .then((response) => {
-                            return { ...workout, exercises: response.data }
-                        })
+        )
+        return data
+    })
+    const {
+        data: userFollowingCount,
+        isLoading: userFollowingCountLoading,
+        isError: userFollowingCountError
+    } = useQuery(['following', 'followingcount', userId], async () => {
+        const { data } = await axios.get(
+            `/api/v1/following/followingcount/${userId}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('jwt')}`
                 }
             }
-        })
+        )
+        return data
+    })
+    const {
+        data: isUserFollowingUser,
+        isLoading: isUserFollowingUserLoading,
+        isError: isUserFollowingUserError
+    } = useQuery(
+        ['following', 'isfollowing', localStorage.getItem('id'), userId],
+        async () => {
+            const { data } = await axios.get(
+                `/api/v1/following/isfollowing/${localStorage.getItem(
+                    'id'
+                )}/${userId}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('jwt')}`
+                    }
+                }
+            )
+            return data
+        }
     )
 
+    const {
+        data: userWorkouts,
+        isLoading: userWorkoutsLoading,
+        isError: userWorkoutsError
+    } = useQuery(['workouts', 'user', userId], async () => {
+        const { data } = await axios.get(`/api/v1/workouts/user/${userId}`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('jwt')}`
+            }
+        })
+        return data
+    })
+
     const followUserMutation = useMutation(
-        () => {
-            return axios
-                .post(
-                    `/api/v1/following/follow/${localStorage.getItem(
-                        'id'
-                    )}/${userId}`,
-                    {},
-                    {
-                        headers: {
-                            Authorization: `Bearer ${localStorage.getItem(
-                                'jwt'
-                            )}`
-                        }
+        async () => {
+            const { data } = await axios.post(
+                `/api/v1/following/follow/${localStorage.getItem(
+                    'id'
+                )}/${userId}`,
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('jwt')}`
                     }
-                )
-                .then((response) => {
-                    return response.data
-                })
+                }
+            )
+            return data
         },
         {
             onSuccess: () => {
@@ -177,23 +125,18 @@ const User = () => {
         }
     )
     const unfollowUserMutation = useMutation(
-        () => {
-            return axios
-                .delete(
-                    `/api/v1/following/unfollow/${localStorage.getItem(
-                        'id'
-                    )}/${userId}`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${localStorage.getItem(
-                                'jwt'
-                            )}`
-                        }
+        async () => {
+            const { data } = await axios.delete(
+                `/api/v1/following/unfollow/${localStorage.getItem(
+                    'id'
+                )}/${userId}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('jwt')}`
                     }
-                )
-                .then((response) => {
-                    return response.data
-                })
+                }
+            )
+            return data
         },
         {
             onSuccess: () => {
@@ -218,7 +161,7 @@ const User = () => {
     )
 
     const handleFollowEvent = () => {
-        if (isFollowing) {
+        if (isUserFollowingUser) {
             unfollowUserMutation.mutate()
         } else {
             followUserMutation.mutate()
@@ -227,24 +170,18 @@ const User = () => {
 
     if (
         userInfoLoading ||
-        userWorkoutsQuery.isLoading ||
-        userFollowersCountQuery.isLoading ||
-        userFollowingCountQuery.isLoading ||
-        isAppUserFollowingUserQuery.isLoading ||
-        workoutsExercises.filter((workoutExercises) => {
-            return workoutExercises.isLoading
-        }).length > 0
+        userFollowersCountLoading ||
+        userFollowingCountLoading ||
+        isUserFollowingUserLoading ||
+        userWorkoutsLoading
     )
         return <Loading />
     if (
         userInfoError ||
-        userWorkoutsQuery.isError ||
-        userFollowersCountQuery.isError ||
-        userFollowingCountQuery.isError ||
-        isAppUserFollowingUserQuery.isError ||
-        workoutsExercises.filter((workoutExercises) => {
-            return workoutExercises.isError
-        }).length > 0
+        userFollowersCountError ||
+        userFollowingCountError ||
+        isUserFollowingUserError ||
+        userWorkoutsError
     )
         return <SomethingWentWrong />
 
@@ -258,10 +195,10 @@ const User = () => {
                     </div>
                     <input
                         type="button"
-                        value={isFollowing ? 'Otprati' : 'Prati'}
+                        value={isUserFollowingUser ? 'Otprati' : 'Prati'}
                         onClick={handleFollowEvent}
                         className={`${styles.followButtonTemplate} ${
-                            isFollowing
+                            isUserFollowingUser
                                 ? styles.unfollowButton
                                 : styles.followButton
                         }`}
@@ -283,14 +220,13 @@ const User = () => {
             <div className={styles.separator}></div>
             <div className={styles.userWorkoutsContainer}>
                 <h2>Treninzi</h2>
-                {workoutsExercises.length > 0 ? (
-                    workoutsExercises.map(({ data }) => (
-                        <UserWorkout key={data.workoutId} workoutInfo={data} />
+                {userWorkouts.length > 0 ? (
+                    userWorkouts.map((workout) => (
+                        <Workout key={workout.workoutId} workout={workout} />
                     ))
                 ) : (
                     <h1>Nema treninga</h1>
                 )}
-                {}
             </div>
         </div>
     )

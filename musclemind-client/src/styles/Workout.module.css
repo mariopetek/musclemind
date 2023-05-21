@@ -7,6 +7,13 @@
     width: 100%;
     position: relative;
 }
+.workoutInfoContainer > h4 {
+    position: absolute;
+    top: 0;
+    right: 20px;
+    color: rgba(89, 89, 89, 1);
+}
+
 .timeAddedContainer {
     display: flex;
     align-items: center;
@@ -18,12 +25,7 @@
     font-size: 0.85rem;
     font-weight: 500;
 }
-.workoutInfoContainer > h4 {
-    position: absolute;
-    top: 0;
-    right: 20px;
-    color: rgba(89, 89, 89, 1);
-}
+
 .calendarIcon {
     color: rgba(89, 89, 89, 1);
 }
@@ -43,10 +45,6 @@
     background-color: rgba(89, 89, 89, 1);
 }
 
-.exercisesContainer {
-    padding: 20px;
-}
-
 .workoutOptionsContainer {
     padding: 0 30px;
     display: flex;
@@ -54,6 +52,7 @@
     align-items: center;
     gap: 30px;
 }
+
 .likeContainer,
 .saveContainer {
     display: flex;
@@ -67,6 +66,7 @@
     margin-top: 5px;
     font-size: 0.8rem;
 }
+
 .likeIcon {
     color: rgb(253, 82, 82);
     transition: all 0.2s ease;
@@ -75,6 +75,7 @@
     cursor: pointer;
     color: rgb(158, 2, 2);
 }
+
 .saveIcon {
     color: rgba(89, 89, 89, 1);
     transition: all 0.2s ease;

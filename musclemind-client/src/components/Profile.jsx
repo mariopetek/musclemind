@@ -9,79 +9,128 @@ import Loading from './partials/Loading'
 import SomethingWentWrong from './partials/SomethingWentWrong'
 
 import styles from '../styles/Profile.module.css'
-import MyWorkout from './partials/MyWorkout'
+import Workout from './partials/Workout'
 
 const Profile = () => {
     const [isSavedWorkoutsSelected, setIsSavedWorkoutsSelected] =
         useState(false)
-    const appUserId = localStorage.getItem('id')
+
     const {
         data: userInfo,
         isLoading: userInfoLoading,
         isError: userInfoError
-    } = useQuery(['users', appUserId], async () => {
-        const { data } = await axios.get(`/api/v1/users/${appUserId}`, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('jwt')}`
+    } = useQuery(['users', localStorage.getItem('id')], async () => {
+        const { data } = await axios.get(
+            `/api/v1/users/${localStorage.getItem('id')}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('jwt')}`
+                }
             }
-        })
+        )
         return data
     })
     const {
         data: userFollowersCount,
         isLoading: userFollowersCountLoading,
         isError: userFollowersCountError
-    } = useQuery(['following', 'followerscount', appUserId], async () => {
-        const { data } = await axios.get(
-            `/api/v1/following/followerscount/${appUserId}`,
-            {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('jwt')}`
+    } = useQuery(
+        ['following', 'followerscount', localStorage.getItem('id')],
+        async () => {
+            const { data } = await axios.get(
+                `/api/v1/following/followerscount/${localStorage.getItem(
+                    'id'
+                )}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('jwt')}`
+                    }
                 }
-            }
-        )
-        return data
-    })
+            )
+            return data
+        }
+    )
     const {
         data: userFollowingCount,
         isLoading: userFollowingCountLoading,
         isError: userFollowingCountError
-    } = useQuery(['following', 'followingcount', appUserId], async () => {
-        const { data } = await axios.get(
-            `/api/v1/following/followingcount/${appUserId}`,
-            {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('jwt')}`
+    } = useQuery(
+        ['following', 'followingcount', localStorage.getItem('id')],
+        async () => {
+            const { data } = await axios.get(
+                `/api/v1/following/followingcount/${localStorage.getItem(
+                    'id'
+                )}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('jwt')}`
+                    }
                 }
-            }
-        )
-        return data
-    })
+            )
+            return data
+        }
+    )
     const {
         data: userWorkouts,
         isLoading: userWorkoutsLoading,
         isError: userWorkoutsError
-    } = useQuery(['workouts', 'user', appUserId], async () => {
-        const { data } = await axios.get(`/api/v1/workouts/user/${appUserId}`, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('jwt')}`
-            }
-        })
-        return data
-    })
+    } = useQuery(
+        ['workouts', 'user', localStorage.getItem('id')],
+        async () => {
+            const { data } = await axios.get(
+                `/api/v1/workouts/user/${localStorage.getItem('id')}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('jwt')}`
+                    }
+                }
+            )
+            return data
+        },
+        {
+            enabled: !isSavedWorkoutsSelected
+        }
+    )
+    const {
+        data: savedWorkouts,
+        isLoading: savedWorkoutsLoading,
+        isError: savedWorkoutsError
+    } = useQuery(
+        ['saving', 'saved', localStorage.getItem('id')],
+        async () => {
+            const { data } = await axios.get(
+                `/api/v1/saving/saved/${localStorage.getItem('id')}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('jwt')}`
+                    }
+                }
+            )
+            return data.map((el) => {
+                return el.savedId.workout
+            })
+        },
+        {
+            enabled: isSavedWorkoutsSelected
+        }
+    )
+
+    const workouts = isSavedWorkoutsSelected ? savedWorkouts : userWorkouts
 
     if (
         userInfoLoading ||
         userFollowersCountLoading ||
         userFollowingCountLoading ||
-        userWorkoutsLoading
+        userWorkoutsLoading ||
+        savedWorkoutsLoading
     )
         return <Loading />
     if (
         userInfoError ||
         userFollowersCountError ||
         userFollowingCountError ||
-        userWorkoutsError
+        userWorkoutsError ||
+        savedWorkoutsError
     )
         return <SomethingWentWrong />
     return (
@@ -150,16 +199,9 @@ const Profile = () => {
                     </div>
                 </div>
                 <div className={styles.workoutsContainer}>
-                    {userWorkouts.map(
-                        (workout) =>
-                            !isSavedWorkoutsSelected && (
-                                <MyWorkout
-                                    key={workout.workoutId}
-                                    userInfo={userInfo}
-                                    workout={workout}
-                                />
-                            )
-                    )}
+                    {workouts.map((workout) => (
+                        <Workout key={workout.workoutId} workout={workout} />
+                    ))}
                 </div>
             </div>
         </div>
