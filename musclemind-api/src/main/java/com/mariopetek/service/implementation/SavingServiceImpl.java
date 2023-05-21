@@ -9,6 +9,8 @@ import com.mariopetek.service.SavingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class SavingServiceImpl implements SavingService {
@@ -23,6 +25,9 @@ public class SavingServiceImpl implements SavingService {
         return savingRepository.countBySavedIdAppUserAndSavedIdWorkout(
                 appUserRepository.findByAppUserId(appUserId).orElseThrow(),
                 workoutRepository.findByWorkoutId(workoutId).orElseThrow()) > 0;
+    }
+    public List<Saved> getWorkoutsSavedByAppUser(Long appUserId) {
+        return savingRepository.findBySavedIdAppUser(appUserRepository.findByAppUserId(appUserId).orElseThrow());
     }
     public String appUserSavesWorkout(Long appUserId, Long workoutId) {
         Saved saved = new Saved();

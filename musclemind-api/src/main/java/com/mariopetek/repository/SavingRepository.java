@@ -6,7 +6,10 @@ import com.mariopetek.model.SavedId;
 import com.mariopetek.model.Workout;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface SavingRepository extends JpaRepository<Saved, SavedId> {
     Long countBySavedIdWorkout(Workout workout);
     Long countBySavedIdAppUserAndSavedIdWorkout(AppUser appUser, Workout workout);
+    List<Saved> findBySavedIdAppUser(AppUser appUser);
 }
