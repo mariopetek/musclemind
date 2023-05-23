@@ -10,10 +10,14 @@ import SomethingWentWrong from './partials/SomethingWentWrong'
 
 import styles from '../styles/Profile.module.css'
 import Workout from './partials/Workout'
+import UserFollowers from './partials/UserFollowers'
+import UserFollowing from './partials/UserFollowing'
 
 const Profile = () => {
     const [isSavedWorkoutsSelected, setIsSavedWorkoutsSelected] =
         useState(false)
+    const [isFollowersDialogShown, setIsFollowersDialogShown] = useState(false)
+    const [isFollowingDialogShown, setIsFollowingDialogShown] = useState(false)
 
     const {
         data: userInfo,
@@ -70,50 +74,39 @@ const Profile = () => {
             return data
         }
     )
+
     const {
         data: userWorkouts,
         isLoading: userWorkoutsLoading,
         isError: userWorkoutsError
-    } = useQuery(
-        ['workouts', 'user', localStorage.getItem('id')],
-        async () => {
-            const { data } = await axios.get(
-                `/api/v1/workouts/user/${localStorage.getItem('id')}`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem('jwt')}`
-                    }
+    } = useQuery(['workouts', 'user', localStorage.getItem('id')], async () => {
+        const { data } = await axios.get(
+            `/api/v1/workouts/user/${localStorage.getItem('id')}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('jwt')}`
                 }
-            )
-            return data
-        },
-        {
-            enabled: !isSavedWorkoutsSelected
-        }
-    )
+            }
+        )
+        return data
+    })
     const {
         data: savedWorkouts,
         isLoading: savedWorkoutsLoading,
         isError: savedWorkoutsError
-    } = useQuery(
-        ['saving', 'saved', localStorage.getItem('id')],
-        async () => {
-            const { data } = await axios.get(
-                `/api/v1/saving/saved/${localStorage.getItem('id')}`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem('jwt')}`
-                    }
+    } = useQuery(['saving', 'saved', localStorage.getItem('id')], async () => {
+        const { data } = await axios.get(
+            `/api/v1/saving/saved/${localStorage.getItem('id')}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('jwt')}`
                 }
-            )
-            return data.map((el) => {
-                return el.savedId.workout
-            })
-        },
-        {
-            enabled: isSavedWorkoutsSelected
-        }
-    )
+            }
+        )
+        return data.map((el) => {
+            return el.savedId.workout
+        })
+    })
 
     const workouts = isSavedWorkoutsSelected ? savedWorkouts : userWorkouts
 
@@ -135,16 +128,36 @@ const Profile = () => {
         return <SomethingWentWrong />
     return (
         <div className={styles.userContainer}>
+            <UserFollowers
+                isFollowersDialogShown={isFollowersDialogShown}
+                setIsFollowersDialogShown={setIsFollowersDialogShown}
+            />
+            <UserFollowing
+                isFollowingDialogShown={isFollowingDialogShown}
+                setIsFollowingDialogShown={setIsFollowingDialogShown}
+            />
             <div className={styles.userInfoContainer}>
                 <div className={styles.usernameContactContainer}>
                     <h2>@{userInfo.username}</h2>
                     <p>Kontakt: {userInfo.email}</p>
                 </div>
                 <div className={styles.followCountContainer}>
-                    <div className={styles.followersCount}>
+                    <div
+                        className={styles.followersCount}
+                        onClick={() => setIsFollowersDialogShown(true)}
+                        onKeyDown={() => setIsFollowersDialogShown(true)}
+                        role="button"
+                        tabIndex={0}
+                    >
                         Pratitetlja: <p>{userFollowersCount}</p>
                     </div>
-                    <div className={styles.followingCount}>
+                    <div
+                        className={styles.followingCount}
+                        onClick={() => setIsFollowingDialogShown(true)}
+                        onKeyDown={() => setIsFollowingDialogShown(true)}
+                        role="button"
+                        tabIndex={0}
+                    >
                         Pratim: <p>{userFollowingCount}</p>
                     </div>
                 </div>
