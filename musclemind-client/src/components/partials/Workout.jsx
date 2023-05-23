@@ -272,11 +272,13 @@ const Workout = ({ workout }) => {
                             <BsHeartFill
                                 className={styles.likeIcon}
                                 onClick={handleLikeEvent}
+                                title={`Odznači sa "sviđa mi se"`}
                             />
                         ) : (
                             <BsHeart
                                 className={styles.likeIcon}
                                 onClick={handleLikeEvent}
+                                title={`Označi sa "sviđa mi se"`}
                             />
                         )}
                     </IconContext.Provider>
@@ -288,11 +290,13 @@ const Workout = ({ workout }) => {
                             <BsSaveFill
                                 className={styles.saveIcon}
                                 onClick={handleSaveEvent}
+                                title="Odspremi"
                             />
                         ) : (
                             <BsSave
                                 className={styles.saveIcon}
                                 onClick={handleSaveEvent}
+                                title="Spremi"
                             />
                         )}
                     </IconContext.Provider>

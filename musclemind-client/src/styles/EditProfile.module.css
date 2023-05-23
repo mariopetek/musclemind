@@ -25,8 +25,7 @@
     gap: 20px;
 }
 
-.usernameEmailContainer,
-.nameBioContainer {
+.usernameEmailContainer {
     outline: 1px solid rgba(191, 191, 191, 1);
     border-radius: 8px;
     padding: 10px;

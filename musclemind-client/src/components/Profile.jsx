@@ -149,6 +149,7 @@ const Profile = () => {
                         onKeyDown={() => setIsFollowersDialogShown(true)}
                         role="button"
                         tabIndex={0}
+                        title="Pratitelji"
                     >
                         Pratitetlja: <p>{userFollowersCount}</p>
                     </div>
@@ -158,6 +159,7 @@ const Profile = () => {
                         onKeyDown={() => setIsFollowingDialogShown(true)}
                         role="button"
                         tabIndex={0}
+                        title="Pratim"
                     >
                         Pratim: <p>{userFollowingCount}</p>
                     </div>
@@ -166,7 +168,11 @@ const Profile = () => {
             <div className={styles.nameBioContainer}>
                 <h3>{userInfo.name}</h3>
                 <p>{userInfo.bio}</p>
-                <Link to="/profile/edit" className={styles.editProfileButton}>
+                <Link
+                    to="/profile/edit"
+                    className={styles.editProfileButton}
+                    title="Uredi račun"
+                >
                     Uredi račun
                 </Link>
             </div>
@@ -197,6 +203,7 @@ const Profile = () => {
                         }}
                         role="button"
                         tabIndex={0}
+                        title="Moji treninzi"
                     >
                         <IconContext.Provider value={{ size: '30px' }}>
                             {isSavedWorkoutsSelected ? (
@@ -230,6 +237,7 @@ const Profile = () => {
                         }}
                         role="button"
                         tabIndex={0}
+                        title="Spremljeni treninzi"
                     >
                         <IconContext.Provider value={{ size: '30px' }}>
                             {isSavedWorkoutsSelected ? (
