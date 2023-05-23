@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from 'react-query'
-import { useParams } from 'react-router-dom'
+import { Navigate, useParams } from 'react-router-dom'
 import axios from 'axios'
 
 import styles from '../styles/User.module.css'
@@ -10,6 +10,10 @@ import Workout from './partials/Workout'
 const User = () => {
     const { userId } = useParams()
     const queryClient = useQueryClient()
+
+    if (userId === localStorage.getItem('id')) {
+        return <Navigate to="/profile" />
+    }
 
     const {
         data: userInfo,

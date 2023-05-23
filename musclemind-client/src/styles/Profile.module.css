@@ -11,7 +11,7 @@
     justify-content: space-around;
     width: 75%;
     padding: 10px;
-    outline: 1px solid rgba(89, 89, 89, 1);
+    outline: 1px solid rgba(191, 191, 191, 1);
     border-radius: 8px;
 }
 
@@ -47,7 +47,7 @@
 
 .nameBioContainer {
     width: 75%;
-    padding: 0 20px;
+    padding: 20px;
 }
 .nameBioContainer > h3,
 .nameBioContainer > p {
@@ -62,11 +62,14 @@
 }
 
 .editProfileButton {
+    display: inline-block;
     text-decoration: none;
-    padding: 20px;
-    outline: 1px solid rgba(89, 89, 89, 1);
+    padding: 10px;
+    outline: 1px solid rgba(191, 191, 191, 1);
+    background-color: var(--navbar-color);
     border-radius: 8px;
     color: rgba(89, 89, 89, 1);
+    font-weight: 500;
     transition: all 0.2s ease;
 }
 .editProfileButton:hover {
@@ -99,6 +102,7 @@
 
 .userWorkoutsLabelContainer,
 .savedWorkoutsLabelContainer {
+    color: rgba(89, 89, 89, 1);
     display: flex;
     align-items: center;
     gap: 10px;
@@ -111,5 +115,11 @@
 }
 
 .workoutLabelSelected {
+    color: black;
     text-decoration: underline 2px;
+}
+
+.noWorkoutsYet {
+    color: rgba(89, 89, 89, 1);
+    font-size: 0.8rem;
 }

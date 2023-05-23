@@ -27,6 +27,7 @@ const UserFollowing = ({
     return !userFollowingLoading && !userFollowingError ? (
         <Dialog
             header="Pratim"
+            noUsersMessage="Trenutno ne pratite ni jednog korisnika. Korisnici koje zapratite pojaviti će se ovdje."
             isDialogShown={isFollowingDialogShown}
             setIsDialogShown={setIsFollowingDialogShown}
             data={userFollowing}

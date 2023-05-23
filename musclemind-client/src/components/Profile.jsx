@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useQuery } from 'react-query'
+import { useQuery, useQueryClient } from 'react-query'
 import { Link } from 'react-router-dom'
 import { IconContext } from 'react-icons'
 import { BsSave2, BsSave2Fill, BsGrid1X2, BsGrid1X2Fill } from 'react-icons/bs'
@@ -18,6 +18,7 @@ const Profile = () => {
         useState(false)
     const [isFollowersDialogShown, setIsFollowersDialogShown] = useState(false)
     const [isFollowingDialogShown, setIsFollowingDialogShown] = useState(false)
+    const queryClient = useQueryClient()
 
     const {
         data: userInfo,
@@ -165,10 +166,11 @@ const Profile = () => {
             <div className={styles.nameBioContainer}>
                 <h3>{userInfo.name}</h3>
                 <p>{userInfo.bio}</p>
+                <Link to="/profile/edit" className={styles.editProfileButton}>
+                    Uredi račun
+                </Link>
             </div>
-            <Link to="/profile/edit" className={styles.editProfileButton}>
-                Uredi račun
-            </Link>
+
             <div className={styles.separator}></div>
             <div className={styles.workoutsSection}>
                 <div className={styles.workoutsLabelsContainer}>
@@ -177,8 +179,22 @@ const Profile = () => {
                             !isSavedWorkoutsSelected &&
                             styles.workoutLabelSelected
                         }`}
-                        onClick={() => setIsSavedWorkoutsSelected(false)}
-                        onKeyDown={() => setIsSavedWorkoutsSelected(false)}
+                        onClick={() => {
+                            setIsSavedWorkoutsSelected(false)
+                            queryClient.invalidateQueries([
+                                'workouts',
+                                'user',
+                                localStorage.getItem('id')
+                            ])
+                        }}
+                        onKeyDown={() => {
+                            setIsSavedWorkoutsSelected(false)
+                            queryClient.invalidateQueries([
+                                'workouts',
+                                'user',
+                                localStorage.getItem('id')
+                            ])
+                        }}
                         role="button"
                         tabIndex={0}
                     >
@@ -196,8 +212,22 @@ const Profile = () => {
                             isSavedWorkoutsSelected &&
                             styles.workoutLabelSelected
                         }`}
-                        onClick={() => setIsSavedWorkoutsSelected(true)}
-                        onKeyDown={() => setIsSavedWorkoutsSelected(true)}
+                        onClick={() => {
+                            setIsSavedWorkoutsSelected(true)
+                            queryClient.invalidateQueries([
+                                'saving',
+                                'saved',
+                                localStorage.getItem('id')
+                            ])
+                        }}
+                        onKeyDown={() => {
+                            setIsSavedWorkoutsSelected(true)
+                            queryClient.invalidateQueries([
+                                'saving',
+                                'saved',
+                                localStorage.getItem('id')
+                            ])
+                        }}
                         role="button"
                         tabIndex={0}
                     >
@@ -211,11 +241,25 @@ const Profile = () => {
                         Spremljeni treninzi
                     </div>
                 </div>
-                <div className={styles.workoutsContainer}>
-                    {workouts.map((workout) => (
-                        <Workout key={workout.workoutId} workout={workout} />
-                    ))}
-                </div>
+
+                {workouts.length > 0 ? (
+                    <div className={styles.workoutsContainer}>
+                        {workouts.map((workout) => (
+                            <Workout
+                                key={workout.workoutId}
+                                workout={workout}
+                            />
+                        ))}
+                    </div>
+                ) : (
+                    <div className={styles.noWorkoutsYet}>
+                        <p>
+                            {isSavedWorkoutsSelected
+                                ? `Trenutno nemate spremljenih treninga. Treninzi koje spremite pojaviti će se ovdje.`
+                                : 'Trenuto nemate vlastitih treninga. Treninzi koje izradite pojaviti će se ovdje.'}
+                        </p>
+                    </div>
+                )}
             </div>
         </div>
     )

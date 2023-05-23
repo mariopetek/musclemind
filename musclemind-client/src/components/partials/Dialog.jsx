@@ -4,15 +4,21 @@ import { TfiClose } from 'react-icons/tfi'
 
 import styles from '../../styles/Dialog.module.css'
 
-const Dialog = ({ header, isDialogShown, setIsDialogShown, data }) => {
+const Dialog = ({
+    header,
+    noUsersMessage,
+    isDialogShown,
+    setIsDialogShown,
+    data
+}) => {
     const dialogRef = useRef()
 
     useEffect(() => {
         if (isDialogShown) {
-            document.querySelector('body').style.overflow = 'hidden'
+            document.body.style.position = 'fixed'
             dialogRef.current.showModal()
         } else {
-            document.querySelector('body').style.overflow = 'auto'
+            document.body.style.position = ''
             dialogRef.current.close()
         }
         const handler = (event) => {
@@ -29,6 +35,7 @@ const Dialog = ({ header, isDialogShown, setIsDialogShown, data }) => {
         document.addEventListener('mousedown', handler)
         return () => {
             document.removeEventListener('mousedown', handler)
+            dialogRef.current?.close()
         }
     }, [isDialogShown])
 
@@ -44,17 +51,23 @@ const Dialog = ({ header, isDialogShown, setIsDialogShown, data }) => {
                 </button>
                 <h3>{header}</h3>
             </div>
-            <div className={styles.usersContainer}>
-                {data.map((user) => (
-                    <NavLink
-                        className={styles.userLink}
-                        key={user.appUserId}
-                        to={`/explore/users/${user.appUserId}`}
-                    >
-                        {user.username}
-                    </NavLink>
-                ))}
-            </div>
+            {data.length > 0 ? (
+                <div className={styles.usersContainer}>
+                    {data.map((user) => (
+                        <NavLink
+                            className={styles.userLink}
+                            key={user.appUserId}
+                            to={`/explore/users/${user.appUserId}`}
+                        >
+                            {user.username}
+                        </NavLink>
+                    ))}
+                </div>
+            ) : (
+                <div className={styles.noUsersContainer}>
+                    <p>{noUsersMessage}</p>
+                </div>
+            )}
         </dialog>
     )
 }

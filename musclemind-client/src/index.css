@@ -10,12 +10,11 @@ body {
     padding: 0;
     margin: 0;
 }
+html {
+    overflow-y: scroll;
+}
 body {
     background-color: rgba(255, 255, 255, 1);
     font-family: 'Montserrat', sans-serif;
-    height: 100vh;
-}
-
-#root {
-    height: 100vh;
+    padding-top: 60px;
 }
