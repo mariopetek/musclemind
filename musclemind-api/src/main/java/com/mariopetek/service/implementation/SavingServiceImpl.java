@@ -27,7 +27,7 @@ public class SavingServiceImpl implements SavingService {
                 workoutRepository.findByWorkoutId(workoutId).orElseThrow()) > 0;
     }
     public List<Saved> getWorkoutsSavedByAppUser(Long appUserId) {
-        return savingRepository.findBySavedIdAppUser(appUserRepository.findByAppUserId(appUserId).orElseThrow());
+        return savingRepository.findBySavedIdAppUserOrderBySavedIdDesc(appUserRepository.findByAppUserId(appUserId).orElseThrow());
     }
     public String appUserSavesWorkout(Long appUserId, Long workoutId) {
         Saved saved = new Saved();

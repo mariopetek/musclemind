@@ -9,5 +9,5 @@ import java.util.Optional;
 
 public interface WorkoutRepository extends JpaRepository<Workout, Long> {
     Optional<Workout> findByWorkoutId(Long workoutId);
-    List<Workout> findByAppUser(AppUser appUser);
+    List<Workout> findByAppUserOrderByTimeAddedDesc(AppUser appUser);
 }

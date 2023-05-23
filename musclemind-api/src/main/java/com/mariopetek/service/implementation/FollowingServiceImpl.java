@@ -8,6 +8,8 @@ import com.mariopetek.service.FollowingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class FollowingServiceImpl implements FollowingService {
@@ -24,6 +26,12 @@ public class FollowingServiceImpl implements FollowingService {
         return followingRepository.countByFollowingId_AppUser1AndFollowingId_AppUser2(
                 appUserRepository.findByAppUserId(appUserId1).orElseThrow(),
                 appUserRepository.findByAppUserId(appUserId2).orElseThrow()) > 0;
+    }
+    public List<Following> getUsersAppUserIsFollowing(Long appUserId) {
+        return followingRepository.findByFollowingId_AppUser1(appUserRepository.findByAppUserId(appUserId).orElseThrow());
+    }
+    public List<Following> getAppUsersFollowers(Long appUserId) {
+        return followingRepository.findByFollowingId_AppUser2(appUserRepository.findByAppUserId(appUserId).orElseThrow());
     }
     public String appUser1FollowsAppUser2(Long appUserId1, Long appUserId2) {
         Following following = new Following();

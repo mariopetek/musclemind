@@ -35,6 +35,6 @@ public class WorkoutServiceImpl implements WorkoutService {
     }
 
     public List<Workout> getAllWorkoutsFromUser(Long appUserId) {
-        return workoutRepository.findByAppUser(appUserRepository.findByAppUserId(appUserId).orElseThrow());
+        return workoutRepository.findByAppUserOrderByTimeAddedDesc(appUserRepository.findByAppUserId(appUserId).orElseThrow());
     }
 }
