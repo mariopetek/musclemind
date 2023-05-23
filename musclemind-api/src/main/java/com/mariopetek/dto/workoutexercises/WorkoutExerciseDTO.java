@@ -9,10 +9,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class WorkoutExerciseDto {
+public class WorkoutExerciseDTO {
     private Long id;
     private String name;
     private Integer sets;
     private Integer reps;
-    private WorkoutExerciseRestDto rest;
+    private WorkoutExerciseRestDTO rest;
 }

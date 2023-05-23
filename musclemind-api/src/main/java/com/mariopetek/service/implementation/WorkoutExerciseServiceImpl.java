@@ -1,6 +1,6 @@
 package com.mariopetek.service.implementation;
 
-import com.mariopetek.dto.workoutexercises.NewWorkoutExercisesDto;
+import com.mariopetek.dto.workoutexercises.NewWorkoutExercisesDTO;
 import com.mariopetek.model.WorkoutExercise;
 import com.mariopetek.model.WorkoutExerciseId;
 import com.mariopetek.repository.ExerciseRepository;
@@ -19,7 +19,7 @@ public class WorkoutExerciseServiceImpl implements WorkoutExerciseService {
     private final WorkoutRepository workoutRepository;
     private final ExerciseRepository exerciseRepository;
 
-    public String saveNewWorkoutExercises(NewWorkoutExercisesDto newWorkoutExercises) {
+    public String saveNewWorkoutExercises(NewWorkoutExercisesDTO newWorkoutExercises) {
         newWorkoutExercises.getWorkoutExercises().forEach((exercise) -> {
             WorkoutExercise workoutExercise = new WorkoutExercise();
             workoutExercise.setWorkoutExerciseId(new WorkoutExerciseId(

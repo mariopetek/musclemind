@@ -1,6 +1,6 @@
 package com.mariopetek.service.implementation;
 
-import com.mariopetek.dto.NewWorkoutDto;
+import com.mariopetek.dto.NewWorkoutDTO;
 import com.mariopetek.model.Workout;
 import com.mariopetek.repository.AppUserRepository;
 import com.mariopetek.repository.LevelRepository;
@@ -22,7 +22,7 @@ public class WorkoutServiceImpl implements WorkoutService {
     private final VisibilityRepository visibilityRepository;
     private final LevelRepository levelRepository;
 
-    public Long saveNewWorkout(NewWorkoutDto newWorkout) {
+    public Long saveNewWorkout(NewWorkoutDTO newWorkout) {
         Workout workout = new Workout();
         workout.setWorkoutName(newWorkout.getWorkoutName());
         workout.setWorkoutDescription(newWorkout.getWorkoutDescription());

@@ -1,6 +1,6 @@
 package com.mariopetek.controller;
 
-import com.mariopetek.dto.workoutexercises.NewWorkoutExercisesDto;
+import com.mariopetek.dto.workoutexercises.NewWorkoutExercisesDTO;
 import com.mariopetek.model.WorkoutExercise;
 import com.mariopetek.service.WorkoutExerciseService;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ public class WorkoutExerciseController {
     private final WorkoutExerciseService workoutExerciseService;
 
     @PostMapping("/new")
-    public ResponseEntity<String> saveNewWorkoutExercises(@RequestBody NewWorkoutExercisesDto newWorkoutExercises) {
+    public ResponseEntity<String> saveNewWorkoutExercises(@RequestBody NewWorkoutExercisesDTO newWorkoutExercises) {
         return ResponseEntity.ok(workoutExerciseService.saveNewWorkoutExercises(newWorkoutExercises));
     }
     @GetMapping("/workout/{workoutId}")

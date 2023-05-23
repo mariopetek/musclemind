@@ -10,7 +10,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class NewWorkoutExercisesDto {
+public class NewWorkoutExercisesDTO {
     private Long workoutId;
-    private List<WorkoutExerciseDto> workoutExercises;
+    private List<WorkoutExerciseDTO> workoutExercises;
 }

@@ -11,5 +11,5 @@ import java.util.List;
 public interface SavingRepository extends JpaRepository<Saved, SavedId> {
     Long countBySavedIdWorkout(Workout workout);
     Long countBySavedIdAppUserAndSavedIdWorkout(AppUser appUser, Workout workout);
-    List<Saved> findBySavedIdAppUserOrderBySavedIdDesc(AppUser appUser);
+    List<Saved> findBySavedIdAppUserOrderByTimeSavedDesc(AppUser appUser);
 }

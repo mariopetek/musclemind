@@ -9,6 +9,8 @@ import com.mariopetek.service.SavingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -27,7 +29,7 @@ public class SavingServiceImpl implements SavingService {
                 workoutRepository.findByWorkoutId(workoutId).orElseThrow()) > 0;
     }
     public List<Saved> getWorkoutsSavedByAppUser(Long appUserId) {
-        return savingRepository.findBySavedIdAppUserOrderBySavedIdDesc(appUserRepository.findByAppUserId(appUserId).orElseThrow());
+        return savingRepository.findBySavedIdAppUserOrderByTimeSavedDesc(appUserRepository.findByAppUserId(appUserId).orElseThrow());
     }
     public String appUserSavesWorkout(Long appUserId, Long workoutId) {
         Saved saved = new Saved();
@@ -35,6 +37,7 @@ public class SavingServiceImpl implements SavingService {
                 appUserRepository.findByAppUserId(appUserId).orElseThrow(),
                 workoutRepository.findByWorkoutId(workoutId).orElseThrow()
         ));
+        saved.setTimeSaved(Timestamp.valueOf(LocalDateTime.now()));
         savingRepository.save(saved);
         return "Trening spremljen";
     }

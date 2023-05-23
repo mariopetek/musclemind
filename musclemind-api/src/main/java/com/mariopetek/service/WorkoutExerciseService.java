@@ -1,11 +1,11 @@
 package com.mariopetek.service;
 
-import com.mariopetek.dto.workoutexercises.NewWorkoutExercisesDto;
+import com.mariopetek.dto.workoutexercises.NewWorkoutExercisesDTO;
 import com.mariopetek.model.WorkoutExercise;
 
 import java.util.List;
 
 public interface WorkoutExerciseService {
-    String saveNewWorkoutExercises(NewWorkoutExercisesDto newWorkoutExercises);
+    String saveNewWorkoutExercises(NewWorkoutExercisesDTO newWorkoutExercises);
     List<WorkoutExercise> getAllWorkoutExercisesFromWorkout(Long workoutId);
 }

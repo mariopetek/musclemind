@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class WorkoutExerciseRestDto {
+public class WorkoutExerciseRestDTO {
     private Integer minutes;
     private Integer seconds;
 }
