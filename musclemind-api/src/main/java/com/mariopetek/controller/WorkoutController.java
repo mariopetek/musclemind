@@ -23,4 +23,8 @@ public class WorkoutController {
     public ResponseEntity<List<Workout>> getAllWorkoutsFromUser(@PathVariable("appUserId") Long appUserId){
         return ResponseEntity.ok(workoutService.getAllWorkoutsFromUser(appUserId));
     }
+    @DeleteMapping("/delete/{workoutId}")
+    public ResponseEntity<String> deleteWorkout(@PathVariable("workoutId") Long workoutId) {
+        return ResponseEntity.ok(workoutService.deleteWorkout(workoutId));
+    }
 }

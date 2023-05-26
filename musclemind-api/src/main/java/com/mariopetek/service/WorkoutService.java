@@ -8,4 +8,5 @@ import java.util.List;
 public interface WorkoutService {
     Long saveNewWorkout(NewWorkoutDTO newWorkout);
     List<Workout> getAllWorkoutsFromUser(Long appUserId);
+    String deleteWorkout(Long workoutId);
 }
