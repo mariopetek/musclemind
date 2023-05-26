@@ -1,5 +1,6 @@
 package com.mariopetek.controller;
 
+import com.mariopetek.dto.AppUserUpdateDTO;
 import com.mariopetek.model.AppUser;
 import com.mariopetek.service.AppUserService;
 import lombok.RequiredArgsConstructor;
@@ -26,5 +27,9 @@ public class AppUserController {
     @GetMapping("/{appUserId}")
     public ResponseEntity<AppUser> getAppUserByAppUserId(@PathVariable("appUserId") Long appUserId) {
         return ResponseEntity.ok(appUserService.getAppUserByAppUserId(appUserId).orElseThrow());
+    }
+    @PutMapping ("/update/{appUserId}")
+    public ResponseEntity<String> updateAppUserInfo(@PathVariable("appUserId") Long appUserId, @RequestBody AppUserUpdateDTO appUserUpdateInfo) {
+        return ResponseEntity.ok(appUserService.updateAppUserInfo(appUserId, appUserUpdateInfo));
     }
 }

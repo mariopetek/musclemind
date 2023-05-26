@@ -1,5 +1,6 @@
 package com.mariopetek.service.implementation;
 
+import com.mariopetek.dto.AppUserUpdateDTO;
 import com.mariopetek.model.AppUser;
 import com.mariopetek.repository.AppUserRepository;
 import com.mariopetek.repository.RoleRepository;
@@ -30,5 +31,20 @@ public class AppUserServiceImpl implements AppUserService {
 
     public List<AppUser> getAppUsersByUsernameContainingIgnoreCase(String username) {
         return appUserRepository.findTop10ByUsernameContainingIgnoreCase(username);
+    }
+    public String updateAppUserInfo(Long appUserId, AppUserUpdateDTO appUserUpdateInfo) {
+        AppUser appUser = appUserRepository.findByAppUserId(appUserId).orElseThrow();
+        if(!appUserUpdateInfo.getName().equals(appUser.getName())) {
+            appUser.setName(appUserUpdateInfo.getName());
+        }
+        if(!appUserUpdateInfo.getBio().equals(appUser.getBio())) {
+            if(appUserUpdateInfo.getBio().equals("")) {
+                appUser.setBio(null);
+            }else {
+                appUser.setBio(appUserUpdateInfo.getBio());
+            }
+        }
+        appUserRepository.save(appUser);
+        return "Podaci uspješno promijenjeni";
     }
 }
