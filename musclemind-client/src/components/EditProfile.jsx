@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useQuery } from 'react-query'
+import { useQuery, useMutation } from 'react-query'
 import { NavLink } from 'react-router-dom'
 import { HiLockClosed, HiPencil } from 'react-icons/hi2'
 import axios from 'axios'
@@ -8,6 +8,8 @@ import styles from '../styles/EditProfile.module.css'
 const EditProfile = () => {
     const [name, setName] = useState('')
     const [bio, setBio] = useState('')
+    const [successMessage, setSuccessMessage] = useState('')
+    const [errorMessage, setErrorMessage] = useState('')
     const {
         data: userInfo,
         isLoading: userInfoLoading,
@@ -37,8 +39,35 @@ const EditProfile = () => {
         }
     )
 
+    const updateUserMutation = useMutation(
+        async (appUserUpdate) => {
+            const { data } = await axios.put(
+                `/api/v1/users/update/${userInfo.appUserId}`,
+                appUserUpdate,
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+                        'Content-Type': 'application/json'
+                    }
+                }
+            )
+            return data
+        },
+        {
+            onSuccess: () => {
+                setErrorMessage('')
+                setSuccessMessage('Uspješna promjena')
+            },
+            onError: () => {
+                setErrorMessage('Došlo je do pogreške')
+                setSuccessMessage('')
+            }
+        }
+    )
+
     const handleSaveChanges = (event) => {
         event.preventDefault()
+        updateUserMutation.mutate({ name, bio })
     }
 
     if (userInfoLoading) return <p>Učitavanje</p>
@@ -111,13 +140,17 @@ const EditProfile = () => {
                         to="/profile"
                         title="Odustani"
                     >
-                        Odustani
+                        Povratak
                     </NavLink>
                     <button type="submit" title="Spremi">
                         Spremi
                     </button>
                 </div>
             </form>
+            <p>
+                {successMessage}
+                {errorMessage}
+            </p>
         </div>
     )
 }
