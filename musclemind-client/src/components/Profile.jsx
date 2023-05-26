@@ -263,8 +263,8 @@ const Profile = () => {
                     <div className={styles.noWorkoutsYet}>
                         <p>
                             {isSavedWorkoutsSelected
-                                ? `Trenutno nemate spremljenih treninga. Treninzi koje spremite pojaviti će se ovdje.`
-                                : 'Trenuto nemate vlastitih treninga. Treninzi koje izradite pojaviti će se ovdje.'}
+                                ? `Trenutno nemaš spremljenih treninga. Treninzi koje spremiš pojaviti će se ovdje.`
+                                : 'Trenuto nemaš vlastitih treninga. Treninzi koje izradiš pojaviti će se ovdje.'}
                         </p>
                     </div>
                 )}

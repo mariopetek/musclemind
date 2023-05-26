@@ -8,7 +8,7 @@ import SomethingWentWrong from './SomethingWentWrong'
 import styles from '../../styles/Workout.module.css'
 import ExercisesTable from './ExercisesTable'
 
-const Workout = ({ workout }) => {
+const Workout = ({ workout, children }) => {
     const queryClient = useQueryClient()
 
     const {
@@ -266,41 +266,44 @@ const Workout = ({ workout }) => {
             <div className={styles.separator}></div>
             <ExercisesTable workoutId={workout.workoutId} />
             <div className={styles.workoutOptionsContainer}>
-                <div className={styles.likeContainer}>
-                    <IconContext.Provider value={{ size: '25px' }}>
-                        {isWorkoutLiked ? (
-                            <BsHeartFill
-                                className={styles.likeIcon}
-                                onClick={handleLikeEvent}
-                                title={`Odznači sa "sviđa mi se"`}
-                            />
-                        ) : (
-                            <BsHeart
-                                className={styles.likeIcon}
-                                onClick={handleLikeEvent}
-                                title={`Označi sa "sviđa mi se"`}
-                            />
-                        )}
-                    </IconContext.Provider>
-                    <p>{workoutLikesCount}</p>
-                </div>
-                <div className={styles.saveContainer}>
-                    <IconContext.Provider value={{ size: '25px' }}>
-                        {isWorkoutSaved ? (
-                            <BsSaveFill
-                                className={styles.saveIcon}
-                                onClick={handleSaveEvent}
-                                title="Odspremi"
-                            />
-                        ) : (
-                            <BsSave
-                                className={styles.saveIcon}
-                                onClick={handleSaveEvent}
-                                title="Spremi"
-                            />
-                        )}
-                    </IconContext.Provider>
-                    <p>{workoutSavesCount}</p>
+                <div className={styles.deleteButtonContainer}>{children}</div>
+                <div className={styles.saveLikeContainer}>
+                    <div className={styles.likeContainer}>
+                        <IconContext.Provider value={{ size: '25px' }}>
+                            {isWorkoutLiked ? (
+                                <BsHeartFill
+                                    className={styles.likeIcon}
+                                    onClick={handleLikeEvent}
+                                    title={`Odznači sa "sviđa mi se"`}
+                                />
+                            ) : (
+                                <BsHeart
+                                    className={styles.likeIcon}
+                                    onClick={handleLikeEvent}
+                                    title={`Označi sa "sviđa mi se"`}
+                                />
+                            )}
+                        </IconContext.Provider>
+                        <p>{workoutLikesCount}</p>
+                    </div>
+                    <div className={styles.saveContainer}>
+                        <IconContext.Provider value={{ size: '25px' }}>
+                            {isWorkoutSaved ? (
+                                <BsSaveFill
+                                    className={styles.saveIcon}
+                                    onClick={handleSaveEvent}
+                                    title="Odspremi"
+                                />
+                            ) : (
+                                <BsSave
+                                    className={styles.saveIcon}
+                                    onClick={handleSaveEvent}
+                                    title="Spremi"
+                                />
+                            )}
+                        </IconContext.Provider>
+                        <p>{workoutSavesCount}</p>
+                    </div>
                 </div>
             </div>
         </div>

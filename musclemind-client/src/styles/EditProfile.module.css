@@ -2,7 +2,37 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
     margin: 20px;
+}
+.editProfileContainer > h2 {
+    margin: 0;
+    color: rgba(89, 89, 89, 1);
+}
+
+.selectionContainer {
+    display: flex;
+    width: 80%;
+    justify-content: space-around;
+    padding: 20px;
+}
+.userInfoOption,
+.userWorkoutsOption {
+    color: rgba(89, 89, 89, 1);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+.optionSelected {
+    color: black;
+    text-decoration: underline 2px;
+}
+.userInfoOption:hover,
+.userWorkoutsOption:hover {
+    cursor: pointer;
+    opacity: 0.8;
 }
 .editProfileContainer > form {
     display: flex;
@@ -12,11 +42,7 @@
     outline: 1px solid rgba(191, 191, 191, 1);
     border-radius: 8px;
     width: 900px;
-}
-.editProfileContainer > form > h2 {
-    margin: 0;
-    color: rgba(89, 89, 89, 1);
-    text-align: center;
+    margin: 20px;
 }
 
 .userInfoContainer {
@@ -109,4 +135,8 @@
 .returnButton:hover {
     opacity: 0.8;
     cursor: pointer;
+}
+
+.userWorkoutsContainer {
+    width: 75%;
 }

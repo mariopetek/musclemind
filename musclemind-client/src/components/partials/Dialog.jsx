@@ -15,10 +15,12 @@ const Dialog = ({
 
     useEffect(() => {
         if (isDialogShown) {
-            document.body.style.position = 'fixed'
+            document.querySelector('html').style.position = 'fixed'
+            document.querySelector('html').style.width = '100%'
             dialogRef.current.showModal()
         } else {
-            document.body.style.position = ''
+            document.querySelector('html').style.position = ''
+            document.querySelector('html').style.width = ''
             dialogRef.current.close()
         }
         const handler = (event) => {

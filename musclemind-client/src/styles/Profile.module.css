@@ -112,6 +112,7 @@
 .userWorkoutsLabelContainer:hover,
 .savedWorkoutsLabelContainer:hover {
     cursor: pointer;
+    opacity: 0.8;
 }
 
 .workoutLabelSelected {

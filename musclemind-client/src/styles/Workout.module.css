@@ -46,11 +46,18 @@
 }
 
 .workoutOptionsContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.saveLikeContainer {
     padding: 0 30px;
     display: flex;
-    justify-content: flex-end;
     align-items: center;
     gap: 30px;
+}
+.deleteButtonContainer {
+    padding: 0 30px;
 }
 
 .likeContainer,

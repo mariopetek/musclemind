@@ -27,7 +27,7 @@ const UserFollowers = ({
     return !userFollowersLoading && !userFollowersError ? (
         <Dialog
             header="Pratitelji"
-            noUsersMessage="Trenutno nemate korisnika koji Vas prate. Korisnici koji Vas zaprate pojaviti će se ovdje."
+            noUsersMessage="Trenutno te ne prati ni jedan korisnik. Korisnici koji te zaprate pojaviti će se ovdje."
             isDialogShown={isFollowersDialogShown}
             setIsDialogShown={setIsFollowersDialogShown}
             data={userFollowers}

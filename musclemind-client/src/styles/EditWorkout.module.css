@@ -1,0 +1,15 @@
+.deleteWorkoutButton {
+    border: none;
+    color: white;
+    background-color: rgba(217, 43, 43, 1);
+    outline: 1px solid rgba(176, 18, 18, 1);
+    font-family: inherit;
+    padding: 7px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+.deleteWorkoutButton:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
