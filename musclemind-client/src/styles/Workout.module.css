@@ -40,9 +40,13 @@
     color: rgba(89, 89, 89, 1);
 }
 
-.workoutNameBio > h3 {
-    margin: 5px;
+.workoutName {
+    display: flex;
+    align-items: center;
     color: rgba(89, 89, 89, 1);
+}
+.workoutName > h3 {
+    margin: 5px;
 }
 .workoutNameBio > p {
     margin: 5px;

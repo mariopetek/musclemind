@@ -226,13 +226,23 @@ const User = () => {
             </div>
             <div className={styles.separator}></div>
             <div className={styles.userWorkoutsContainer}>
-                <h2>Treninzi</h2>
                 {userWorkouts.length > 0 ? (
-                    userWorkouts.map((workout) => (
-                        <Workout key={workout.workoutId} workout={workout} />
-                    ))
+                    <>
+                        <p className={styles.userWorkoutsContainerLabel}>
+                            Treninzi:
+                        </p>
+                        {userWorkouts.map((workout) => (
+                            <Workout
+                                key={workout.workoutId}
+                                workout={workout}
+                            />
+                        ))}
+                    </>
                 ) : (
-                    <h1>Nema treninga</h1>
+                    <p className={styles.noWorkoutsText}>
+                        Korisnik trenutno nema treninga. Treninge koje korisnik
+                        objavi pojaviti će se ovdje.
+                    </p>
                 )}
             </div>
         </div>

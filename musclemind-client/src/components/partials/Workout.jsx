@@ -2,12 +2,25 @@ import { useQuery, useMutation, useQueryClient } from 'react-query'
 import { IconContext } from 'react-icons'
 import { HiOutlineCalendarDays } from 'react-icons/hi2'
 import { BsHeart, BsHeartFill, BsSave, BsSaveFill } from 'react-icons/bs'
+import { FiGlobe, FiLock } from 'react-icons/fi'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import Loading from './Loading'
 import SomethingWentWrong from './SomethingWentWrong'
 import styles from '../../styles/Workout.module.css'
 import ExercisesTable from './ExercisesTable'
+
+const levelColors = {
+    1: 'royalblue',
+    2: 'green',
+    3: 'orange',
+    4: 'red'
+}
+
+const visibilityIcons = {
+    1: <FiLock />,
+    2: <FiGlobe />
+}
 
 const Workout = ({ workout, children }) => {
     const queryClient = useQueryClient()
@@ -265,18 +278,21 @@ const Workout = ({ workout, children }) => {
                     {workout.appUser.username}
                 </Link>
             </div>
-            <h4>{workout.level.levelName}</h4>
+            <h4 style={{ color: levelColors[workout.level.levelId] }}>
+                {workout.level.levelName}
+            </h4>
             <div className={styles.workoutNameBio}>
-                <h3>{workout.workoutName}</h3>
+                <div className={styles.workoutName}>
+                    <h3>{workout.workoutName}</h3>
+                    {visibilityIcons[workout.visibility.visibilityId]}
+                </div>
                 <p>{workout.workoutDescription}</p>
             </div>
             <div className={styles.separator}></div>
             <ExercisesTable workoutId={workout.workoutId} />
-            {workout.visibility.visibilityId === 2 && (
-                <div className={styles.workoutOptionsContainer}>
-                    <div className={styles.deleteButtonContainer}>
-                        {children}
-                    </div>
+            <div className={styles.workoutOptionsContainer}>
+                <div className={styles.deleteButtonContainer}>{children}</div>
+                {workout.visibility.visibilityId === 2 && (
                     <div className={styles.saveLikeContainer}>
                         <div className={styles.likeContainer}>
                             <IconContext.Provider value={{ size: '25px' }}>
@@ -315,8 +331,8 @@ const Workout = ({ workout, children }) => {
                             <p>{workoutSavesCount}</p>
                         </div>
                     </div>
-                </div>
-            )}
+                )}
+            </div>
         </div>
     )
 }

@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom'
 import { useQuery, useMutation } from 'react-query'
 import { IconContext } from 'react-icons'
 import { BsEmojiFrown } from 'react-icons/bs'
+import { MdAddBox } from 'react-icons/md'
 import axios from 'axios'
 
 import styles from '../styles/NewWorkout.module.css'
@@ -250,8 +251,13 @@ const NewWorkout = () => {
 
     return (
         <div className={styles.newWorkoutContainer}>
-            <form onSubmit={saveWorkout}>
+            <div className={styles.headerText}>
+                <IconContext.Provider value={{ size: '30px' }}>
+                    <MdAddBox />
+                </IconContext.Provider>
                 <h2>Novi trening</h2>
+            </div>
+            <form onSubmit={saveWorkout}>
                 <div className={styles.visibilityContainer}>
                     {visibilitiesQuery.data.map((visibility) => (
                         <label
