@@ -20,8 +20,12 @@ public class WorkoutController {
         return ResponseEntity.ok(workoutService.saveNewWorkout(newWorkout));
     }
     @GetMapping("/user/{appUserId}")
-    public ResponseEntity<List<Workout>> getAllWorkoutsFromUser(@PathVariable("appUserId") Long appUserId){
+    public ResponseEntity<List<Workout>> getAllWorkoutsFromUser(@PathVariable("appUserId") Long appUserId) {
         return ResponseEntity.ok(workoutService.getAllWorkoutsFromUser(appUserId));
+    }
+    @GetMapping("/public/user/{appUserId}")
+    public ResponseEntity<List<Workout>> getAllPublicWorkoutsFromUser(@PathVariable("appUserId") Long appUserId) {
+        return ResponseEntity.ok(workoutService.getAllPublicWorkoutsFromUser(appUserId));
     }
     @DeleteMapping("/delete/{workoutId}")
     public ResponseEntity<String> deleteWorkout(@PathVariable("workoutId") Long workoutId) {

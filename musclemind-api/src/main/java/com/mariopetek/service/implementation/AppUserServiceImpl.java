@@ -30,7 +30,7 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     public List<AppUser> getAppUsersByUsernameContainingIgnoreCase(String username) {
-        return appUserRepository.findTop10ByUsernameContainingIgnoreCase(username);
+        return appUserRepository.findTop10ByUsernameContainingIgnoreCase(username.trim());
     }
     public String updateAppUserInfo(Long appUserId, AppUserUpdateDTO appUserUpdateInfo) {
         AppUser appUser = appUserRepository.findByAppUserId(appUserId).orElseThrow();

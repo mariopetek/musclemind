@@ -41,6 +41,9 @@ public class WorkoutServiceImpl implements WorkoutService {
     public List<Workout> getAllWorkoutsFromUser(Long appUserId) {
         return workoutRepository.findByAppUserOrderByTimeAddedDesc(appUserRepository.findByAppUserId(appUserId).orElseThrow());
     }
+    public List<Workout> getAllPublicWorkoutsFromUser(Long appUserId) {
+        return workoutRepository.findPublicWorkoutsByAppUser(appUserRepository.findByAppUserId(appUserId).orElseThrow());
+    }
 
     public String deleteWorkout(Long workoutId) {
         savingRepository.deleteAll(savingRepository.findBySavedIdWorkout(workoutRepository.findByWorkoutId(workoutId).orElseThrow()));
@@ -54,6 +57,6 @@ public class WorkoutServiceImpl implements WorkoutService {
         List<Following> followingObjectList = followingRepository.findByFollowingId_AppUser1(appUserRepository.findByAppUserId(appUserId).orElseThrow());
         List<AppUser> followedUsers = followingObjectList.stream().map((following ->
              following.getFollowingId().getAppUser2())).toList();
-        return workoutRepository.findByFollowedUsers(followedUsers);
+        return workoutRepository.findPublicWorkoutsByFollowedUsers(followedUsers);
     }
 }

@@ -10,4 +10,5 @@ public interface WorkoutService {
     List<Workout> getAllWorkoutsFromUser(Long appUserId);
     String deleteWorkout(Long workoutId);
     List<Workout> getAllWorkoutsFromFollowedUser(Long appUserId);
+    List<Workout> getAllPublicWorkoutsFromUser(Long appUserId);
 }

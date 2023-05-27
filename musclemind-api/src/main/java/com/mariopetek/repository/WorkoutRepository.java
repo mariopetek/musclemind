@@ -12,8 +12,8 @@ import java.util.Optional;
 public interface WorkoutRepository extends JpaRepository<Workout, Long> {
     Optional<Workout> findByWorkoutId(Long workoutId);
     List<Workout> findByAppUserOrderByTimeAddedDesc(AppUser appUser);
-
-    //SELECT * FROM trening WHERE id_korisnik IN (SELECT pratim_id_korisnik FROM pracenje WHERE id_korisnik = 1);
-    @Query(value = "SELECT w FROM Workout w WHERE w.appUser IN :followedUsers ORDER BY w.timeAdded DESC")
-    List<Workout> findByFollowedUsers(@Param("followedUsers") List<AppUser> followedUsers);
+    @Query(value = "SELECT w FROM Workout w WHERE w.visibility.visibilityId = 2 AND w.appUser = :appUser ORDER BY w.timeAdded DESC")
+    List<Workout> findPublicWorkoutsByAppUser(@Param("appUser")AppUser appUser);
+    @Query(value = "SELECT w FROM Workout w WHERE w.visibility.visibilityId = 2 AND w.appUser IN :followedUsers ORDER BY w.timeAdded DESC")
+    List<Workout> findPublicWorkoutsByFollowedUsers(@Param("followedUsers") List<AppUser> followedUsers);
 }
