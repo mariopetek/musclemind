@@ -1,6 +1,8 @@
 package com.mariopetek.service.implementation;
 
 import com.mariopetek.dto.NewWorkoutDTO;
+import com.mariopetek.model.AppUser;
+import com.mariopetek.model.Following;
 import com.mariopetek.model.Workout;
 import com.mariopetek.repository.*;
 import com.mariopetek.service.WorkoutService;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +24,7 @@ public class WorkoutServiceImpl implements WorkoutService {
     private final WorkoutExerciseRepository workoutExerciseRepository;
     private final SavingRepository savingRepository;
     private final LikingRepository likingRepository;
+    private final FollowingRepository followingRepository;
 
     public Long saveNewWorkout(NewWorkoutDTO newWorkout) {
         Workout workout = new Workout();
@@ -44,5 +48,12 @@ public class WorkoutServiceImpl implements WorkoutService {
         workoutExerciseRepository.deleteAll(workoutExerciseRepository.findByWorkoutExerciseIdWorkout(workoutRepository.findByWorkoutId(workoutId).orElseThrow()));
         workoutRepository.delete(workoutRepository.findByWorkoutId(workoutId).orElseThrow());
         return "Trening uspješno izbrisan";
+    }
+
+    public List<Workout> getAllWorkoutsFromFollowedUser(Long appUserId) {
+        List<Following> followingObjectList = followingRepository.findByFollowingId_AppUser1(appUserRepository.findByAppUserId(appUserId).orElseThrow());
+        List<AppUser> followedUsers = followingObjectList.stream().map((following ->
+             following.getFollowingId().getAppUser2())).toList();
+        return workoutRepository.findByFollowedUsers(followedUsers);
     }
 }
