@@ -18,12 +18,22 @@
     display: flex;
     align-items: center;
     gap: 5px;
+    color: rgba(89, 89, 89, 1);
 }
 .timeAddedContainer > p {
-    color: rgba(89, 89, 89, 1);
     margin: 0;
     font-size: 0.85rem;
     font-weight: 500;
+}
+.usernameLink {
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: rgba(89, 89, 89, 1);
+    transition: all 0.2s ease;
+}
+.usernameLink:hover {
+    opacity: 0.8;
 }
 
 .calendarIcon {

@@ -1,0 +1,28 @@
+.homePageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+.headerText {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    color: rgba(89, 89, 89, 1);
+}
+.headerText > h2 {
+    margin: 0;
+}
+.workoutsContainer {
+    width: 75%;
+}
+.workoutsContainerLabel {
+    color: rgba(89, 89, 89, 1);
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+.noWorkoutsText {
+    text-align: center;
+    color: rgba(89, 89, 89, 1);
+    font-size: 0.8rem;
+}

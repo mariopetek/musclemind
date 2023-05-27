@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from 'react-query'
 import { IconContext } from 'react-icons'
 import { HiOutlineCalendarDays } from 'react-icons/hi2'
 import { BsHeart, BsHeartFill, BsSave, BsSaveFill } from 'react-icons/bs'
+import { Link } from 'react-router-dom'
 import axios from 'axios'
 import Loading from './Loading'
 import SomethingWentWrong from './SomethingWentWrong'
@@ -256,7 +257,13 @@ const Workout = ({ workout, children }) => {
                         minute: 'numeric'
                     })}
                 </p>
-                <p> | {workout.appUser.username}</p>
+                |
+                <Link
+                    className={styles.usernameLink}
+                    to={`/explore/users/${workout.appUser.appUserId}`}
+                >
+                    {workout.appUser.username}
+                </Link>
             </div>
             <h4>{workout.level.levelName}</h4>
             <div className={styles.workoutNameBio}>

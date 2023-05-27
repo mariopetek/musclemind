@@ -303,7 +303,7 @@ const NewWorkout = () => {
                         type="text"
                         value={workoutName}
                         maxLength="50"
-                        placeholder="Unesite naziv treninga (max. 50 znakova)"
+                        placeholder="Unesi naziv treninga (max. 50 znakova)"
                         onChange={(event) => setWorkoutName(event.target.value)}
                     />
                 </div>
@@ -312,7 +312,7 @@ const NewWorkout = () => {
                     <textarea
                         name="workoutDesc"
                         maxLength="500"
-                        placeholder="Unesite opis treninga (max. 500 znakova)"
+                        placeholder="Unesi opis treninga (max. 500 znakova)"
                         value={workoutDesc}
                         onChange={(event) => setWorkoutDesc(event.target.value)}
                     />
@@ -330,7 +330,7 @@ const NewWorkout = () => {
                                 }
                             >
                                 <option value="" disabled>
-                                    Odaberite vježbu
+                                    Odaberi vježbu
                                 </option>
                                 {exercisesQuery.data.map((exercise) => (
                                     <option
@@ -372,7 +372,7 @@ const NewWorkout = () => {
                             </IconContext.Provider>
 
                             <p>Prazno...</p>
-                            <p>(Vježbe koje dodate pojaviti će se ovdje)</p>
+                            <p>(Vježbe koje dodaš pojaviti će se ovdje)</p>
                         </div>
                     ) : (
                         workoutExercises.map((exercise, idx) => (
