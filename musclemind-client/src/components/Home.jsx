@@ -1,7 +1,7 @@
 import { useQuery } from 'react-query'
 import axios from 'axios'
 import { IconContext } from 'react-icons'
-import { AiFillHome } from 'react-icons/ai'
+import { MdHome } from 'react-icons/md'
 
 import Workout from './partials/Workout'
 
@@ -34,7 +34,7 @@ const Home = () => {
         <div className={styles.homePageContainer}>
             <div className={styles.headerText}>
                 <IconContext.Provider value={{ size: '30px' }}>
-                    <AiFillHome />
+                    <MdHome />
                 </IconContext.Provider>
                 <h2>Početna</h2>
             </div>

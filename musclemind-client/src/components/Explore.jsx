@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { NavLink } from 'react-router-dom'
 import { BiSearch } from 'react-icons/bi'
+import { MdExplore } from 'react-icons/md'
 import { IconContext } from 'react-icons'
 import axios from 'axios'
 
@@ -24,31 +25,37 @@ const Explore = () => {
         }
     }, [])
 
-    useEffect(() => {
-        if (/\S/.test(searchValue)) {
-            axios
-                .get(`/api/v1/users/search?username=${searchValue}`, {
+    const handleInputChange = async (event) => {
+        setSearchValue(event.target.value)
+        if (!/\S/.test(event.target.value)) {
+            setFoundUsers([])
+        } else {
+            const { data } = await axios.get(
+                `/api/v1/users/search?username=${event.target.value}`,
+                {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('jwt')}`
                     }
-                })
-                .then((response) => {
-                    return response.data
-                })
-                .then((data) => {
-                    setFoundUsers(
-                        data.filter((element) => {
-                            return (
-                                element.appUserId !==
-                                Number(localStorage.getItem('id'))
-                            )
-                        })
+                }
+            )
+            setFoundUsers(
+                data.filter((element) => {
+                    return (
+                        element.appUserId !== Number(localStorage.getItem('id'))
                     )
                 })
+            )
         }
-    }, [searchValue])
+    }
+
     return (
         <div className={styles.exploreContainer}>
+            <div className={styles.headerText}>
+                <IconContext.Provider value={{ size: '30px' }}>
+                    <MdExplore />
+                </IconContext.Provider>
+                <h2>Istraži</h2>
+            </div>
             <div className={styles.userSearchContainer} ref={searchMenuRef}>
                 <IconContext.Provider value={{ size: '30px' }}>
                     <BiSearch className={styles.searchIcon} />
@@ -56,11 +63,10 @@ const Explore = () => {
                 <input
                     className={styles.searchInput}
                     type="text"
-                    placeholder="Pretražite korisnike"
+                    placeholder="Pretraži korisnike"
                     value={searchValue}
                     onChange={(event) => {
-                        setSearchValue(event.target.value)
-                        if (!/\S/.test(event.target.value)) setFoundUsers([])
+                        handleInputChange(event)
                     }}
                 />
 

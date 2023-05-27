@@ -83,12 +83,15 @@ const User = () => {
         data: userWorkouts,
         isLoading: userWorkoutsLoading,
         isError: userWorkoutsError
-    } = useQuery(['workouts', 'user', userId], async () => {
-        const { data } = await axios.get(`/api/v1/workouts/user/${userId}`, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('jwt')}`
+    } = useQuery(['workouts', 'public', 'user', userId], async () => {
+        const { data } = await axios.get(
+            `/api/v1/workouts/public/user/${userId}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('jwt')}`
+                }
             }
-        })
+        )
         return data
     })
 
