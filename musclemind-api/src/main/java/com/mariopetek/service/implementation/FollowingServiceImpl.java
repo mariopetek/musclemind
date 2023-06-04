@@ -8,6 +8,8 @@ import com.mariopetek.service.FollowingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -39,6 +41,7 @@ public class FollowingServiceImpl implements FollowingService {
                 appUserRepository.findByAppUserId(appUserId1).orElseThrow(),
                 appUserRepository.findByAppUserId(appUserId2).orElseThrow()
         ));
+        following.setTimeFollowed(Timestamp.valueOf(LocalDateTime.now()));
         followingRepository.save(following);
         return "Korisnik zapracen";
     }

@@ -9,6 +9,9 @@ import com.mariopetek.service.LikingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class LikingServiceImpl implements LikingService {
@@ -30,6 +33,7 @@ public class LikingServiceImpl implements LikingService {
                 appUserRepository.findByAppUserId(appUserId).orElseThrow(),
                 workoutRepository.findByWorkoutId(workoutId).orElseThrow()
         ));
+        liking.setTimeLiked(Timestamp.valueOf(LocalDateTime.now()));
         likingRepository.save(liking);
         return "Trening lajkan";
     }
