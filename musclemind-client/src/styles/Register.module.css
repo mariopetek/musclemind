@@ -39,8 +39,7 @@
     width: 48%;
 }
 .buttonContainer > button:disabled {
-    outline: 1px solid rgb(103, 187, 248);
-    background-color: rgb(139, 209, 247);
+    opacity: 0.3;
 }
 .buttonContainer > button:enabled:hover {
     opacity: 0.8;

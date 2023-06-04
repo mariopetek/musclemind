@@ -18,25 +18,29 @@ const Register = () => {
             id: 1,
             name: 'username',
             label: 'Korisničko ime',
-            type: 'text'
+            type: 'text',
+            regex: /^[\w](?!.*?\.{2})[\w.]{1,28}[\w]$/
         },
         {
             id: 2,
             name: 'email',
             label: 'Email',
-            type: 'text'
+            type: 'text',
+            regex: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
         },
         {
             id: 3,
             name: 'password',
             label: 'Lozinka',
-            type: 'password'
+            type: 'password',
+            regex: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,40}$/
         },
         {
             id: 4,
             name: 'confirmPassword',
             label: 'Potvrda lozinke',
-            type: 'password'
+            type: 'password',
+            regex: inputValues.password
         }
     ]
     const handleInputChange = (event) => {
@@ -79,17 +83,22 @@ const Register = () => {
                     <h2>Registracija</h2>
                     {inputs.map((input) => (
                         <InputField
+                            error={
+                                inputValues[input.name].length > 0 &&
+                                !new RegExp(input.regex).test(
+                                    inputValues[input.name]
+                                )
+                            }
                             key={input.id}
                             name={input.name}
                             value={inputValues[input.name]}
                             label={input.label}
                             type={input.type}
-                            required
                             onChange={handleInputChange}
-                            helperText=""
+                            helperText={input.error}
                             variant="outlined"
                             size="small"
-                        />
+                        ></InputField>
                     ))}
                     <div className={styles.buttonContainer}>
                         <NavLink
@@ -99,7 +108,22 @@ const Register = () => {
                         >
                             Odustani
                         </NavLink>
-                        <button type="submit" title="Registriraj se">
+                        <button
+                            type="submit"
+                            title="Registriraj se"
+                            disabled={
+                                inputValues.username.length === 0 ||
+                                inputValues.email.length === 0 ||
+                                inputValues.password.length === 0 ||
+                                inputValues.confirmPassword.length === 0 ||
+                                inputs.some(
+                                    (input) =>
+                                        !new RegExp(input.regex).test(
+                                            inputValues[input.name]
+                                        )
+                                )
+                            }
+                        >
                             Registriraj se
                         </button>
                     </div>
