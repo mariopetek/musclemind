@@ -48,8 +48,8 @@ const Login = () => {
                 setError(null)
                 const data = await response.json()
                 localStorage.setItem('jwt', data.token)
-                localStorage.setItem('id', data.appUser.appUserId)
-                localStorage.setItem('username', data.appUser.username)
+                localStorage.setItem('id', data.appUserId)
+                localStorage.setItem('username', data.username)
                 navigate('/home')
             } else {
                 throw Error('Neispravno korisničko ime ili lozinka')

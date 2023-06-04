@@ -42,12 +42,8 @@ const EditProfile = () => {
         },
         {
             onSuccess: (data) => {
-                setName(data.name)
-                if (data.bio === null) {
-                    setBio('')
-                } else {
-                    setBio(data.bio)
-                }
+                setName(data.name === null ? '' : data.name)
+                setBio(data.bio === null ? '' : data.bio)
             }
         }
     )

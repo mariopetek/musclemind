@@ -6,7 +6,6 @@ import styles from '../styles/Register.module.css'
 
 const Register = () => {
     const [inputValues, setInputValues] = useState({
-        name: '',
         username: '',
         email: '',
         password: '',
@@ -17,30 +16,24 @@ const Register = () => {
     const inputs = [
         {
             id: 1,
-            name: 'name',
-            label: 'Ime',
-            type: 'text'
-        },
-        {
-            id: 2,
             name: 'username',
             label: 'Korisničko ime',
             type: 'text'
         },
         {
-            id: 3,
+            id: 2,
             name: 'email',
             label: 'Email',
             type: 'text'
         },
         {
-            id: 4,
+            id: 3,
             name: 'password',
             label: 'Lozinka',
             type: 'password'
         },
         {
-            id: 5,
+            id: 4,
             name: 'confirmPassword',
             label: 'Potvrda lozinke',
             type: 'password'
@@ -69,8 +62,8 @@ const Register = () => {
                 setError(null)
                 const data = await response.json()
                 localStorage.setItem('jwt', data.token)
-                localStorage.setItem('id', data.appUser.appUserId)
-                localStorage.setItem('username', data.appUser.username)
+                localStorage.setItem('id', data.appUserId)
+                localStorage.setItem('username', data.username)
                 navigate('/home')
             } else {
                 throw Error('Neuspješna registracija')
