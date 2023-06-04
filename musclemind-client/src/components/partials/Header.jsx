@@ -88,7 +88,7 @@ const Header = () => {
                         <NavLink
                             className={styles.githubLogo}
                             target="_blank"
-                            to="https://www.github.com"
+                            to="https://github.com/mariopetek/musclemind"
                             title="Source projekta"
                         >
                             <img src={GithubLogo} alt="github-logo.png" />

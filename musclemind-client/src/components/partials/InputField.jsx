@@ -14,7 +14,7 @@ const InputField = styled(TextField)(() => ({
     '& .MuiOutlinedInput-root': {
         borderRadius: '8px',
         '.MuiOutlinedInput-notchedOutline': {
-            transition: 'all 0.2s ease'
+            transition: 'border-color 0.2s ease'
         },
         '&:hover .MuiOutlinedInput-notchedOutline': {
             borderColor: 'rgba(89, 89, 89, 1)'

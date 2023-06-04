@@ -200,6 +200,7 @@ const User = () => {
                     </div>
                     <input
                         type="button"
+                        title={isUserFollowingUser ? 'Otprati' : 'Prati'}
                         value={isUserFollowingUser ? 'Otprati' : 'Prati'}
                         onClick={handleFollowEvent}
                         className={`${styles.followButtonTemplate} ${

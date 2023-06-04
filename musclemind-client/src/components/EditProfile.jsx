@@ -17,6 +17,8 @@ import styles from '../styles/EditProfile.module.css'
 import EditWorkout from './partials/EditWorkout'
 
 const EditProfile = () => {
+    const [initialName, setInitialName] = useState('')
+    const [initialBio, setInitialBio] = useState('')
     const [name, setName] = useState('')
     const [bio, setBio] = useState('')
     const [successMessage, setSuccessMessage] = useState('')
@@ -44,6 +46,9 @@ const EditProfile = () => {
         },
         {
             onSuccess: (data) => {
+                setInitialName(data.name === null ? '' : data.name)
+                setInitialBio(data.bio === null ? '' : data.bio)
+
                 setName(data.name === null ? '' : data.name)
                 setBio(data.bio === null ? '' : data.bio)
             }
@@ -229,7 +234,7 @@ const EditProfile = () => {
                                 >
                                     <div className={styles.labelContainer}>
                                         <HiLockClosed />
-                                        <p>E-mail</p>
+                                        <p>Email</p>
                                     </div>
                                     <input
                                         type="text"
@@ -257,6 +262,8 @@ const EditProfile = () => {
                                             setName(e.target.value)
                                         }
                                         autoComplete="true"
+                                        placeholder="Unesi ime (max. 50 znakova)"
+                                        maxLength="50"
                                     />
                                 </label>
                                 <label
@@ -273,6 +280,8 @@ const EditProfile = () => {
                                         value={bio}
                                         onChange={(e) => setBio(e.target.value)}
                                         autoComplete="true"
+                                        placeholder="Unesi opis (max. 500 znakova)"
+                                        maxLength="500"
                                     />
                                 </label>
                             </div>
@@ -281,29 +290,50 @@ const EditProfile = () => {
                             <NavLink
                                 className={styles.returnButton}
                                 to="/profile"
-                                title="Odustani"
+                                title="Povratak"
                             >
                                 Povratak
                             </NavLink>
-                            <button type="submit" title="Spremi">
+                            <button
+                                type="submit"
+                                title="Spremi"
+                                disabled={
+                                    initialName === name && initialBio === bio
+                                }
+                            >
                                 Spremi
                             </button>
                         </div>
                     </form>
-                    <p>
-                        {successMessage}
-                        {errorMessage}
-                    </p>
+                    {successMessage && (
+                        <div className={styles.successMessageContainer}>
+                            {successMessage}
+                        </div>
+                    )}
+                    {errorMessage && (
+                        <div className={styles.errorMessageContainer}>
+                            {errorMessage}
+                        </div>
+                    )}
                 </>
             ) : (
                 <div className={styles.userWorkoutsContainer}>
-                    {userWorkouts.map((workout) => (
-                        <EditWorkout
-                            key={workout.workoutId}
-                            workout={workout}
-                            deleteWorkoutMutation={deleteWorkoutMutation}
-                        />
-                    ))}
+                    {userWorkouts.length > 0 ? (
+                        userWorkouts.map((workout) => (
+                            <EditWorkout
+                                key={workout.workoutId}
+                                workout={workout}
+                                deleteWorkoutMutation={deleteWorkoutMutation}
+                            />
+                        ))
+                    ) : (
+                        <div className={styles.noWorkoutsYet}>
+                            <p>
+                                Trenutno nemaš treninga za urediti. Treninzi
+                                koje izradiš pojaviti će se ovdje.
+                            </p>
+                        </div>
+                    )}
                 </div>
             )}
         </div>

@@ -355,6 +355,7 @@ const NewWorkout = () => {
                                 value=" ⨉ "
                                 className={styles.clearExerciseInput}
                                 onClick={() => setExerciseInput('')}
+                                title="Očisti"
                             ></input>
                         </div>
                         <input
@@ -363,6 +364,7 @@ const NewWorkout = () => {
                             value="Dodaj"
                             onClick={addExercise}
                             disabled={exerciseInput === ''}
+                            title="Dodaj"
                         />
                     </div>
                 </div>
@@ -395,6 +397,7 @@ const NewWorkout = () => {
                                             onClick={() =>
                                                 removeExercise(exercise.id)
                                             }
+                                            title="Ukloni"
                                         />
                                     </div>
                                     <div className={styles.repsSetsRest}>
@@ -419,6 +422,7 @@ const NewWorkout = () => {
                                                     disabled={
                                                         exercise.reps === 1
                                                     }
+                                                    title="Smanji"
                                                 />
                                                 <input
                                                     className={styles.repsValue}
@@ -443,6 +447,7 @@ const NewWorkout = () => {
                                                             exercise.id
                                                         )
                                                     }
+                                                    title="Povećaj"
                                                 />
                                             </div>
                                         </div>
@@ -467,6 +472,7 @@ const NewWorkout = () => {
                                                     disabled={
                                                         exercise.sets === 1
                                                     }
+                                                    title="Smanji"
                                                 />
                                                 <input
                                                     className={styles.setsValue}
@@ -491,6 +497,7 @@ const NewWorkout = () => {
                                                             exercise.id
                                                         )
                                                     }
+                                                    title="Povećaj"
                                                 />
                                             </div>
                                         </div>
@@ -578,12 +585,17 @@ const NewWorkout = () => {
                 </div>
 
                 <div className={styles.buttonContainer}>
-                    <NavLink to="/home" className={styles.returnButton}>
+                    <NavLink
+                        to="/home"
+                        className={styles.returnButton}
+                        title="Odustani"
+                    >
                         Odustani
                     </NavLink>
                     <button
                         type="submit"
                         disabled={!workoutName || workoutExercises.length === 0}
+                        title="Završi"
                     >
                         Završi
                     </button>

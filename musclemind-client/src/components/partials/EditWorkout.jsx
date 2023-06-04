@@ -9,6 +9,7 @@ const EditWorkout = ({ workout, deleteWorkoutMutation }) => {
                 className={styles.deleteWorkoutButton}
                 type="button"
                 onClick={() => deleteWorkoutMutation.mutate(workout)}
+                title="Obriši"
             >
                 Obriši
             </button>
