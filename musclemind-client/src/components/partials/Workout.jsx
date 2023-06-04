@@ -5,8 +5,7 @@ import { BsHeart, BsHeartFill, BsSave, BsSaveFill } from 'react-icons/bs'
 import { FiGlobe, FiLock } from 'react-icons/fi'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
-import Loading from './Loading'
-import SomethingWentWrong from './SomethingWentWrong'
+
 import styles from '../../styles/Workout.module.css'
 import ExercisesTable from './ExercisesTable'
 
@@ -242,14 +241,14 @@ const Workout = ({ workout, children }) => {
         isWorkoutLikedLoading ||
         isWorkoutSavedLoading
     )
-        return <Loading />
+        return <p>Učitavanje</p>
     if (
         workoutLikesCountError ||
         workoutSavesCountError ||
         isWorkoutLikedError ||
         isWorkoutSavedError
     )
-        return <SomethingWentWrong />
+        return <p>Nešto je pošlo po zlu</p>
 
     return (
         <div className={styles.workoutInfoContainer}>

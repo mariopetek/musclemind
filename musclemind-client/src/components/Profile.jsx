@@ -5,9 +5,6 @@ import { IconContext } from 'react-icons'
 import { BsSave2, BsSave2Fill, BsGrid1X2, BsGrid1X2Fill } from 'react-icons/bs'
 import axios from 'axios'
 
-import Loading from './partials/Loading'
-import SomethingWentWrong from './partials/SomethingWentWrong'
-
 import styles from '../styles/Profile.module.css'
 import Workout from './partials/Workout'
 import UserFollowers from './partials/UserFollowers'
@@ -118,7 +115,7 @@ const Profile = () => {
         userWorkoutsLoading ||
         savedWorkoutsLoading
     )
-        return <Loading />
+        return <p>Učitavanje</p>
     if (
         userInfoError ||
         userFollowersCountError ||
@@ -126,7 +123,7 @@ const Profile = () => {
         userWorkoutsError ||
         savedWorkoutsError
     )
-        return <SomethingWentWrong />
+        return <p>Nešto je pošlo po zlu</p>
     return (
         <div className={styles.userContainer}>
             <UserFollowers

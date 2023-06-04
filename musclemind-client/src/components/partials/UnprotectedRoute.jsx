@@ -1,5 +1,6 @@
 import { Navigate, Outlet } from 'react-router-dom'
 import { useEffect, useState } from 'react'
+
 import { useAuth } from './AuthContext'
 
 const UnprotectedRoute = () => {

@@ -7,8 +7,6 @@ import { MdAddBox } from 'react-icons/md'
 import axios from 'axios'
 
 import styles from '../styles/NewWorkout.module.css'
-import Loading from './partials/Loading'
-import SomethingWentWrong from './partials/SomethingWentWrong'
 
 const NewWorkout = () => {
     const [visibilityId, setVisibilityId] = useState(1)
@@ -245,9 +243,9 @@ const NewWorkout = () => {
         visibilitiesQuery.isLoading ||
         levelsQuery.isLoading
     )
-        return <Loading />
+        return <p>Učitavanje</p>
     if (exercisesQuery.error || visibilitiesQuery.error || levelsQuery.error)
-        return <SomethingWentWrong />
+        return <p>Nešto je pošlo po zlu</p>
 
     return (
         <div className={styles.newWorkoutContainer}>

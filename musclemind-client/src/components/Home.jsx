@@ -4,7 +4,6 @@ import { IconContext } from 'react-icons'
 import { MdHome } from 'react-icons/md'
 
 import Workout from './partials/Workout'
-
 import styles from '../styles/Home.module.css'
 
 const Home = () => {

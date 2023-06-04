@@ -3,8 +3,6 @@ import { Navigate, useParams } from 'react-router-dom'
 import axios from 'axios'
 
 import styles from '../styles/User.module.css'
-import SomethingWentWrong from './partials/SomethingWentWrong'
-import Loading from './partials/Loading'
 import Workout from './partials/Workout'
 
 const User = () => {
@@ -182,7 +180,7 @@ const User = () => {
         isUserFollowingUserLoading ||
         userWorkoutsLoading
     )
-        return <Loading />
+        return <p>Učitavanje</p>
     if (
         userInfoError ||
         userFollowersCountError ||
@@ -190,7 +188,7 @@ const User = () => {
         isUserFollowingUserError ||
         userWorkoutsError
     )
-        return <SomethingWentWrong />
+        return <p>Nešto je pošlo po zlu</p>
 
     return (
         <div className={styles.userContainer}>

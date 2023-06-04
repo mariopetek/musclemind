@@ -1,13 +1,12 @@
 import { useQuery } from 'react-query'
-import axios from 'axios'
-
 import { IconContext } from 'react-icons'
 import { RxLapTimer } from 'react-icons/rx'
 import { FaHashtag } from 'react-icons/fa'
-
+import axios from 'axios'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableRow from '@mui/material/TableRow'
+
 import {
     StyledTableBodyRow,
     StyledTableHead,
@@ -15,7 +14,6 @@ import {
     StyledTableBodyCell,
     StyledTableContainer
 } from './StyledTable'
-
 import styles from '../../styles/ExercisesTable.module.css'
 
 const ExercisesTable = ({ workoutId }) => {

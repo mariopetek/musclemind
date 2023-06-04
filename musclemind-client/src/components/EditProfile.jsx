@@ -10,7 +10,9 @@ import {
     HiQueueList,
     HiOutlineQueueList
 } from 'react-icons/hi2'
+import { FaUserEdit } from 'react-icons/fa'
 import axios from 'axios'
+
 import styles from '../styles/EditProfile.module.css'
 import EditWorkout from './partials/EditWorkout'
 
@@ -128,7 +130,12 @@ const EditProfile = () => {
     if (userInfoError || userWorkoutsError) return <p>Nešto je pošlo po zlu</p>
     return (
         <div className={styles.editProfileContainer}>
-            <h2>Uredi račun</h2>
+            <div className={styles.headerText}>
+                <IconContext.Provider value={{ size: '30px' }}>
+                    <FaUserEdit />
+                </IconContext.Provider>
+                <h2>Uredi račun</h2>
+            </div>
             <div className={styles.selectionContainer}>
                 <div
                     className={`${styles.userInfoOption} ${
