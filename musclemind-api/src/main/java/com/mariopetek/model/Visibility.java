@@ -14,9 +14,14 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Visibility {
     @Id
-    @Column(name = "id_vidljivost", nullable = false, columnDefinition = "serial")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_vidljivost")
+    @SequenceGenerator(
+            name="vidljivost_gen",
+            sequenceName = "vidljivost_seq",
+            allocationSize = 1)
+    @GeneratedValue(generator = "vidljivost_gen")
+
     private Long visibilityId;
-    @Column(name = "naziv_vidljivost", nullable = false, unique = true)
+    @Column(name = "naziv_vidljivost")
     private String visibilityName;
 }

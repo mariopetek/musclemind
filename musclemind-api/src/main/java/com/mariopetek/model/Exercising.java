@@ -20,8 +20,6 @@ import java.sql.Timestamp;
 public class Exercising {
     @EmbeddedId
     private ExercisingId exercisingId;
-    @Column(name = "vrijeme_zapoceto", nullable = false)
-    private Timestamp timeStarted;
     @Column(name = "vrijeme_zavrseno")
     private Timestamp timeFinished;
 }

@@ -11,9 +11,14 @@ import lombok.*;
 @AllArgsConstructor
 public class Role {
     @Id
-    @Column(name = "id_uloga", nullable = false, columnDefinition = "serial")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_uloga")
+    @SequenceGenerator(
+            name="uloga_gen",
+            sequenceName = "uloga_seq",
+            allocationSize = 1)
+    @GeneratedValue(generator = "uloga_gen")
+
     private Long roleId;
-    @Column(name = "naziv_uloga", nullable = false, unique = true)
+    @Column(name = "naziv_uloga")
     private String roleName;
 }

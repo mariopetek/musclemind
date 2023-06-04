@@ -1,7 +1,7 @@
 package com.mariopetek.service.implementation;
 
-import com.mariopetek.model.Saved;
-import com.mariopetek.model.SavedId;
+import com.mariopetek.model.Saving;
+import com.mariopetek.model.SavingId;
 import com.mariopetek.repository.AppUserRepository;
 import com.mariopetek.repository.SavingRepository;
 import com.mariopetek.repository.WorkoutRepository;
@@ -21,33 +21,33 @@ public class SavingServiceImpl implements SavingService {
     private final AppUserRepository appUserRepository;
 
     public Long getNumberOfWorkoutSaves(Long workoutId) {
-        return savingRepository.countBySavedIdWorkout(workoutRepository.findByWorkoutId(workoutId).orElseThrow());
+        return savingRepository.countBySavingIdWorkout(workoutRepository.findByWorkoutId(workoutId).orElseThrow());
     }
     public Boolean isWorkoutSavedByAppUser(Long appUserId, Long workoutId) {
-        return savingRepository.countBySavedIdAppUserAndSavedIdWorkout(
+        return savingRepository.countBySavingIdAppUserAndSavingIdWorkout(
                 appUserRepository.findByAppUserId(appUserId).orElseThrow(),
                 workoutRepository.findByWorkoutId(workoutId).orElseThrow()) > 0;
     }
-    public List<Saved> getWorkoutsSavedByAppUser(Long appUserId) {
-        return savingRepository.findBySavedIdAppUserOrderByTimeSavedDesc(appUserRepository.findByAppUserId(appUserId).orElseThrow());
+    public List<Saving> getWorkoutsSavedByAppUser(Long appUserId) {
+        return savingRepository.findBySavingIdAppUserOrderByTimeSavedDesc(appUserRepository.findByAppUserId(appUserId).orElseThrow());
     }
     public String appUserSavesWorkout(Long appUserId, Long workoutId) {
-        Saved saved = new Saved();
-        saved.setSavedId(new SavedId(
+        Saving saving = new Saving();
+        saving.setSavingId(new SavingId(
                 appUserRepository.findByAppUserId(appUserId).orElseThrow(),
                 workoutRepository.findByWorkoutId(workoutId).orElseThrow()
         ));
-        saved.setTimeSaved(Timestamp.valueOf(LocalDateTime.now()));
-        savingRepository.save(saved);
+        saving.setTimeSaved(Timestamp.valueOf(LocalDateTime.now()));
+        savingRepository.save(saving);
         return "Trening spremljen";
     }
     public String appUserUnsavesWorkout(Long appUserId, Long workoutId) {
-        Saved saved = new Saved();
-        saved.setSavedId(new SavedId(
+        Saving saving = new Saving();
+        saving.setSavingId(new SavingId(
                 appUserRepository.findByAppUserId(appUserId).orElseThrow(),
                 workoutRepository.findByWorkoutId(workoutId).orElseThrow()
         ));
-        savingRepository.delete(saved);
+        savingRepository.delete(saving);
         return "Trening odspremljen";
     }
 }

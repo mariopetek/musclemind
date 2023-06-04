@@ -1,6 +1,6 @@
 package com.mariopetek.controller;
 
-import com.mariopetek.model.Saved;
+import com.mariopetek.model.Saving;
 import com.mariopetek.service.SavingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +23,7 @@ public class SavingController {
         return ResponseEntity.ok(savingService.isWorkoutSavedByAppUser(appUserId, workoutId));
     }
     @GetMapping("/saved/{appUserId}") //svi treninzi koje je korisnik appUserId spremio
-    public ResponseEntity<List<Saved>> getWorkoutsSavedByAppUser(@PathVariable("appUserId") Long appUserId) {
+    public ResponseEntity<List<Saving>> getWorkoutsSavedByAppUser(@PathVariable("appUserId") Long appUserId) {
         return ResponseEntity.ok(savingService.getWorkoutsSavedByAppUser(appUserId));
     }
     @PostMapping("/save/{appUserId}/{workoutId}") //korisnik appUserId lajka trening workoutId

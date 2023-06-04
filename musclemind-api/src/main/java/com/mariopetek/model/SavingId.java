@@ -9,13 +9,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @Embeddable
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SavedId implements Serializable {
+public class SavingId implements Serializable {
     @ManyToOne
     @JoinColumn(name = "id_korisnik")
     private AppUser appUser;
@@ -23,4 +24,15 @@ public class SavedId implements Serializable {
     @JoinColumn(name = "id_trening")
     private Workout workout;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SavingId savingId = (SavingId) o;
+        return Objects.equals(appUser, savingId.appUser) && Objects.equals(workout, savingId.workout);
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(appUser, workout);
+    }
 }

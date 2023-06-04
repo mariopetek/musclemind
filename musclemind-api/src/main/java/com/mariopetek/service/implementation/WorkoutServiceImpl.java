@@ -46,7 +46,7 @@ public class WorkoutServiceImpl implements WorkoutService {
     }
 
     public String deleteWorkout(Long workoutId) {
-        savingRepository.deleteAll(savingRepository.findBySavedIdWorkout(workoutRepository.findByWorkoutId(workoutId).orElseThrow()));
+        savingRepository.deleteAll(savingRepository.findBySavingIdWorkout(workoutRepository.findByWorkoutId(workoutId).orElseThrow()));
         likingRepository.deleteAll(likingRepository.findByLikingIdWorkout(workoutRepository.findByWorkoutId(workoutId).orElseThrow()));
         workoutExerciseRepository.deleteAll(workoutExerciseRepository.findByWorkoutExerciseIdWorkout(workoutRepository.findByWorkoutId(workoutId).orElseThrow()));
         workoutRepository.delete(workoutRepository.findByWorkoutId(workoutId).orElseThrow());

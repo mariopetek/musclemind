@@ -14,11 +14,14 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Category {
     @Id
-    @Column(name = "id_kategorija", nullable = false, columnDefinition = "serial")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_kategorija")
+    @SequenceGenerator(
+            name="kategorija_gen",
+            sequenceName = "kategorija_seq",
+            allocationSize = 1)
+    @GeneratedValue(generator = "kategorija_gen")
+
     private Long categoryId;
-    @Column(name = "naziv_kategorija", nullable = false, unique = true)
+    @Column(name = "naziv_kategorija")
     private String categoryName;
-    @Column(name = "slika", nullable = false, unique = true)
-    private String image;
 }

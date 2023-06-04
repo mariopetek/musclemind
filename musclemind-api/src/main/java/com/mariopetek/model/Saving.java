@@ -12,14 +12,14 @@ import lombok.Setter;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "spremljeno")
+@Table(name = "spremanje")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Saved {
+public class Saving {
     @EmbeddedId
-    private SavedId savedId;
-    @Column(name="vrijeme_spremljeno", nullable = false)
+    private SavingId savingId;
+    @Column(name="vrijeme_spremanje")
     private Timestamp timeSaved;
 }

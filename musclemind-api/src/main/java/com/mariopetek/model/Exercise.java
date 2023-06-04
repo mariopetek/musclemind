@@ -14,10 +14,14 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Exercise {
     @Id
-    @Column(name = "id_vjezba", nullable = false, columnDefinition = "serial")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_vjezba")
+    @SequenceGenerator(
+            name="vjezba_gen",
+            sequenceName = "vjezba_seq",
+            allocationSize = 1)
+    @GeneratedValue(generator = "vjezba_gen")
     private Long exerciseId;
-    @Column(name = "naziv_vjezba", nullable = false, unique = true)
+    @Column(name = "naziv_vjezba")
     private String exerciseName;
     @ManyToOne
     @JoinColumn(name = "id_kategorija")

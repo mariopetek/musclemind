@@ -16,14 +16,19 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class Workout {
     @Id
-    @Column(name = "id_trening", nullable = false, columnDefinition = "serial")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_trening")
+    @SequenceGenerator(
+            name="trening_gen",
+            sequenceName = "trening_seq",
+            allocationSize = 1)
+    @GeneratedValue(generator = "trening_gen")
+
     private Long workoutId;
-    @Column(name = "naziv_trening", nullable = false)
+    @Column(name = "naziv_trening")
     private String workoutName;
-    @Column(name = "vrijeme_objava", nullable = false)
+    @Column(name = "vrijeme_objava")
     private Timestamp timeAdded;
-    @Column(name = "uk_broj_serija", nullable = false)
+    @Column(name = "uk_broj_serija")
     private Integer numberOfSets;
     @Column(name = "opis_trening")
     private String workoutDescription;
