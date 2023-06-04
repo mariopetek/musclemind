@@ -1,4 +1,4 @@
-package com.mariopetek.configuration;
+package com.mariopetek.configuration.authentication.jwt;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;

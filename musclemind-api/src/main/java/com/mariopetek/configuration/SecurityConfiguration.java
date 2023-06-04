@@ -1,6 +1,7 @@
 package com.mariopetek.configuration;
 
-import jakarta.servlet.http.HttpServletResponse;
+import com.mariopetek.configuration.authentication.jwt.JwtAuthenticationFilter;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

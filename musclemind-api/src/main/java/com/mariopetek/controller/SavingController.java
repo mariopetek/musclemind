@@ -14,11 +14,11 @@ import java.util.List;
 public class SavingController {
     private final SavingService savingService;
 
-    @GetMapping("/count/{workoutId}") //broj lajkova od workoutId
+    @GetMapping("/count/{workoutId}") //broj spremanja od workoutId
     public ResponseEntity<Long> getNumberOfWorkoutSaves(@PathVariable("workoutId") Long workoutId) {
         return ResponseEntity.ok(savingService.getNumberOfWorkoutSaves(workoutId));
     }
-    @GetMapping("/issaved/{appUserId}/{workoutId}") //je li korisnik appUserId lajkao trening workoutId
+    @GetMapping("/issaved/{appUserId}/{workoutId}") //je li korisnik appUserId spremio trening workoutId
     public ResponseEntity<Boolean> isWorkoutSavedByAppUser(@PathVariable("appUserId") Long appUserId, @PathVariable("workoutId") Long workoutId) {
         return ResponseEntity.ok(savingService.isWorkoutSavedByAppUser(appUserId, workoutId));
     }

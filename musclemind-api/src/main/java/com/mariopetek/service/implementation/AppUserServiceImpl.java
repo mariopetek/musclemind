@@ -1,6 +1,7 @@
 package com.mariopetek.service.implementation;
 
 import com.mariopetek.dto.AppUserUpdateDTO;
+import com.mariopetek.dto.validator.DTOValidator;
 import com.mariopetek.model.AppUser;
 import com.mariopetek.repository.AppUserRepository;
 import com.mariopetek.repository.RoleRepository;
@@ -16,11 +17,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AppUserServiceImpl implements AppUserService {
     private final AppUserRepository appUserRepository;
+    private final DTOValidator<AppUserUpdateDTO> appUserUpdateDTOValidator;
 
-    @Override
-    public List<AppUser> getAllAppUsers() {
-        return appUserRepository.findAll();
-    }
     @Override
     public Optional<AppUser> getAppUserByUsername(String username) {
         return appUserRepository.findByUsername(username);
@@ -33,16 +31,13 @@ public class AppUserServiceImpl implements AppUserService {
         return appUserRepository.findTop10ByUsernameContainingIgnoreCase(username.trim());
     }
     public String updateAppUserInfo(Long appUserId, AppUserUpdateDTO appUserUpdateInfo) {
+        appUserUpdateDTOValidator.validate(appUserUpdateInfo);
         AppUser appUser = appUserRepository.findByAppUserId(appUserId).orElseThrow();
         if(!appUserUpdateInfo.getName().equals(appUser.getName())) {
-            appUser.setName(appUserUpdateInfo.getName());
+            appUser.setName(appUserUpdateInfo.getName().equals("") ? null : appUserUpdateInfo.getName());
         }
         if(!appUserUpdateInfo.getBio().equals(appUser.getBio())) {
-            if(appUserUpdateInfo.getBio().equals("")) {
-                appUser.setBio(null);
-            }else {
-                appUser.setBio(appUserUpdateInfo.getBio());
-            }
+            appUser.setBio(appUserUpdateInfo.getBio().equals("") ? null : appUserUpdateInfo.getBio());
         }
         appUserRepository.save(appUser);
         return "Podaci uspješno promijenjeni";

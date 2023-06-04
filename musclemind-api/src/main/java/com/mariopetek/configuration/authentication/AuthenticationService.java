@@ -1,6 +1,7 @@
-package com.mariopetek.authentication;
+package com.mariopetek.configuration.authentication;
 
-import com.mariopetek.configuration.JwtService;
+import com.mariopetek.dto.validator.DTOValidator;
+import com.mariopetek.configuration.authentication.jwt.JwtService;
 import com.mariopetek.model.AppUser;
 import com.mariopetek.repository.AppUserRepository;
 import com.mariopetek.repository.RoleRepository;
@@ -18,33 +19,38 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final DTOValidator<RegisterRequest> registerRequestValidator;
     public AuthenticationResponse register(RegisterRequest request) {
-        var appUser = AppUser
+        registerRequestValidator.validate(request);
+        AppUser appUser = AppUser
                         .builder()
-                        .name(request.getName())
+                        .name(null)
                         .username(request.getUsername())
                         .email(request.getEmail())
                         .password(passwordEncoder.encode(request.getPassword()))
                         .bio(null)
                         .role(roleRepository.findByRoleName("ROLE_USER"))
                         .build();
-        var jwtToken = jwtService.generateToken(appUser);
+        String jwtToken = jwtService.generateToken(appUser);
+        AppUser savedAppUser = appUserRepository.save(appUser);
         return AuthenticationResponse
                 .builder()
                 .token(jwtToken)
-                .appUser(appUserRepository.save(appUser))
+                .appUserId(savedAppUser.getAppUserId())
+                .username(savedAppUser.getUsername())
                 .build();
     }
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(request.getUsername(),
                                                     request.getPassword()));
-        var appUser = appUserRepository.findByUsername(request.getUsername()).orElseThrow();
-        var jwtToken = jwtService.generateToken(appUser);
+        AppUser appUser = appUserRepository.findByUsername(request.getUsername()).orElseThrow();
+        String jwtToken = jwtService.generateToken(appUser);
         return AuthenticationResponse
                 .builder()
                 .token(jwtToken)
-                .appUser(appUser)
+                .appUserId(appUser.getAppUserId())
+                .username(appUser.getUsername())
                 .build();
     }
 }

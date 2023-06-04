@@ -1,4 +1,4 @@
-package com.mariopetek.authentication;
+package com.mariopetek.configuration.authentication;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

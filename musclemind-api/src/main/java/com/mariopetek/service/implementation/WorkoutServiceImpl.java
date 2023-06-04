@@ -1,6 +1,7 @@
 package com.mariopetek.service.implementation;
 
 import com.mariopetek.dto.NewWorkoutDTO;
+import com.mariopetek.dto.validator.DTOValidator;
 import com.mariopetek.model.AppUser;
 import com.mariopetek.model.Following;
 import com.mariopetek.model.Workout;
@@ -25,11 +26,13 @@ public class WorkoutServiceImpl implements WorkoutService {
     private final SavingRepository savingRepository;
     private final LikingRepository likingRepository;
     private final FollowingRepository followingRepository;
+    private final DTOValidator<NewWorkoutDTO> newWorkoutDTOValidator;
 
     public Long saveNewWorkout(NewWorkoutDTO newWorkout) {
+        newWorkoutDTOValidator.validate(newWorkout);
         Workout workout = new Workout();
         workout.setWorkoutName(newWorkout.getWorkoutName());
-        workout.setWorkoutDescription(newWorkout.getWorkoutDescription());
+        workout.setWorkoutDescription(newWorkout.getWorkoutDescription().equals("") ? null : newWorkout.getWorkoutDescription());
         workout.setTimeAdded(Timestamp.valueOf(LocalDateTime.now()));
         workout.setNumberOfSets(newWorkout.getNumberOfSets());
         workout.setAppUser(appUserRepository.findByAppUserId(newWorkout.getAppUserId()).orElseThrow());

@@ -31,7 +31,7 @@ public class WorkoutController {
     public ResponseEntity<String> deleteWorkout(@PathVariable("workoutId") Long workoutId) {
         return ResponseEntity.ok(workoutService.deleteWorkout(workoutId));
     }
-    @GetMapping("/following/{appUserId}") //appUserId1 prati korisnik appUserId2 (trebaju nam treninzi od appUserId2)
+    @GetMapping("/following/{appUserId}") //treninzi svih korisnika koje appUserId prati
     public ResponseEntity<List<Workout>> getAllWorkoutsFromFollowedUsers(@PathVariable("appUserId") Long appUserId) {
         return ResponseEntity.ok(workoutService.getAllWorkoutsFromFollowedUser(appUserId));
     }

@@ -1,4 +1,4 @@
-package com.mariopetek.authentication;
+package com.mariopetek.configuration.authentication;
 
 import com.mariopetek.model.AppUser;
 import lombok.AllArgsConstructor;
@@ -12,5 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AuthenticationResponse {
     private String token;
-    private AppUser appUser;
+    private Long appUserId;
+    private String username;
 }

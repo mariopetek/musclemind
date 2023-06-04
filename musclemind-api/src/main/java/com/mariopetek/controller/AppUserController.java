@@ -16,10 +16,6 @@ import java.util.List;
 public class AppUserController {
     private final AppUserService appUserService;
 
-    @GetMapping("")
-    public ResponseEntity<List<AppUser>> getAllAppUsers() {
-        return ResponseEntity.ok(appUserService.getAllAppUsers());
-    }
     @GetMapping("/search")
     public ResponseEntity<List<AppUser>> getAppUsersByUsernameContainingIgnoreCase(@RequestParam("username") String username) {
         return ResponseEntity.ok(appUserService.getAppUsersByUsernameContainingIgnoreCase(username));
