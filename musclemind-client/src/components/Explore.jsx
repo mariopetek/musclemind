@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { useQuery } from 'react-query'
 import { NavLink } from 'react-router-dom'
 import { BiSearch } from 'react-icons/bi'
 import { MdExplore } from 'react-icons/md'
@@ -6,6 +7,7 @@ import { IconContext } from 'react-icons'
 import axios from 'axios'
 
 import styles from '../styles/Explore.module.css'
+import Workout from './partials/Workout'
 
 const Explore = () => {
     const [searchValue, setSearchValue] = useState('')
@@ -47,6 +49,22 @@ const Explore = () => {
             )
         }
     }
+
+    const {
+        data: popularWorkouts,
+        isLoading: popularWorkoutsLoading,
+        isError: popularWorkoutsError
+    } = useQuery(['workouts', 'popular'], async () => {
+        const { data } = await axios.get('/api/v1/workouts/popular', {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('jwt')}`
+            }
+        })
+        return data
+    })
+
+    if (popularWorkoutsLoading) return <p>Učitavanje</p>
+    if (popularWorkoutsError) return <p>Nešto je pošlo po zlu</p>
 
     return (
         <div className={styles.exploreContainer}>
@@ -103,9 +121,21 @@ const Explore = () => {
                     </div>
                 ) : null}
             </div>
-            <div className={styles.popularWorkoutsContainer}>
-                <h3>Popularni treninzi</h3>
-            </div>
+            {popularWorkouts.length > 0 ? (
+                <div className={styles.popularWorkoutsContainer}>
+                    <p className={styles.popularWorkoutsContainerLabel}>
+                        Popularni treninzi:
+                    </p>
+                    {popularWorkouts.map((workout) => (
+                        <Workout key={workout.workoutId} workout={workout} />
+                    ))}
+                </div>
+            ) : (
+                <p className={styles.noPopularWorkoutsText}>
+                    Trenutno nema popularnih treninga. Treninzi s najviše oznaka
+                    sviđanja pojaviti će se ovdje.
+                </p>
+            )}
         </div>
     )
 }
