@@ -184,7 +184,7 @@ const Profile = () => {
                         <IoStatsChart
                             className={styles.statsIcon}
                             onClick={() => setIsStatsDialogShown(true)}
-                            title="Statitika"
+                            title="Statistika"
                         />
                     </IconContext.Provider>
                 </div>
