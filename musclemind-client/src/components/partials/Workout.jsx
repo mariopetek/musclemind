@@ -77,13 +77,34 @@ const Workout = ({ workout, children }) => {
     })
     const {
         data: isWorkoutSaved,
-        isLoadin: isWorkoutSavedLoading,
+        isLoading: isWorkoutSavedLoading,
         isError: isWorkoutSavedError
     } = useQuery(
         ['saving', 'issaved', localStorage.getItem('id'), workout.workoutId],
         async () => {
             const { data } = await axios.get(
                 `/api/v1/saving/issaved/${localStorage.getItem('id')}/${
+                    workout.workoutId
+                }`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('jwt')}`
+                    }
+                }
+            )
+            return data
+        }
+    )
+
+    const {
+        data: exercisingInfo,
+        isLoading: exercisingInfoLoading,
+        isError: exercisingInfoError
+    } = useQuery(
+        ['exercising', 'info', localStorage.getItem('id'), workout.workoutId],
+        async () => {
+            const { data } = await axios.get(
+                `/api/v1/exercising/info/${localStorage.getItem('id')}/${
                     workout.workoutId
                 }`,
                 {
@@ -220,6 +241,59 @@ const Workout = ({ workout, children }) => {
         }
     )
 
+    const startWorkoutMutation = useMutation(
+        async () => {
+            const { data } = await axios.post(
+                `/api/v1/exercising/start/${localStorage.getItem('id')}/${
+                    workout.workoutId
+                }`,
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('jwt')}`
+                    }
+                }
+            )
+            return data
+        },
+        {
+            onSuccess: () => {
+                queryClient.invalidateQueries([
+                    'exercising',
+                    'info',
+                    localStorage.getItem('id'),
+                    workout.workoutId
+                ])
+            }
+        }
+    )
+    const finishWorkoutMutation = useMutation(
+        async () => {
+            const { data } = await axios.put(
+                `/api/v1/exercising/finish/${localStorage.getItem('id')}/${
+                    workout.workoutId
+                }`,
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('jwt')}`
+                    }
+                }
+            )
+            return data
+        },
+        {
+            onSuccess: () => {
+                queryClient.invalidateQueries([
+                    'exercising',
+                    'info',
+                    localStorage.getItem('id'),
+                    workout.workoutId
+                ])
+            }
+        }
+    )
+
     const handleLikeEvent = () => {
         if (isWorkoutLiked) {
             unlikeWorkoutMutation.mutate()
@@ -234,22 +308,30 @@ const Workout = ({ workout, children }) => {
             saveWorkoutMutation.mutate()
         }
     }
+    const handleWorkoutEvent = () => {
+        if (exercisingInfo !== null && exercisingInfo.timeFinished === null) {
+            finishWorkoutMutation.mutate()
+        } else {
+            startWorkoutMutation.mutate()
+        }
+    }
 
     if (
         workoutLikesCountLoading ||
         workoutSavesCountLoading ||
         isWorkoutLikedLoading ||
-        isWorkoutSavedLoading
+        isWorkoutSavedLoading ||
+        exercisingInfoLoading
     )
         return <p>Učitavanje</p>
     if (
         workoutLikesCountError ||
         workoutSavesCountError ||
         isWorkoutLikedError ||
-        isWorkoutSavedError
+        isWorkoutSavedError ||
+        exercisingInfoError
     )
         return <p>Nešto je pošlo po zlu</p>
-
     return (
         <div className={styles.workoutInfoContainer}>
             <div className={styles.timeAddedContainer}>
@@ -291,46 +373,96 @@ const Workout = ({ workout, children }) => {
             <ExercisesTable workoutId={workout.workoutId} />
             <div className={styles.workoutOptionsContainer}>
                 <div className={styles.deleteButtonContainer}>{children}</div>
-                {workout.visibility.visibilityId === 2 && (
-                    <div className={styles.saveLikeContainer}>
-                        <div className={styles.likeContainer}>
-                            <IconContext.Provider value={{ size: '25px' }}>
-                                {isWorkoutLiked ? (
-                                    <BsHeartFill
-                                        className={styles.likeIcon}
-                                        onClick={handleLikeEvent}
-                                        title={`Odznači sa "sviđa mi se"`}
-                                    />
-                                ) : (
-                                    <BsHeart
-                                        className={styles.likeIcon}
-                                        onClick={handleLikeEvent}
-                                        title={`Označi sa "sviđa mi se"`}
-                                    />
-                                )}
-                            </IconContext.Provider>
-                            <p>{workoutLikesCount}</p>
-                        </div>
-                        <div className={styles.saveContainer}>
-                            <IconContext.Provider value={{ size: '25px' }}>
-                                {isWorkoutSaved ? (
-                                    <BsSaveFill
-                                        className={styles.saveIcon}
-                                        onClick={handleSaveEvent}
-                                        title="Odspremi"
-                                    />
-                                ) : (
-                                    <BsSave
-                                        className={styles.saveIcon}
-                                        onClick={handleSaveEvent}
-                                        title="Spremi"
-                                    />
-                                )}
-                            </IconContext.Provider>
-                            <p>{workoutSavesCount}</p>
-                        </div>
+                {children === undefined && (
+                    <div className={styles.startWorkoutButtonContainer}>
+                        <input
+                            type="button"
+                            title={
+                                exercisingInfo !== null &&
+                                exercisingInfo.timeFinished === null
+                                    ? 'Završi trening'
+                                    : 'Započni trening'
+                            }
+                            value={
+                                exercisingInfo !== null &&
+                                exercisingInfo.timeFinished === null
+                                    ? 'Završi trening'
+                                    : 'Započni trening'
+                            }
+                            onClick={handleWorkoutEvent}
+                            className={
+                                exercisingInfo !== null &&
+                                exercisingInfo.timeFinished === null
+                                    ? styles.finishWorkout
+                                    : styles.startWorkout
+                            }
+                        />
+                        {exercisingInfo !== null && (
+                            <div className={styles.exercisingTimeContainer}>
+                                {exercisingInfo.timeFinished === null
+                                    ? `Započeto: ${new Date(
+                                          exercisingInfo.exercisingId.timeStarted
+                                      ).toLocaleDateString('hr-HR', {
+                                          day: 'numeric',
+                                          month: 'long',
+                                          year: 'numeric',
+                                          hour: 'numeric',
+                                          minute: 'numeric'
+                                      })}`
+                                    : `Završeno: ${new Date(
+                                          exercisingInfo.timeFinished
+                                      ).toLocaleDateString('hr-HR', {
+                                          day: 'numeric',
+                                          month: 'long',
+                                          year: 'numeric',
+                                          hour: 'numeric',
+                                          minute: 'numeric'
+                                      })}`}
+                            </div>
+                        )}
                     </div>
                 )}
+                {workout.visibility.visibilityId === 2 &&
+                    children === undefined && (
+                        <div className={styles.saveLikeContainer}>
+                            <div className={styles.likeContainer}>
+                                <IconContext.Provider value={{ size: '25px' }}>
+                                    {isWorkoutLiked ? (
+                                        <BsHeartFill
+                                            className={styles.likeIcon}
+                                            onClick={handleLikeEvent}
+                                            title={`Odznači sa "sviđa mi se"`}
+                                        />
+                                    ) : (
+                                        <BsHeart
+                                            className={styles.likeIcon}
+                                            onClick={handleLikeEvent}
+                                            title={`Označi sa "sviđa mi se"`}
+                                        />
+                                    )}
+                                </IconContext.Provider>
+                                <p>{workoutLikesCount}</p>
+                            </div>
+                            <div className={styles.saveContainer}>
+                                <IconContext.Provider value={{ size: '25px' }}>
+                                    {isWorkoutSaved ? (
+                                        <BsSaveFill
+                                            className={styles.saveIcon}
+                                            onClick={handleSaveEvent}
+                                            title="Odspremi"
+                                        />
+                                    ) : (
+                                        <BsSave
+                                            className={styles.saveIcon}
+                                            onClick={handleSaveEvent}
+                                            title="Spremi"
+                                        />
+                                    )}
+                                </IconContext.Provider>
+                                <p>{workoutSavesCount}</p>
+                            </div>
+                        </div>
+                    )}
             </div>
         </div>
     )
