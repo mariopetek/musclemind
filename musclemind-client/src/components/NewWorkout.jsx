@@ -94,18 +94,24 @@ const NewWorkout = () => {
         setWorkoutExercises(
             workoutExercises.map((exercise) => {
                 return exercise.id === exerciseId
-                    ? { ...exercise, reps: exercise.reps + 1 }
+                    ? {
+                          ...exercise,
+                          reps: exercise.reps >= 100 ? 100 : exercise.reps + 1
+                      }
                     : exercise
             })
         )
     }
     const handleRepsChange = (exerciseId, value) => {
+        if (Number(value) > 100) value = 100
+        else if (Number(value) < 1) value = 1
+        value = Number(value)
         setWorkoutExercises(
             workoutExercises.map((exercise) => {
                 return exercise.id === exerciseId
                     ? {
                           ...exercise,
-                          reps: Number(value) < 1 ? 1 : Number(value)
+                          reps: value
                       }
                     : exercise
             })
@@ -130,19 +136,22 @@ const NewWorkout = () => {
                 return exercise.id === exerciseId
                     ? {
                           ...exercise,
-                          sets: exercise.sets + 1
+                          sets: exercise.sets >= 100 ? 100 : exercise.sets + 1
                       }
                     : exercise
             })
         )
     }
     const handleSetsChange = (exerciseId, value) => {
+        if (Number(value) > 100) value = 100
+        else if (Number(value) < 1) value = 1
+        value = Number(value)
         setWorkoutExercises(
             workoutExercises.map((exercise) => {
                 return exercise.id === exerciseId
                     ? {
                           ...exercise,
-                          sets: Number(value) < 1 ? 1 : Number(value)
+                          sets: value
                       }
                     : exercise
             })
@@ -172,7 +181,11 @@ const NewWorkout = () => {
     }
 
     const handleTotalSetsChange = (value) => {
-        setTotalSets(Number(value) < 1 ? 1 : Number(value))
+        if (Number(value) > 100) {
+            setTotalSets(100)
+        } else {
+            setTotalSets(Number(value) < 1 ? 1 : Number(value))
+        }
     }
 
     const workoutExercisesMutation = useMutation(
@@ -420,7 +433,7 @@ const NewWorkout = () => {
                                                         )
                                                     }
                                                     disabled={
-                                                        exercise.reps === 1
+                                                        exercise.reps <= 1
                                                     }
                                                     title="Smanji"
                                                 />
@@ -447,6 +460,9 @@ const NewWorkout = () => {
                                                             exercise.id
                                                         )
                                                     }
+                                                    disabled={
+                                                        exercise.reps >= 100
+                                                    }
                                                     title="Povećaj"
                                                 />
                                             </div>
@@ -470,7 +486,7 @@ const NewWorkout = () => {
                                                         )
                                                     }
                                                     disabled={
-                                                        exercise.sets === 1
+                                                        exercise.sets <= 1
                                                     }
                                                     title="Smanji"
                                                 />
@@ -497,6 +513,9 @@ const NewWorkout = () => {
                                                             exercise.id
                                                         )
                                                     }
+                                                    disabled={
+                                                        exercise.sets >= 100
+                                                    }
                                                     title="Povećaj"
                                                 />
                                             </div>
@@ -506,7 +525,7 @@ const NewWorkout = () => {
                                                 styles.exerciseRestContainer
                                             }
                                         >
-                                            <p>odmor (min:sek)</p>
+                                            <p>odmor</p>
                                             <div className={styles.restInputs}>
                                                 <input
                                                     className={styles.restValue}
@@ -525,7 +544,8 @@ const NewWorkout = () => {
                                                         )
                                                     }
                                                 />
-                                                :
+                                                <span>min</span>
+
                                                 <input
                                                     className={styles.restValue}
                                                     type="number"
@@ -543,6 +563,7 @@ const NewWorkout = () => {
                                                         )
                                                     }
                                                 />
+                                                <span>sec</span>
                                             </div>
                                         </div>
                                     </div>
@@ -559,10 +580,10 @@ const NewWorkout = () => {
                             type="button"
                             value=" - "
                             className={styles.changeValueButton}
-                            disabled={totalSets === 1}
+                            disabled={totalSets <= 1}
                             onClick={() =>
                                 setTotalSets((prev) =>
-                                    prev === 1 ? 1 : prev - 1
+                                    prev <= 1 ? 1 : prev - 1
                                 )
                             }
                         />
@@ -579,7 +600,12 @@ const NewWorkout = () => {
                             type="button"
                             value=" + "
                             className={styles.changeValueButton}
-                            onClick={() => setTotalSets((prev) => prev + 1)}
+                            onClick={() =>
+                                setTotalSets((prev) =>
+                                    prev >= 100 ? 100 : prev + 1
+                                )
+                            }
+                            disabled={totalSets >= 100}
                         />
                     </div>
                 </div>
