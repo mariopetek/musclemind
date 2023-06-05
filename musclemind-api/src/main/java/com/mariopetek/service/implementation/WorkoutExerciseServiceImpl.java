@@ -46,7 +46,6 @@ public class WorkoutExerciseServiceImpl implements WorkoutExerciseService {
         workoutExerciseRepository.saveAll(workoutExercises);
         return "Vježbe su uspješno pohranjene";
     }
-
     public List<WorkoutExercise> getAllWorkoutExercisesFromWorkout(Long workoutId){
         return workoutExerciseRepository.findByWorkoutExerciseIdWorkout(workoutRepository.findByWorkoutId(workoutId).orElseThrow());
     }

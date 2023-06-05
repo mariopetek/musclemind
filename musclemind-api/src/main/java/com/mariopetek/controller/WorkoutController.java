@@ -35,4 +35,8 @@ public class WorkoutController {
     public ResponseEntity<List<Workout>> getAllWorkoutsFromFollowedUsers(@PathVariable("appUserId") Long appUserId) {
         return ResponseEntity.ok(workoutService.getAllWorkoutsFromFollowedUser(appUserId));
     }
+    @GetMapping("/popular")
+    public ResponseEntity<List<Workout>> getPopularWorkouts() {
+        return ResponseEntity.ok(workoutService.getPopularWorkouts());
+    }
 }

@@ -12,6 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class VisibilityServiceImpl implements VisiblityService {
     private final VisibilityRepository visibilityRepository;
+
     public List<Visibility> getAllVisibilities() {
         return visibilityRepository.findAll();
     }

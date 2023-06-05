@@ -40,14 +40,12 @@ public class WorkoutServiceImpl implements WorkoutService {
         workout.setLevel(levelRepository.findByLevelId(newWorkout.getLevelId()).orElseThrow());
         return workoutRepository.save(workout).getWorkoutId();
     }
-
     public List<Workout> getAllWorkoutsFromUser(Long appUserId) {
         return workoutRepository.findByAppUserOrderByTimeAddedDesc(appUserRepository.findByAppUserId(appUserId).orElseThrow());
     }
     public List<Workout> getAllPublicWorkoutsFromUser(Long appUserId) {
         return workoutRepository.findPublicWorkoutsByAppUser(appUserRepository.findByAppUserId(appUserId).orElseThrow());
     }
-
     public String deleteWorkout(Long workoutId) {
         savingRepository.deleteAll(savingRepository.findBySavingIdWorkout(workoutRepository.findByWorkoutId(workoutId).orElseThrow()));
         likingRepository.deleteAll(likingRepository.findByLikingIdWorkout(workoutRepository.findByWorkoutId(workoutId).orElseThrow()));
@@ -55,11 +53,13 @@ public class WorkoutServiceImpl implements WorkoutService {
         workoutRepository.delete(workoutRepository.findByWorkoutId(workoutId).orElseThrow());
         return "Trening uspješno izbrisan";
     }
-
     public List<Workout> getAllWorkoutsFromFollowedUser(Long appUserId) {
         List<Following> followingObjectList = followingRepository.findByFollowingId_AppUser1(appUserRepository.findByAppUserId(appUserId).orElseThrow());
         List<AppUser> followedUsers = followingObjectList.stream().map((following ->
              following.getFollowingId().getAppUser2())).toList();
         return workoutRepository.findPublicWorkoutsByFollowedUsers(followedUsers);
+    }
+    public List<Workout> getPopularWorkouts() {
+        return workoutRepository.findPopularWorkouts();
     }
 }

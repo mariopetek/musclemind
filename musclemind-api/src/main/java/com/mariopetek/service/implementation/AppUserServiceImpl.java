@@ -19,12 +19,11 @@ public class AppUserServiceImpl implements AppUserService {
     private final AppUserRepository appUserRepository;
     private final DTOValidator<AppUserUpdateDTO> appUserUpdateDTOValidator;
 
-    @Override
     public Optional<AppUser> getAppUserByUsername(String username) {
         return appUserRepository.findByUsername(username);
     }
     public Optional<AppUser> getAppUserByAppUserId(Long appUserId) {
-        return appUserRepository.findByAppUserId(appUserId);
+        return Optional.of(appUserRepository.findByAppUserId(appUserId).get());
     }
 
     public List<AppUser> getAppUsersByUsernameContainingIgnoreCase(String username) {
