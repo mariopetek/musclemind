@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { useQuery } from 'react-query'
 
-import Dialog from './Dialog'
+import UsersDialog from './UsersDialog'
 
 const UserFollowers = ({
     isFollowersDialogShown,
@@ -26,7 +26,7 @@ const UserFollowers = ({
         }
     )
     return !userFollowersLoading && !userFollowersError ? (
-        <Dialog
+        <UsersDialog
             header="Pratitelji"
             noUsersMessage="Trenutno te ne prati ni jedan korisnik. Korisnici koji te zaprate pojaviti će se ovdje."
             isDialogShown={isFollowersDialogShown}

@@ -1,16 +1,9 @@
 import { useEffect, useRef } from 'react'
-import { NavLink } from 'react-router-dom'
 import { TfiClose } from 'react-icons/tfi'
 
-import styles from '../../styles/Dialog.module.css'
+import styles from '../../styles/StatsDialog.module.css'
 
-const Dialog = ({
-    header,
-    noUsersMessage,
-    isDialogShown,
-    setIsDialogShown,
-    data
-}) => {
+const StatsDialog = ({ header, isDialogShown, setIsDialogShown }) => {
     const dialogRef = useRef()
 
     useEffect(() => {
@@ -53,25 +46,8 @@ const Dialog = ({
                 </button>
                 <h3>{header}</h3>
             </div>
-            {data.length > 0 ? (
-                <div className={styles.usersContainer}>
-                    {data.map((user) => (
-                        <NavLink
-                            className={styles.userLink}
-                            key={user.appUserId}
-                            to={`/explore/users/${user.appUserId}`}
-                        >
-                            {user.username}
-                        </NavLink>
-                    ))}
-                </div>
-            ) : (
-                <div className={styles.noUsersContainer}>
-                    <p>{noUsersMessage}</p>
-                </div>
-            )}
         </dialog>
     )
 }
 
-export default Dialog
+export default StatsDialog

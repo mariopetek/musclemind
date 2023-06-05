@@ -1,0 +1,41 @@
+.dialogContainer {
+    border: none;
+    outline: 1px solid rgba(191, 191, 191, 1);
+    border-radius: 8px;
+    height: 600px;
+    width: 400px;
+    overflow: hidden;
+    position: fixed;
+}
+.dialogContainer::backdrop {
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+}
+.headerContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.headerContainer > h3 {
+    color: rgba(89, 89, 89, 1);
+    margin: 0;
+}
+.closeButton {
+    border: none;
+    outline: 1px solid rgba(191, 191, 191, 1);
+    color: rgba(89, 89, 89, 1);
+    border-radius: 100%;
+    font-size: 1rem;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+.closeButton:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}

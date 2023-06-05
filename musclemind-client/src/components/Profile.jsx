@@ -3,18 +3,21 @@ import { useQuery, useQueryClient } from 'react-query'
 import { Link } from 'react-router-dom'
 import { IconContext } from 'react-icons'
 import { BsSave2, BsSave2Fill, BsGrid1X2, BsGrid1X2Fill } from 'react-icons/bs'
+import { IoStatsChart } from 'react-icons/io5'
 import axios from 'axios'
 
 import styles from '../styles/Profile.module.css'
 import Workout from './partials/Workout'
 import UserFollowers from './partials/UserFollowers'
 import UserFollowing from './partials/UserFollowing'
+import UserStats from './partials/UserStats'
 
 const Profile = () => {
     const [isSavedWorkoutsSelected, setIsSavedWorkoutsSelected] =
         useState(false)
     const [isFollowersDialogShown, setIsFollowersDialogShown] = useState(false)
     const [isFollowingDialogShown, setIsFollowingDialogShown] = useState(false)
+    const [isStatsDialogShown, setIsStatsDialogShown] = useState(false)
     const queryClient = useQueryClient()
 
     const {
@@ -134,6 +137,10 @@ const Profile = () => {
                 isFollowingDialogShown={isFollowingDialogShown}
                 setIsFollowingDialogShown={setIsFollowingDialogShown}
             />
+            <UserStats
+                isStatsDialogShown={isStatsDialogShown}
+                setIsStatsDialogShown={setIsStatsDialogShown}
+            />
             <div className={styles.userInfoContainer}>
                 <div className={styles.usernameContactContainer}>
                     <h2>@{userInfo.username}</h2>
@@ -165,13 +172,22 @@ const Profile = () => {
             <div className={styles.nameBioContainer}>
                 <h3>{userInfo.name}</h3>
                 <p>{userInfo.bio}</p>
-                <Link
-                    to="/profile/edit"
-                    className={styles.editProfileButton}
-                    title="Uredi račun"
-                >
-                    Uredi račun
-                </Link>
+                <div className={styles.underBioContainer}>
+                    <Link
+                        to="/profile/edit"
+                        className={styles.editProfileButton}
+                        title="Uredi račun"
+                    >
+                        Uredi račun
+                    </Link>
+                    <IconContext.Provider value={{ size: '30px' }}>
+                        <IoStatsChart
+                            className={styles.statsIcon}
+                            onClick={() => setIsStatsDialogShown(true)}
+                            title="Statitika"
+                        />
+                    </IconContext.Provider>
+                </div>
             </div>
 
             <div className={styles.separator}></div>
