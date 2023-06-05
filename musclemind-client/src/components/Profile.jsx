@@ -102,7 +102,7 @@ const Profile = () => {
             }
         )
         return data.map((el) => {
-            return el.savedId.workout
+            return el.savingId.workout
         })
     })
 
