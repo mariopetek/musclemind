@@ -24,7 +24,8 @@ public class AuthenticationService {
         registerRequestValidator.validate(request);
         AppUser appUser = AppUser
                         .builder()
-                        .name(null)
+                        .name(request.getName())
+                        .surname(request.getSurname())
                         .username(request.getUsername())
                         .email(request.getEmail())
                         .password(passwordEncoder.encode(request.getPassword()))

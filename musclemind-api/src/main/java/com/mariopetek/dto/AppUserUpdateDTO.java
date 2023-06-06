@@ -1,8 +1,6 @@
 package com.mariopetek.dto;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,10 +11,13 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AppUserUpdateDTO {
-    @NotNull(message = "Name must not be null")
-    @Size(max = 50, message = "Name does not have correct length")
+
+    @Size(min = 2, max = 50, message = "Name does not have correct length")
+    @Pattern(regexp = "^[A-ZČĆĐŠŽ][a-zčćđšž]{1,49}$", message = "Name does not match correct format")
     private String name;
-    @NotNull(message = "Bio must not be null")
+    @Size(min = 2, max = 50, message = "Surname does not have correct length")
+    @Pattern(regexp = "^[A-ZČĆĐŠŽ][a-zčćđšž]{1,49}$", message = "Surname does not match correct format")
+    private String surname;
     @Size(max = 500, message = "Bio does not have correct length")
     private String bio;
 }

@@ -1,0 +1,1 @@
+ALTER TABLE korisnik ALTER COLUMN prezime SET NOT NULL;

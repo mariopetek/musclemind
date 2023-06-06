@@ -27,6 +27,8 @@ public class AppUser implements UserDetails {
     private Long appUserId;
     @Column(name = "ime")
     private String name;
+    @Column(name = "prezime")
+    private String surname;
     @Column(name = "korisnicko_ime")
     private String username;
     @Column(name = "email")

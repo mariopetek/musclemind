@@ -32,11 +32,20 @@ public class AppUserServiceImpl implements AppUserService {
     public String updateAppUserInfo(Long appUserId, AppUserUpdateDTO appUserUpdateInfo) {
         appUserUpdateDTOValidator.validate(appUserUpdateInfo);
         AppUser appUser = appUserRepository.findByAppUserId(appUserId).orElseThrow();
-        if(!appUserUpdateInfo.getName().equals(appUser.getName())) {
-            appUser.setName(appUserUpdateInfo.getName().equals("") ? null : appUserUpdateInfo.getName());
+        if(appUserUpdateInfo.getName() != null) {
+            if(!appUserUpdateInfo.getName().equals(appUser.getName())) {
+                appUser.setName(appUserUpdateInfo.getName());
+            }
         }
-        if(!appUserUpdateInfo.getBio().equals(appUser.getBio())) {
-            appUser.setBio(appUserUpdateInfo.getBio().equals("") ? null : appUserUpdateInfo.getBio());
+        if(appUserUpdateInfo.getSurname() != null) {
+            if(!appUserUpdateInfo.getSurname().equals(appUser.getSurname())) {
+                appUser.setSurname(appUserUpdateInfo.getSurname());
+            }
+        }
+        if(appUserUpdateInfo.getBio() != null) {
+            if(!appUserUpdateInfo.getBio().equals(appUser.getBio())) {
+                appUser.setBio(appUserUpdateInfo.getBio().equals("") ? null : appUserUpdateInfo.getBio());
+            }
         }
         appUserRepository.save(appUser);
         return "Podaci uspješno promijenjeni";
