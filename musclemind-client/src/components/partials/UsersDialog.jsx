@@ -65,6 +65,7 @@ const UsersDialog = ({
                             to={`/explore/users/${user.appUserId}`}
                         >
                             {user.username}
+                            <p>{`${user.name} ${user.surname}`}</p>
                         </NavLink>
                     ))}
                 </div>

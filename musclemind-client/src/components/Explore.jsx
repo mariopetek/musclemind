@@ -33,7 +33,7 @@ const Explore = () => {
             setFoundUsers([])
         } else {
             const { data } = await axios.get(
-                `/api/v1/users/search?username=${event.target.value}`,
+                `/api/v1/users/search?pattern=${event.target.value}`,
                 {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('jwt')}`
@@ -111,7 +111,7 @@ const Explore = () => {
                                 }`}
                             >
                                 <p>{user.username}</p>
-                                <p>{user.name}</p>
+                                <p>{`${user.name} ${user.surname}`}</p>
                             </NavLink>
                         ))}
                     </div>

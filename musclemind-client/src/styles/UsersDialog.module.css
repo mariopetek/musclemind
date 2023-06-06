@@ -60,6 +60,10 @@
 .userLink:hover {
     opacity: 0.8;
 }
+.userLink > p {
+    margin: 0;
+    font-weight: 400;
+}
 .noUsersContainer {
     display: flex;
     align-items: center;
