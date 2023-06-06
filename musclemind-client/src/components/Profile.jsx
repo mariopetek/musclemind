@@ -170,7 +170,7 @@ const Profile = () => {
                 </div>
             </div>
             <div className={styles.nameBioContainer}>
-                <h3>{userInfo.name}</h3>
+                <h3>{`${userInfo.name} ${userInfo.surname}`}</h3>
                 <p>{userInfo.bio}</p>
                 <div className={styles.underBioContainer}>
                     <Link

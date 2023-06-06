@@ -6,6 +6,8 @@ import styles from '../styles/Register.module.css'
 
 const Register = () => {
     const [inputValues, setInputValues] = useState({
+        name: '',
+        surname: '',
         username: '',
         email: '',
         password: '',
@@ -16,27 +18,41 @@ const Register = () => {
     const inputs = [
         {
             id: 1,
+            name: 'name',
+            label: 'Ime',
+            type: 'text',
+            regex: /^[A-ZČĆĐŠŽ][a-zčćđšž]{1,49}$/
+        },
+        {
+            id: 2,
+            name: 'surname',
+            label: 'Prezime',
+            type: 'text',
+            regex: /^[A-ZČĆĐŠŽ][a-zčćđšž]{1,49}$/
+        },
+        {
+            id: 3,
             name: 'username',
             label: 'Korisničko ime',
             type: 'text',
             regex: /^[\w](?!.*?\.{2})[\w.]{1,28}[\w]$/
         },
         {
-            id: 2,
+            id: 4,
             name: 'email',
             label: 'Email',
             type: 'text',
             regex: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
         },
         {
-            id: 3,
+            id: 5,
             name: 'password',
             label: 'Lozinka',
             type: 'password',
-            regex: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,40}$/
+            regex: /^(?=.*[A-ZČĆĐŠŽa-zčćđšž])(?=.*\d)(?=.*[@$!%*#?&])[A-ZČĆĐŠŽa-zčćđšž\d@$!%*#?&]{8,40}$/
         },
         {
-            id: 4,
+            id: 6,
             name: 'confirmPassword',
             label: 'Potvrda lozinke',
             type: 'password',

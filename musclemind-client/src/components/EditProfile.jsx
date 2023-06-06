@@ -18,8 +18,10 @@ import EditWorkout from './partials/EditWorkout'
 
 const EditProfile = () => {
     const [initialName, setInitialName] = useState('')
+    const [initialSurname, setInitialSurname] = useState('')
     const [initialBio, setInitialBio] = useState('')
     const [name, setName] = useState('')
+    const [surname, setSurname] = useState('')
     const [bio, setBio] = useState('')
     const [successMessage, setSuccessMessage] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
@@ -46,10 +48,11 @@ const EditProfile = () => {
         },
         {
             onSuccess: (data) => {
-                setInitialName(data.name === null ? '' : data.name)
+                setInitialName(data.name)
+                setInitialSurname(data.surname)
                 setInitialBio(data.bio === null ? '' : data.bio)
-
-                setName(data.name === null ? '' : data.name)
+                setName(data.name)
+                setSurname(data.surname)
                 setBio(data.bio === null ? '' : data.bio)
             }
         }
@@ -128,7 +131,7 @@ const EditProfile = () => {
 
     const handleSaveChanges = (event) => {
         event.preventDefault()
-        updateUserMutation.mutate({ name, bio })
+        updateUserMutation.mutate({ name, surname, bio })
     }
 
     if (userInfoLoading || userWorkoutsLoading) return <p>Učitavanje</p>
@@ -267,6 +270,26 @@ const EditProfile = () => {
                                     />
                                 </label>
                                 <label
+                                    htmlFor="surname"
+                                    className={styles.inputField}
+                                >
+                                    <div className={styles.labelContainer}>
+                                        <HiPencil />
+                                        <p>Prezime</p>
+                                    </div>
+                                    <input
+                                        type="text"
+                                        id="surname"
+                                        value={surname}
+                                        onChange={(e) =>
+                                            setSurname(e.target.value)
+                                        }
+                                        autoComplete="true"
+                                        placeholder="Unesi prezime (max. 50 znakova)"
+                                        maxLength="50"
+                                    />
+                                </label>
+                                <label
                                     htmlFor="bio"
                                     className={styles.inputField}
                                 >
@@ -298,7 +321,15 @@ const EditProfile = () => {
                                 type="submit"
                                 title="Spremi"
                                 disabled={
-                                    initialName === name && initialBio === bio
+                                    (initialName === name &&
+                                        initialBio === bio &&
+                                        initialSurname === surname) ||
+                                    !/^[A-ZČĆĐŠŽ][a-zčćđšž]{1,49}$/.test(
+                                        name
+                                    ) ||
+                                    !/^[A-ZČĆĐŠŽ][a-zčćđšž]{1,49}$/.test(
+                                        surname
+                                    )
                                 }
                             >
                                 Spremi
