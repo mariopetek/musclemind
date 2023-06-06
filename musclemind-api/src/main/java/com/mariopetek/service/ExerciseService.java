@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface ExerciseService {
     List<Exercise> getAllExercises();
+    List<Exercise> getTop3ExercisesFromExercising(Long appUserId);
 }
