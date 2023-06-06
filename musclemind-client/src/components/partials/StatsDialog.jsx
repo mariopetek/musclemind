@@ -3,7 +3,13 @@ import { TfiClose } from 'react-icons/tfi'
 
 import styles from '../../styles/StatsDialog.module.css'
 
-const StatsDialog = ({ header, isDialogShown, setIsDialogShown }) => {
+const StatsDialog = ({
+    header,
+    isDialogShown,
+    setIsDialogShown,
+    data,
+    topExercises
+}) => {
     const dialogRef = useRef()
 
     useEffect(() => {
@@ -45,6 +51,12 @@ const StatsDialog = ({ header, isDialogShown, setIsDialogShown }) => {
                     <TfiClose />
                 </button>
                 <h3>{header}</h3>
+            </div>
+            <div>
+                {data.map((el) => (
+                    <p>{`${el.desc} ${el.value}`}</p>
+                ))}
+                <p>{topExercises.desc}</p>
             </div>
         </dialog>
     )

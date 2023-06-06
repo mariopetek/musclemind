@@ -8,7 +8,7 @@ const Welcome = () => {
         <div className={styles.bodyContainer}>
             <img src={MusclemindLogo} alt="musclemind-logo.svg" />
             <div className={styles.textContainer}>
-                <h1>Muscemind</h1>
+                <h1>Musclemind</h1>
                 <p className={styles.mainDesc}>
                     Mjesto na kojem vlada trening i zdravlje.
                 </p>
