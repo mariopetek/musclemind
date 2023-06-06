@@ -19,8 +19,7 @@ public class AuthenticationConfiguration {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> appUserService.getAppUserByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found."));
+        return appUserService::getAppUserByUsername;
     }
     @Bean
     public PasswordEncoder passwordEncoder() {

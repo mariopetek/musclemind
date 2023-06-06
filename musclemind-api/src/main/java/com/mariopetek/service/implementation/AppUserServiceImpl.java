@@ -4,10 +4,8 @@ import com.mariopetek.dto.AppUserUpdateDTO;
 import com.mariopetek.dto.validator.DTOValidator;
 import com.mariopetek.model.AppUser;
 import com.mariopetek.repository.AppUserRepository;
-import com.mariopetek.repository.RoleRepository;
 import com.mariopetek.service.AppUserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,15 +17,15 @@ public class AppUserServiceImpl implements AppUserService {
     private final AppUserRepository appUserRepository;
     private final DTOValidator<AppUserUpdateDTO> appUserUpdateDTOValidator;
 
-    public Optional<AppUser> getAppUserByUsername(String username) {
-        return appUserRepository.findByUsername(username);
+    public AppUser getAppUserByUsername(String username) {
+        return appUserRepository.findByUsername(username).orElseThrow();
     }
-    public Optional<AppUser> getAppUserByAppUserId(Long appUserId) {
-        return Optional.of(appUserRepository.findByAppUserId(appUserId).get());
+    public AppUser getAppUserByAppUserId(Long appUserId) {
+        return appUserRepository.findByAppUserId(appUserId).orElseThrow();
     }
 
-    public List<AppUser> getAppUsersByUsernameContainingIgnoreCase(String username) {
-        return appUserRepository.findTop10ByUsernameContainingIgnoreCase(username.trim());
+    public List<AppUser> getAppUsersByUsernameContainingIgnoreCase(String pattern) {
+        return appUserRepository.findTop10ByUsernameContainingIgnoreCaseOrNameContainingIgnoreCaseOrSurnameContainingIgnoreCase(pattern.trim(), pattern.trim(), pattern.trim());
     }
     public String updateAppUserInfo(Long appUserId, AppUserUpdateDTO appUserUpdateInfo) {
         appUserUpdateDTOValidator.validate(appUserUpdateInfo);

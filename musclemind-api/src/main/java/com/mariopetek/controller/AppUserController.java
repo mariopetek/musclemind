@@ -17,12 +17,12 @@ public class AppUserController {
     private final AppUserService appUserService;
 
     @GetMapping("/search")
-    public ResponseEntity<List<AppUser>> getAppUsersByUsernameContainingIgnoreCase(@RequestParam("username") String username) {
-        return ResponseEntity.ok(appUserService.getAppUsersByUsernameContainingIgnoreCase(username));
+    public ResponseEntity<List<AppUser>> getAppUsersByUsernameContainingIgnoreCase(@RequestParam("pattern") String pattern) {
+        return ResponseEntity.ok(appUserService.getAppUsersByUsernameContainingIgnoreCase(pattern));
     }
     @GetMapping("/{appUserId}")
     public ResponseEntity<AppUser> getAppUserByAppUserId(@PathVariable("appUserId") Long appUserId) {
-        return ResponseEntity.ok(appUserService.getAppUserByAppUserId(appUserId).orElseThrow());
+        return ResponseEntity.ok(appUserService.getAppUserByAppUserId(appUserId));
     }
     @PutMapping ("/update/{appUserId}")
     public ResponseEntity<String> updateAppUserInfo(@PathVariable("appUserId") Long appUserId, @RequestBody AppUserUpdateDTO appUserUpdateInfo) {

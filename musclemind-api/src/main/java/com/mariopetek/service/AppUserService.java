@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AppUserService {
-    Optional<AppUser> getAppUserByUsername(String username);
-    Optional<AppUser> getAppUserByAppUserId(Long appUserId);
+    AppUser getAppUserByUsername(String username);
+    AppUser getAppUserByAppUserId(Long appUserId);
     List<AppUser> getAppUsersByUsernameContainingIgnoreCase(String username);
     String updateAppUserInfo(Long appUserId, AppUserUpdateDTO appUserUpdateInfo);
 }

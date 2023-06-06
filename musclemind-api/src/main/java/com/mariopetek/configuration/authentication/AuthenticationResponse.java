@@ -1,6 +1,5 @@
 package com.mariopetek.configuration.authentication;
 
-import com.mariopetek.model.AppUser;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -30,7 +30,7 @@ public class AuthenticationService {
                         .email(request.getEmail())
                         .password(passwordEncoder.encode(request.getPassword()))
                         .bio(null)
-                        .role(roleRepository.findByRoleName("ROLE_USER"))
+                        .role(roleRepository.findByRoleName("ROLE_USER").orElseThrow())
                         .build();
         String jwtToken = jwtService.generateToken(appUser);
         AppUser savedAppUser = appUserRepository.save(appUser);

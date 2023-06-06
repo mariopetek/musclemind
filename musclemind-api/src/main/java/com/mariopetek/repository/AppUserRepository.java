@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface AppUserRepository extends JpaRepository<AppUser, Long> {
     Optional<AppUser> findByUsername(String username);
     Optional<AppUser> findByAppUserId(Long appUserId);
-    List<AppUser> findTop10ByUsernameContainingIgnoreCase(String username);
+    List<AppUser> findTop10ByUsernameContainingIgnoreCaseOrNameContainingIgnoreCaseOrSurnameContainingIgnoreCase(String username, String name, String surname);
 }
