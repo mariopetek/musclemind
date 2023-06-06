@@ -8,6 +8,9 @@ export const StyledTableBodyRow = styled(TableRow)(() => ({
     '&:nth-of-type(odd)': {
         backgroundColor: 'rgb(241, 241, 241)'
     },
+    '&:nth-of-type(even)': {
+        backgroundColor: 'white'
+    },
     // hide last border
     '&:last-child td, &:last-child th': {
         border: 'none'

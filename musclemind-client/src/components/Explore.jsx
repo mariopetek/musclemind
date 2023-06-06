@@ -79,6 +79,7 @@ const Explore = () => {
                     <BiSearch className={styles.searchIcon} />
                 </IconContext.Provider>
                 <input
+                    name="searchBar"
                     className={styles.searchInput}
                     type="text"
                     placeholder="Pretraži korisnike"

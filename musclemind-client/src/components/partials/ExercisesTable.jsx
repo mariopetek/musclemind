@@ -16,22 +16,25 @@ import {
 } from './StyledTable'
 import styles from '../../styles/ExercisesTable.module.css'
 
-const ExercisesTable = ({ workoutId }) => {
+const ExercisesTable = ({ workout }) => {
     const {
         data: workoutExercises,
         isLoading: workoutExercisesLoading,
         isError: workoutExercisesError
-    } = useQuery(['workoutexercises', 'workout', workoutId], async () => {
-        const { data } = await axios.get(
-            `/api/v1/workoutexercises/workout/${workoutId}`,
-            {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('jwt')}`
+    } = useQuery(
+        ['workoutexercises', 'workout', workout.workoutId],
+        async () => {
+            const { data } = await axios.get(
+                `/api/v1/workoutexercises/workout/${workout.workoutId}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('jwt')}`
+                    }
                 }
-            }
-        )
-        return data
-    })
+            )
+            return data
+        }
+    )
 
     if (workoutExercisesLoading) return <p>Učitavanje</p>
     if (workoutExercisesError) return <p>Nešto je pošlo po zlu</p>
@@ -103,6 +106,12 @@ const ExercisesTable = ({ workoutId }) => {
                                 </StyledTableBodyRow>
                             )
                         )}
+                        <StyledTableBodyRow>
+                            <StyledTableBodyCell>{`Ukupno serija: ${workout.numberOfSets}`}</StyledTableBodyCell>
+                            <StyledTableBodyCell></StyledTableBodyCell>
+                            <StyledTableBodyCell></StyledTableBodyCell>
+                            <StyledTableBodyCell></StyledTableBodyCell>
+                        </StyledTableBodyRow>
                     </TableBody>
                 </Table>
             </StyledTableContainer>

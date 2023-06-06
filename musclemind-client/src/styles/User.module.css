@@ -87,6 +87,7 @@
     flex-direction: column;
     align-items: center;
     width: 75%;
+    padding-bottom: 20px;
 }
 .userWorkoutsContainerLabel {
     color: rgba(89, 89, 89, 1);

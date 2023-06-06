@@ -38,6 +38,9 @@ const UsersDialog = ({
         return () => {
             document.removeEventListener('mousedown', handler)
             dialogRef.current?.close()
+            if (isDialogShown) setIsDialogShown(false)
+            document.querySelector('html').style.position = ''
+            document.querySelector('html').style.width = ''
         }
     }, [isDialogShown])
 

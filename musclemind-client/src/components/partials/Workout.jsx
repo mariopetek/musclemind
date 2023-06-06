@@ -370,9 +370,13 @@ const Workout = ({ workout, children }) => {
                 <p>{workout.workoutDescription}</p>
             </div>
             <div className={styles.separator}></div>
-            <ExercisesTable workoutId={workout.workoutId} />
+            <ExercisesTable workout={workout} />
             <div className={styles.workoutOptionsContainer}>
-                <div className={styles.deleteButtonContainer}>{children}</div>
+                {children !== undefined && (
+                    <div className={styles.deleteButtonContainer}>
+                        {children}
+                    </div>
+                )}
                 {children === undefined && (
                     <div className={styles.startWorkoutButtonContainer}>
                         <input
