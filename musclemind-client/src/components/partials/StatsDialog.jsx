@@ -39,7 +39,8 @@ const StatsDialog = ({
             dialogRef.current?.close()
         }
     }, [isDialogShown])
-
+    console.log(data)
+    console.log(topExercises)
     return (
         <dialog ref={dialogRef} className={styles.dialogContainer}>
             <div className={styles.headerContainer}>
@@ -52,11 +53,21 @@ const StatsDialog = ({
                 </button>
                 <h3>{header}</h3>
             </div>
-            <div>
+            <div className={styles.statsContainer}>
                 {data.map((el) => (
-                    <p>{`${el.desc} ${el.value}`}</p>
+                    <div key={el.id} className={styles.statElement}>
+                        <p className={styles.elementDesc}>{el.desc}</p>
+                        <p className={styles.elementValue}>{el.value}</p>
+                    </div>
                 ))}
-                <p>{topExercises.desc}</p>
+                <div className={styles.topExercisesElement}>
+                    <p className={styles.elementDesc}>{topExercises.desc}</p>
+                    {topExercises.value.map((exercise, idx) => (
+                        <p className={styles.exerciseValue}>{`${idx + 1}. ${
+                            exercise.exerciseName
+                        }`}</p>
+                    ))}
+                </div>
             </div>
         </dialog>
     )

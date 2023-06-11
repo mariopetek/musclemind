@@ -103,12 +103,13 @@ const UserStats = ({ isStatsDialogShown, setIsStatsDialogShown }) => {
             isDialogShown={isStatsDialogShown}
             setIsDialogShown={setIsStatsDialogShown}
             data={[
-                { desc: 'Ukuno treninga: ', value: exercisedCount },
+                { id: 1, desc: 'Ukuno treninga: ', value: exercisedCount },
                 {
+                    id: 2,
                     desc: 'Najčešća težina: ',
                     value: mostCommonLevel?.levelName
                 },
-                { desc: 'Prosječno vrijeme: ', value: averageDuration }
+                { id: 3, desc: 'Prosječno vrijeme: ', value: averageDuration }
             ]}
             topExercises={{ desc: 'Najčešće vježbe: ', value: topExercises }}
         />
