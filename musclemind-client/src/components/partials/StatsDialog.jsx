@@ -39,8 +39,6 @@ const StatsDialog = ({
             dialogRef.current?.close()
         }
     }, [isDialogShown])
-    console.log(data)
-    console.log(topExercises)
     return (
         <dialog ref={dialogRef} className={styles.dialogContainer}>
             <div className={styles.headerContainer}>
@@ -63,9 +61,10 @@ const StatsDialog = ({
                 <div className={styles.topExercisesElement}>
                     <p className={styles.elementDesc}>{topExercises.desc}</p>
                     {topExercises.value.map((exercise, idx) => (
-                        <p className={styles.exerciseValue}>{`${idx + 1}. ${
-                            exercise.exerciseName
-                        }`}</p>
+                        <p
+                            key={exercise.exerciseId}
+                            className={styles.exerciseValue}
+                        >{`${idx + 1}. ${exercise.exerciseName}`}</p>
                     ))}
                 </div>
             </div>
